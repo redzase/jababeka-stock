@@ -1,3 +1,18 @@
+<?php
+
+if (isset($all_data)) {
+  $page = "Edit";
+  $name = $all_data->name;
+  $all_access = $all_access;
+} 
+else {
+  $page = "Add";
+  $name = FALSE;
+  $all_access = [];
+}
+
+?>
+
 <!-- Full Width Column -->
 <div class="content-wrapper">
   <div class="container">
@@ -17,7 +32,9 @@
     <!-- Main content -->
     <section class="content">
       <div class="row">
-      <div id="alert"></div>
+          
+          <?php echo get_validate_form(); ?>
+          
           <div class="col-md-12">
               <div class="box box-info">
               <div class="box-header ">
@@ -25,15 +42,16 @@
               </div>
               <!-- /.box-header -->
               <!-- form start -->
-              <form class="form-horizontal" id="form-role" action="<?php echo site_url("role/action_add"); ?>" method="post" enctype="multipart/form-data">
+              <?php echo form_open(uri_string(), array("id" => "form_sample_3", "class" => "form-horizontal", "enctype" => "multipart/form-data")); ?>
               <div class="box-body">
 
                   <div class="form-group">
                       <label for="inputPassword3" class="col-sm-2 control-label">Role Name</label>
 
                       <div class="col-sm-9">
-                          <input type="text" name="name" class="form-control" id="inputPassword3" placeholder="Role Name" >
-                          <span class="help-inline" style="color:red;" id="err-name"></span>
+                          <?php echo form_input("name", set_value("name", $name), "data-required='1' class='form-control' placeholder='Role Name'"); ?>
+                          <!-- <input type="text" name="name" class="form-control" id="inputPassword3" placeholder="Role Name" >
+                          <span class="help-inline" style="color:red;" id="err-name"></span> -->
 
                       </div>
                   </div>     
@@ -47,40 +65,26 @@
                           </tr>
                       </thead>
                       <tbody>
-                        <tr class="odd">
-                          <td>
-                            <input type="checkbox" name="chk_role" />
-                          </td>
-                          <td>
-                            Stock - Sector - View
-                          </td>
-                        </tr>
-                        <tr class="event">
-                          <td>
-                            <input type="checkbox" name="chk_role" />
-                          </td>
-                          <td>
-                            Stock - Sector - Tambah 
-                          </td>
-                        </tr>
-                        <tr class="odd">
-                          <td>
-                            <input type="checkbox" name="chk_role" />
-                          </td>
-                          <td>
-                            Stock - Sector - Booking
-                          </td>
-                        </tr>
+                        <?php foreach ($all_module_permission as $key => $value): ?>
+                          <tr class="<?php echo ($key % 2) == 0 ? "event" : "odd"; ?>">
+                            <td>
+                              <?php echo form_checkbox('chk_module_permission[]', $value->id, set_checkbox('chk_module_permission[]', $value->id, (in_array($value->id, $all_access)) ? TRUE : FALSE)); ?>
+                            </td>
+                            <td>
+                              <?php echo $value->name; ?>
+                            </td>
+                          </tr>
+                        <?php endforeach; ?>
                       </tbody>
                   </table>
               </div>
               <!-- /.box-body -->
               <div class="box-footer">
                   <a href="<?php echo site_url('role') ?>" class="btn btn-danger">Batal</a>
-                  <button type="button" class="btn btn-primary pull-right" name="submit-role" id="submit-role">Simpan</button>
+                  <button type="submit" class="btn btn-primary pull-right" name="submit-role" id="submit-role">Simpan</button>
               </div>
               <!-- /.box-footer -->
-              </form>
+              <?php echo form_close(); ?>
           </div>
           </div>
       </div>
@@ -92,6 +96,7 @@
 </div>
 <!-- /.content-wrapper -->
 
+<?php /*
 <script>
 $(document).ready(function (e) {
     $("#submit-role").click(function (event) {
@@ -144,4 +149,4 @@ $(document).ready(function (e) {
 });
 
 </script>
-
+*/ ?>

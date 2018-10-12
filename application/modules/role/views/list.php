@@ -1,4 +1,3 @@
-
 <!-- Full Width Column -->
 <div class="content-wrapper">
   <div class="container">
@@ -20,6 +19,8 @@
       <div class="row">
           <div class="col-md-12">
           
+          <?php echo get_validate_sess($ses_result_process); ?>
+          
           <div class="box">
           
           <!-- /.box-header -->
@@ -39,47 +40,24 @@
                     </tr>
                 </thead>
                 <tbody>
-                  <tr class="odd">
-                    <td>
-                      <input type="checkbox" name="chk_role" />
-                    </td>
-                    <td>
-                      Admin Stock
-                    </td>
-                    <td>
-                      4
-                    </td>
-                    <td>
-                      08 Aug 2018
-                    </td>
-                  </tr>
-                  <tr class="event">
-                    <td>
-                      <input type="checkbox" name="chk_role" />
-                    </td>
-                    <td>
-                      Sales
-                    </td>
-                    <td>
-                      2
-                    </td>
-                    <td>
-                      09 Aug 2018
-                    </td>
-                  </tr>
-                  <tr class="odd">
-                    <td>
-                      <input type="checkbox" name="chk_role" />
-                    </td>
-                    <td>
-                      User Stock
-                    </td>
-                    <td>
-                      1
-                    </td>
-                    <td>
-                      08 Aug 2018
-                    </td>
+                  <?php foreach ($all_data as $key => $value): ?>
+                    <tr class="<?php echo ($key % 2) == 0 ? "event" : "odd"; ?>">
+                      <td>
+                        <?php echo $start_no++; ?>
+                      </td>
+                      <td>
+                        <a href="<?php echo site_url("role/edit/". $value->id); ?>">
+                          <?php echo $value->name; ?>
+                        </a>
+                      </td>
+                      <td>
+                        <?php echo $value->total_user; ?>
+                      </td>
+                      <td>
+                        <td><?php echo date_now(12, $value->created_date); ?></td>
+                      </td>
+                    </tr>
+                  <?php endforeach; ?>
                   </tr>
                 </tbody>
             </table>
