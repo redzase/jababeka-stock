@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class User extends MX_Controller 
+class User extends MY_Controller 
 {
     function __construct()
     {
@@ -9,35 +9,257 @@ class User extends MX_Controller
 		// if($this->session->userdata('credential') =='') {
   //           redirect('/auth/logout/');
   //       }
-		$this->load->model('Rolemodel');
+		$this->load->model('Usermodel');
+		$this->load->model('role/Rolemodel');
 
 	}
 	
-	public function index()
+	// public function index()
+	// {
+	// 	// $param['tbl'] ='';
+	// 	// $get_role = $this->Usermodel->retrieve_role($param);
+	// 	// $data['roles'] = $get_role['data'];
+	// 	$this->load->view('list',[]);
+	// }
+
+	public function index($page = 1) 
 	{
-		$param['tbl'] ='';
-		$get_role = $this->Rolemodel->retrieve_role($param);
-		$data['roles'] = $get_role['data'];
-		$this->load->view('list',$data);
-		
+		$page        = ($page < 1) ? 1 : ($page - 1); 
+        $start_limit = $page * TOTAL_ITEM_PER_PAGE;
+        $end_limit   = TOTAL_ITEM_PER_PAGE;
+        $total       = 0;
+
+        $params = array(
+            "start_limit" => $start_limit,
+            "end_limit"   => $end_limit,
+            );
+        $all_data = $this->Usermodel->get_list($params);
+
+        $params = array(
+            "get_total" => TRUE,
+            );
+        $total = $this->Usermodel->get_list($params);  
+
+        /**
+         * -- Start --
+         * Pagination
+         */
+		$base_url    = site_url($this->class_metadata["module"] ."/". $this->class_metadata["class"] ."/". $this->class_metadata["method"]);
+		$uri_segment = 4;
+		$total_rows  = $total;
+		$per_page    = TOTAL_ITEM_PER_PAGE;
+		$suffix      = "";
+		// $suffix   = ($search <> "") ? "?q={$search}" : "";
+        
+        $config = set_config_pagination($base_url, $suffix, $uri_segment, $total_rows, $per_page); 
+
+        $this->pagination->initialize($config);
+        /**
+         * Pagination
+         * -- End --
+         */
+
+        /**
+         * -- Start --
+         * Store data for view
+         */
+        $data_content["all_data"]           = $all_data; 
+        $data_content["total"]              = $total;
+        $data_content["start_no"]           = ($page * TOTAL_ITEM_PER_PAGE) + 1;
+        $data_content["pagination"]         = $this->pagination->create_links();
+        $data_content["ses_result_process"] = $this->session->flashdata(PREFIX_SESSION . "_RESULT_PROCESS");
+        /**
+         * Store data for view
+         * -- End --
+         */
+
+        $this->load->view('list', $data_content);
 	}
+	
+	// public function add()
+	// {
+	// 	$data['message_display'] = $this->session->flashdata('message_display');	
+	// 	$this->load->view('add', $data);
+		
+	// }
+
+	private function _do_add() {
+		$username         = $this->input->post("username");
+		$password         = $this->input->post("password");
+		$confirm_password = $this->input->post("confirm_password");
+		$role             = $this->input->post("select_role");
+
+        /**
+         * -- Start -- 
+         * Do validation
+         */
+        $config = array(
+            array(
+                "field" => "username",
+                "label" => "User name",
+                "rules" => "required",
+                ),
+            array(
+                "field" => "password",
+                "label" => "Password",
+                "rules" => "required",
+                ),
+            array(
+                "field" => "select_role",
+                "label" => "Role",
+                "rules" => "required",
+                ),
+            );
+
+        $this->form_validation->set_rules($config);
+        /**
+         * Do validation
+         * -- End -- 
+         */
+
+        if ($this->form_validation->run()) {
+            $data_create = [
+				"username"       => $username,
+				"password"       => $password,
+				"role_id"        => $role,
+				"status"         => GLOBAL_STATUS_ACTIVE,
+				// "created_by"  => $this->session->userdata(PREFIX_SESSION . "_USER_ID"), 
+				"created_date"   => date_now(),
+				// "modified_by" => $this->session->userdata(PREFIX_SESSION . "_USER_ID"), 
+				"modified_date"  => date_now(),
+            ];
+
+            $action = $this->Usermodel->create($data_create);
+
+            $result["status"]  = $action;
+            $result["message"] = ($action) ? "User successfully created." : "User failed created.";
+
+            // Store session
+            $this->session->set_flashdata(PREFIX_SESSION ."_RESULT_PROCESS", $result);
+
+            redirect($this->class_metadata["module"] ."/". $this->class_metadata["class"], "refresh");
+        }
+    }
 
 	public function add()
 	{
-		$data['message_display'] = $this->session->flashdata('message_display');	
-		$this->load->view('add', $data);
-		
+		// If submit
+        if ($this->input->post()) {
+            self::_do_add();
+        }
+
+		$all_role = $this->Rolemodel->get_list();
+
+        /**
+         * -- Start --
+         * Store data for view
+         */
+		$data_content["all_role"] = generate_array($all_role, "id", "name");
+        /**
+         * Store data for view
+         * -- End --
+         */
+
+        $this->load->view('form', $data_content);
 	}
 
-	public function edit()
-	{
+	// public function edit()
+	// {
 			
-		$id = $this->input->get('id');
-		$config_tbl['filters']=array('id'=>$id);
-		$get_role= $this->Rolemodel->retrieve_role($config_tbl);
-		$data['role'] =  $get_role['data'];
-		$this->load->view('edit', $data);
+	// 	$id = $this->input->get('id');
+	// 	$config_tbl['filters']=array('id'=>$id);
+	// 	$get_role= $this->Usermodel->retrieve_role($config_tbl);
+	// 	$data['role'] =  $get_role['data'];
+	// 	$this->load->view('edit', $data);
 		
+	// }
+
+	private function _do_edit($id) {
+		$username         = $this->input->post("username");
+		$password         = $this->input->post("password");
+		$confirm_password = $this->input->post("confirm_password");
+		$role             = $this->input->post("select_role");
+
+        /**
+         * -- Start -- 
+         * Do validation
+         */
+        $config = array(
+            array(
+                "field" => "username",
+                "label" => "User name",
+                "rules" => "required",
+                ),
+            array(
+                "field" => "password",
+                "label" => "Password",
+                "rules" => "required",
+                ),
+            array(
+                "field" => "select_role",
+                "label" => "Role",
+                "rules" => "required",
+                ),
+            );
+
+        $this->form_validation->set_rules($config);
+        /**
+         * Do validation
+         * -- End -- 
+         */
+
+        if ($this->form_validation->run()) {
+            $data_update = [
+				"id"             => $id,
+				"username"       => $username,
+				"password"       => $password,
+				"role_id"        => $role,
+				"status"         => GLOBAL_STATUS_ACTIVE,
+				// "created_by"  => $this->session->userdata(PREFIX_SESSION . "_USER_ID"), 
+				"created_date"   => date_now(),
+				// "modified_by" => $this->session->userdata(PREFIX_SESSION . "_USER_ID"), 
+				"modified_date"  => date_now(),
+            ];
+
+            $action = $this->Usermodel->update($id, $data_update);
+
+            $result["status"]  = $action;
+            $result["message"] = ($action) ? "Role successfully updated." : "Role failed updated.";
+
+            // Store session
+            $this->session->set_flashdata(PREFIX_SESSION ."_RESULT_PROCESS", $result);
+
+            redirect($this->class_metadata["module"] ."/". $this->class_metadata["class"], "refresh");
+        }
+    }
+
+	public function edit($id)
+	{
+		// If submit
+        if ($this->input->post()) {
+            self::_do_edit($id);
+        }
+
+        // Get detail data
+        $params = array(
+            "id" => $id,
+            );
+        $all_data = $this->Usermodel->get_detail($params);
+
+        $all_role = $this->Rolemodel->get_list();
+
+        /**
+         * -- Start --
+         * Store data for view
+         */
+		$data_content["all_data"]   = $all_data;
+		$data_content["all_role"]   = generate_array($all_role, "id", "name");
+        /**
+         * Store data for view
+         * -- End --
+         */
+
+        $this->load->view('form', $data_content);
 	}
 
 	public function action_add(){
@@ -70,7 +292,7 @@ class User extends MX_Controller
 						'name' => $name,
 					);
 
-					$result = $this->Rolemodel->retrieve_role($check_role);
+					$result = $this->Usermodel->retrieve_role($check_role);
 
 					
 					
@@ -104,11 +326,11 @@ class User extends MX_Controller
 
 					$update_data['data'] = $posting_data;
 					$update_data['filters'] = array('id'=>$_POST['id']);
-					$this->Rolemodel->update_data("role", $update_data);
+					$this->Usermodel->update_data("role", $update_data);
 					$post_response = $_POST['id'];
 				}else{
 				
-					$post_response = $this->Rolemodel->insert_entry("role", $posting_data);
+					$post_response = $this->Usermodel->insert_entry("role", $posting_data);
 				}
 
 				$result['status'] = true;
@@ -141,20 +363,20 @@ class User extends MX_Controller
 		$order = $columns[$this->input->post('order')[0]['column']];
 		$dir = $this->input->post('order')[0]['dir'];
 	
-		$totalData = $this->Rolemodel->all_count();
+		$totalData = $this->Usermodel->all_count();
 			
 		$totalFiltered = $totalData; 
 			
 		if(empty($this->input->post('search')['value']))
 		{            
-			$billings = $this->Rolemodel->all($limit,$start,$order,$dir);
+			$billings = $this->Usermodel->all($limit,$start,$order,$dir);
 		}
 		else {
 			$search = $this->input->post('search')['value']; 
 
-			$billings =  $this->Rolemodel->search($limit,$start,$search,$order,$dir);
+			$billings =  $this->Usermodel->search($limit,$start,$search,$order,$dir);
 
-			$totalFiltered = $this->Rolemodel->search_count($search);
+			$totalFiltered = $this->Usermodel->search_count($search);
 		}
 
 		$data = array();
@@ -206,7 +428,7 @@ class User extends MX_Controller
 		$id = $this->input->get('id');
 		$update_data['data'] = array('is_deleted'=>1);
 		$update_data['filters'] = array('id'=>$id);
-		$this->Rolemodel->update_data("role", $update_data);
+		$this->Usermodel->update_data("role", $update_data);
 		redirect('role');
 
 

@@ -119,6 +119,46 @@ if(!function_exists("get_validate_form")) {
     }
 }
 
+if(!function_exists("generate_array")) {
+    function generate_array($data, $column_index, $column_value, $column_attribute = array()) {
+        $result = "";
+
+        foreach ($data as $key => $value) {
+            if ($column_index === FALSE)
+                $result[] = $value->{$column_value};
+            else {
+                $reformat = "";
+                foreach ($column_attribute as $value_col_attr) {
+                    if (isset($value_col_attr["format"]) and isset($value_col_attr["value"]) and isset($value_col_attr["type"])) {
+                        $format          = $value_col_attr["format"];
+                        $value_attribute = ($value_col_attr["type"] == "DYNAMIC") ? $value->{$value_col_attr["value"]} : $value_col_attr["value"];
+
+                        $reformat .= str_replace("#REPLACE#", $value_attribute, $format);
+                    }
+                }
+
+                $val = trim($value->{$column_value} ." ". $reformat);
+
+                if (is_array($column_index)) {
+                    $index = "";
+                    $str = "";
+
+                    foreach ($column_index as $key1 => $value1)
+                        $index .= ($value1 === FALSE) ? "[]" : "[".strtoupper($value->{$value1})."]";
+                    
+                    $str = "result$index=".$val;
+
+                    parse_str($str);
+                } else {
+                    $result[strtoupper($value->{$column_index})] = $val;
+                }
+            }
+        }
+
+        return (is_array($result)) ? $result : array(0);
+    }
+}
+
 
 
 

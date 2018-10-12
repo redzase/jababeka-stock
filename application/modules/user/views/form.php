@@ -1,3 +1,18 @@
+<?php
+
+if (isset($all_data)) {
+  $page = "Edit";
+  $username = $all_data->username;
+  $role_id = $all_data->role_id;
+} 
+else {
+  $page = "Add";
+  $username = "";
+  $role_id = 0;
+}
+
+?>
+
 <!-- Full Width Column -->
 <div class="content-wrapper">
   <div class="container">
@@ -17,7 +32,9 @@
     <!-- Main content -->
     <section class="content">
       <div class="row">
-      <div id="alert"></div>
+          
+          <?php echo get_validate_form(); ?>
+          
           <div class="col-md-12">
               <div class="box box-info">
               <div class="box-header ">
@@ -25,14 +42,15 @@
               </div>
               <!-- /.box-header -->
               <!-- form start -->
-              <form class="form-horizontal" id="form-role" action="<?php echo site_url("role/action_add"); ?>" method="post" enctype="multipart/form-data">
+              <?php echo form_open(uri_string(), array("id" => "form_sample_3", "class" => "form-horizontal", "enctype" => "multipart/form-data")); ?>
               <div class="box-body">
                   <div class="form-group">
                       <label for="inputPassword3" class="col-sm-2 control-label">User Name</label>
 
                       <div class="col-sm-9">
-                          <input type="text" name="username" class="form-control" id="inputPassword3" placeholder="User Name" >
-                          <span class="help-inline" style="color:red;" id="err-name"></span>
+                          <?php echo form_input("username", set_value("username", $username), "data-required='1' class='form-control' placeholder='User Name'"); ?>
+                          <!-- <input type="text" name="username" class="form-control" id="inputPassword3" placeholder="User Name" >
+                          <span class="help-inline" style="color:red;" id="err-name"></span> -->
                       </div>
                   </div>    
                   <div class="form-group">
@@ -55,13 +73,18 @@
                       <label for="inputPassword3" class="col-sm-2 control-label">Role</label>
 
                       <div class="col-sm-8">
+                          <?php echo form_dropdown('select_role', $all_role, set_value("select_role", $role_id), 'class="form-control"'); ?>
+
+                          <?php /*
                           <select class="form-control" name="select_role">
-                            <option value="">Select Role</option>
-                            <option value="">Superadmin</option>
-                            <option value="">Sales</option>
+                            <option value="">Select Role</option> 
+                            <?php foreach ($all_data as $key => $value): ?>
+                              <option value="<?php echo $value->id; ?>"><?php echo $value->name; ?></option> 
+                            <?php endforeach; ?>
                           </select>
                           <!-- <button type="button" class="btn btn-info pull-right" name="detail-role" id="detail-role">Detail</button> -->
                           <span class="help-inline" style="color:red;" id="err-name"></span>
+                          */ ?>
                       </div>
                       <div class="col-sm-2">
                           <button type="button" class="btn btn-info" name="detail-role" id="detail-role">Detail</button>
@@ -71,10 +94,10 @@
               <!-- /.box-body -->
               <div class="box-footer">
                   <a href="<?php echo site_url('user') ?>" class="btn btn-danger">Cancel</a>
-                  <button type="button" class="btn btn-primary pull-right" name="submit-role" id="submit-role">Simpan</button>
+                  <button type="submit" class="btn btn-primary pull-right" name="submit-role" id="submit-role">Simpan</button>
               </div>
               <!-- /.box-footer -->
-              </form>
+              <?php echo form_close(); ?>
           </div>
           </div>
       </div>
@@ -86,6 +109,7 @@
 </div>
 <!-- /.content-wrapper -->
 
+<?php /*
 <script>
 $(document).ready(function (e) {
     $("#submit-role").click(function (event) {
@@ -138,4 +162,4 @@ $(document).ready(function (e) {
 });
 
 </script>
-
+*/ ?>
