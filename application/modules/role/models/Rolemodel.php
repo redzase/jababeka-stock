@@ -194,6 +194,24 @@ class Rolemodel extends MY_Model {
         }
     }
 
+    public function delete($id) {
+        try {
+            $this->db->where("id", $id);
+            $this->db->where("total_user", 0); 
+            $this->db->where("status", GLOBAL_STATUS_ACTIVE); 
+            $query = $this->db->update($this->_table_role, [
+                "status" => GLOBAL_STATUS_NOTACTIVE
+            ]);
+
+            if($query === FALSE)
+                throw new Exception();
+
+            return TRUE;
+        } catch(Exception $e) {
+            return FALSE;
+        }
+    }
+
     // public function insert($params = array()) {
     //     $module_id    = (isset($params["module_id"])) ? $params["module_id"] : "";
     //     $title        = (isset($params["title"])) ? $params["title"] : "";

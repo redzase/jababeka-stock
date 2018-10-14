@@ -37,6 +37,7 @@
                         <th>Role Name</th>
                         <th>Total User</th>
                         <th>Created Date</th>
+                        <th width="12%">&nbsp;</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -46,15 +47,19 @@
                         <?php echo $start_no++; ?>
                       </td>
                       <td>
-                        <a href="<?php echo site_url("role/edit/". $value->id); ?>">
-                          <?php echo $value->name; ?>
-                        </a>
+                        <?php echo $value->name; ?>
                       </td>
                       <td>
                         <?php echo $value->total_user; ?>
                       </td>
                       <td>
-                        <td><?php echo date_now(12, $value->created_date); ?></td>
+                        <?php echo date_now(12, $value->created_date); ?>
+                      </td>
+                      <td>
+                        <a class="btn default btn-xs purple" href="<?php echo site_url("role/edit/". $value->id); ?>"><i class="fa fa-edit"></i> Edit </a>
+                        <?php if ($value->total_user == 0): ?>
+                          <a class="btn default btn-xs black" href="<?php echo site_url("role/delete/". $value->id); ?>" onclick="return confirm('Anda yakin ingin menghapus data ini?');"><i class="fa fa-trash-o"></i> Delete </a>
+                        <?php endif; ?>
                       </td>
                     </tr>
                   <?php endforeach; ?>

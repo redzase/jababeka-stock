@@ -52,7 +52,9 @@ else {
                           <!-- <input type="text" name="username" class="form-control" id="inputPassword3" placeholder="User Name" >
                           <span class="help-inline" style="color:red;" id="err-name"></span> -->
                       </div>
-                  </div>    
+                  </div>   
+
+                  <?php /* 
                   <div class="form-group">
                       <label for="inputPassword3" class="col-sm-2 control-label">Password</label>
 
@@ -69,6 +71,8 @@ else {
                           <span class="help-inline" style="color:red;" id="err-name"></span>
                       </div>
                   </div>    
+                  */ ?>
+                 
                   <div class="form-group">
                       <label for="inputPassword3" class="col-sm-2 control-label">Role</label>
 
@@ -86,9 +90,11 @@ else {
                           <span class="help-inline" style="color:red;" id="err-name"></span>
                           */ ?>
                       </div>
+                      <?php /*
                       <div class="col-sm-2">
                           <button type="button" class="btn btn-info" name="detail-role" id="detail-role">Detail</button>
                       </div>
+                      */ ?>
                   </div> 
               </div>
               <!-- /.box-body -->

@@ -103,4 +103,21 @@ class Usermodel extends MY_Model {
         }
     }
 
+    public function delete($id) {
+        try {
+            $this->db->where("id", $id);
+            $this->db->where("status", GLOBAL_STATUS_ACTIVE); 
+            $query = $this->db->update($this->_table_user, [
+                "status" => GLOBAL_STATUS_NOTACTIVE
+            ]);
+
+            if($query === FALSE)
+                throw new Exception();
+
+            return TRUE;
+        } catch(Exception $e) {
+            return FALSE;
+        }
+    }
+
 }

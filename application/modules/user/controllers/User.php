@@ -85,8 +85,8 @@ class User extends MY_Controller
 
 	private function _do_add() {
 		$username         = $this->input->post("username");
-		$password         = $this->input->post("password");
-		$confirm_password = $this->input->post("confirm_password");
+		// $password         = $this->input->post("password");
+		// $confirm_password = $this->input->post("confirm_password");
 		$role             = $this->input->post("select_role");
 
         /**
@@ -99,11 +99,11 @@ class User extends MY_Controller
                 "label" => "User name",
                 "rules" => "required",
                 ),
-            array(
-                "field" => "password",
-                "label" => "Password",
-                "rules" => "required",
-                ),
+            // array(
+            //     "field" => "password",
+            //     "label" => "Password",
+            //     "rules" => "required",
+            //     ),
             array(
                 "field" => "select_role",
                 "label" => "Role",
@@ -120,7 +120,7 @@ class User extends MY_Controller
         if ($this->form_validation->run()) {
             $data_create = [
 				"username"       => $username,
-				"password"       => $password,
+				// "password"       => $password,
 				"role_id"        => $role,
 				"status"         => GLOBAL_STATUS_ACTIVE,
 				// "created_by"  => $this->session->userdata(PREFIX_SESSION . "_USER_ID"), 
@@ -176,8 +176,8 @@ class User extends MY_Controller
 
 	private function _do_edit($id) {
 		$username         = $this->input->post("username");
-		$password         = $this->input->post("password");
-		$confirm_password = $this->input->post("confirm_password");
+		// $password         = $this->input->post("password");
+		// $confirm_password = $this->input->post("confirm_password");
 		$role             = $this->input->post("select_role");
 
         /**
@@ -212,7 +212,7 @@ class User extends MY_Controller
             $data_update = [
 				"id"             => $id,
 				"username"       => $username,
-				"password"       => $password,
+				// "password"       => $password,
 				"role_id"        => $role,
 				"status"         => GLOBAL_STATUS_ACTIVE,
 				// "created_by"  => $this->session->userdata(PREFIX_SESSION . "_USER_ID"), 
@@ -423,15 +423,24 @@ class User extends MY_Controller
 	}
 
 
-	public function delete()
-	{
-		$id = $this->input->get('id');
-		$update_data['data'] = array('is_deleted'=>1);
-		$update_data['filters'] = array('id'=>$id);
-		$this->Usermodel->update_data("role", $update_data);
-		redirect('role');
+	public function delete($id) {
+        $action = $this->Usermodel->delete($id);
 
+        if ($action === TRUE) {
+            $return = array(
+                "status"  => TRUE,
+                "message" => "User successfully deleted.",
+                );
+        } else {
+            $return = array(
+                "status"  => FALSE,
+                "message" => "User failed deleted.",
+                );
+        }
 
-	}
+        $this->session->set_flashdata(PREFIX_SESSION . "_RESULT_PROCESS", $return);
+
+        redirect($this->class_metadata["module"] ."/". $this->class_metadata["class"], "refresh");
+    }
 
 }

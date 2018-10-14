@@ -355,92 +355,100 @@ class Role extends MY_Controller
 	}
 
 
-	public function get_role()
-	{
+	// public function get_role()
+	// {
 		
-		$columns = array( 
-							0 =>'id', 
-							1 =>'name',
-							2 =>'status',
-							3=> 'created_date',
-							4=> '',
+	// 	$columns = array( 
+	// 						0 =>'id', 
+	// 						1 =>'name',
+	// 						2 =>'status',
+	// 						3=> 'created_date',
+	// 						4=> '',
 
-						);
+	// 					);
 
-		$limit = $this->input->post('length');
-		$start = $this->input->post('start');
-		$order = $columns[$this->input->post('order')[0]['column']];
-		$dir = $this->input->post('order')[0]['dir'];
+	// 	$limit = $this->input->post('length');
+	// 	$start = $this->input->post('start');
+	// 	$order = $columns[$this->input->post('order')[0]['column']];
+	// 	$dir = $this->input->post('order')[0]['dir'];
 	
-		$totalData = $this->Rolemodel->all_count();
+	// 	$totalData = $this->Rolemodel->all_count();
 			
-		$totalFiltered = $totalData; 
+	// 	$totalFiltered = $totalData; 
 			
-		if(empty($this->input->post('search')['value']))
-		{            
-			$billings = $this->Rolemodel->all($limit,$start,$order,$dir);
-		}
-		else {
-			$search = $this->input->post('search')['value']; 
+	// 	if(empty($this->input->post('search')['value']))
+	// 	{            
+	// 		$billings = $this->Rolemodel->all($limit,$start,$order,$dir);
+	// 	}
+	// 	else {
+	// 		$search = $this->input->post('search')['value']; 
 
-			$billings =  $this->Rolemodel->search($limit,$start,$search,$order,$dir);
+	// 		$billings =  $this->Rolemodel->search($limit,$start,$search,$order,$dir);
 
-			$totalFiltered = $this->Rolemodel->search_count($search);
-		}
+	// 		$totalFiltered = $this->Rolemodel->search_count($search);
+	// 	}
 
-		$data = array();
-		if(!empty($billings))
-		{
-			foreach ($billings as $row)
-			{
+	// 	$data = array();
+	// 	if(!empty($billings))
+	// 	{
+	// 		foreach ($billings as $row)
+	// 		{
 
-				if (permission('Update','Role')==true){
-					$edit = '<a class="badge bg-blue" href="'. site_url('role/edit/?id='.$row->id) .'" ><i class="fa fa-edit"></i></a>&nbsp';
-				}else{
-					$edit = "";
-				}
-				if (permission('Delete','Role')==true){
-					$delete = '<a class="badge bg-red" onclick="delete_confirm(\''. site_url('role/delete/?id='. $row->id) .'\')" ><i class="fa fa-trash"></i></a>';
-				}else{
-					$delete = "";
-				}
+	// 			if (permission('Update','Role')==true){
+	// 				$edit = '<a class="badge bg-blue" href="'. site_url('role/edit/?id='.$row->id) .'" ><i class="fa fa-edit"></i></a>&nbsp';
+	// 			}else{
+	// 				$edit = "";
+	// 			}
+	// 			if (permission('Delete','Role')==true){
+	// 				$delete = '<a class="badge bg-red" onclick="delete_confirm(\''. site_url('role/delete/?id='. $row->id) .'\')" ><i class="fa fa-trash"></i></a>';
+	// 			}else{
+	// 				$delete = "";
+	// 			}
 
-				$bg = $row->status == 1 ? 'badge bg-green':'badge bg-red';
-				$status = '<span class="'.$bg.'">'.status($row->status).'</span>';
-				$nestedData['id'] = $row->id;
-				$nestedData['name'] = $row->name;
-				$nestedData['status'] =$status;
-				$nestedData['created_date'] = date('j M Y h:i a',strtotime($row->created_date));
-				$nestedData['action'] = $edit.$delete;
+	// 			$bg = $row->status == 1 ? 'badge bg-green':'badge bg-red';
+	// 			$status = '<span class="'.$bg.'">'.status($row->status).'</span>';
+	// 			$nestedData['id'] = $row->id;
+	// 			$nestedData['name'] = $row->name;
+	// 			$nestedData['status'] =$status;
+	// 			$nestedData['created_date'] = date('j M Y h:i a',strtotime($row->created_date));
+	// 			$nestedData['action'] = $edit.$delete;
 
 				
-				$data[] = $nestedData;
+	// 			$data[] = $nestedData;
 
-			}
-		}
+	// 		}
+	// 	}
 			
-		$json_data = array(
-					"draw"            => intval($this->input->post('draw')),  
-					"recordsTotal"    => intval($totalData),  
-					"recordsFiltered" => intval($totalFiltered), 
-					"data"            => $data   
-					);
+	// 	$json_data = array(
+	// 				"draw"            => intval($this->input->post('draw')),  
+	// 				"recordsTotal"    => intval($totalData),  
+	// 				"recordsFiltered" => intval($totalFiltered), 
+	// 				"data"            => $data   
+	// 				);
 			
-		echo json_encode($json_data); 
+	// 	echo json_encode($json_data); 
 		
 
-	}
+	// }
 
+	public function delete($id) {
+        $action = $this->Rolemodel->delete($id);
 
-	public function delete()
-	{
-		$id = $this->input->get('id');
-		$update_data['data'] = array('is_deleted'=>1);
-		$update_data['filters'] = array('id'=>$id);
-		$this->Rolemodel->update_data("role", $update_data);
-		redirect('role');
+        if ($action === TRUE) {
+            $return = array(
+                "status"  => TRUE,
+                "message" => "Role successfully deleted.",
+                );
+        } else {
+            $return = array(
+                "status"  => FALSE,
+                "message" => "Role failed deleted.",
+                );
+        }
 
+        $this->session->set_flashdata(PREFIX_SESSION . "_RESULT_PROCESS", $return);
 
-	}
+        redirect($this->class_metadata["module"] ."/". $this->class_metadata["class"], "refresh");
+    }
 
 }
