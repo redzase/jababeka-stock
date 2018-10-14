@@ -8,5 +8,6 @@ class MY_Model extends CI_Model {
 	protected $_table_role              = "role";
 	protected $_table_role_permission   = "role_permission";
 	protected $_table_user              = "user";
+	protected $_table_menu              = "menu";
     
 }
