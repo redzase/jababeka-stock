@@ -3,9 +3,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Auth extends MX_Controller 
 {
+
     function __construct()
     {
 		parent::__construct();
+		
 		$this->load->model('Authmodel');
 		$this->load->library('googleplus');
 
@@ -40,7 +42,7 @@ class Auth extends MX_Controller
 	        else {
 	        	$result = array(
 	            	"status" => FALSE,
-	                "message" => "Login was failed. Check your account again.",
+	                "message" => "Login failed. Check your account again.",
 	            );
 
 	            // Set session error message
@@ -55,7 +57,7 @@ class Auth extends MX_Controller
 		else {
 		 	$result = array(
             	"status" => FALSE,
-                "message" => "Login was failed. Check your account again.",
+                "message" => "Login failed. Check your account again.",
             );
 
             // Store session
