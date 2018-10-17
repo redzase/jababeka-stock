@@ -17,28 +17,27 @@
     <!-- Main content -->
     <section class="content">
       <div class="row">
-        <div class="col-lg-2 col-xs-4">
-          <!-- small box -->
-          <div class="small-box bg-aqua">
-            <div class="inner">
-              <h3>Stock</h3>
+
+        <?php 
+        if (isset($this->session->userdata(PREFIX_SESSION . "_ALL_ACCESS")["menu"])):
+          foreach ($this->session->userdata(PREFIX_SESSION . "_ALL_ACCESS")["menu"] as $key => $value):
+        ?>
+            <div class="col-lg-2 col-xs-4">
+              <!-- small box -->
+              <div class="small-box bg-aqua">
+                <div class="inner">
+                  <h3><?php echo $value["name"]; ?></h3>
+                </div>
+                <a href="<?php echo $value["url"]; ?>" target="_blank" class="small-box-footer">
+                  More info <i class="fa fa-arrow-circle-right"></i>
+                </a>
+              </div>
             </div>
-            <a href="<?php echo site_url("sector"); ?>" class="small-box-footer">
-              More info <i class="fa fa-arrow-circle-right"></i>
-            </a>
-          </div>
-        </div>
-        <div class="col-lg-2 col-xs-4">
-          <!-- small box -->
-          <div class="small-box bg-aqua">
-            <div class="inner">
-              <h3>Settings</h3>
-            </div>
-            <a href="<?php echo site_url("role"); ?>" class="small-box-footer">
-              More info <i class="fa fa-arrow-circle-right"></i>
-            </a>
-          </div>
-        </div>
+        <?php 
+          endforeach;
+        endif;
+        ?>
+
       </div>
       <!-- /.box -->
     </section>

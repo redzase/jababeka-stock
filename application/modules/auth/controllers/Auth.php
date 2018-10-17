@@ -37,6 +37,14 @@ class Auth extends MX_Controller
 	        $all_data = $this->Authmodel->check_email($params);
 
 	        if ($all_data) {
+	        	$session_data = array(
+					PREFIX_SESSION . "_USER_ID"       => $all_data->id,
+					PREFIX_SESSION . "_USER_USERNAME" => $all_data->username,
+					PREFIX_SESSION . "_ALL_ACCESS"    => $all_data->all_access,
+					);
+
+				$this->session->set_userdata($session_data);
+				
 	        	redirect('dashboard');
 	        } 
 	        else {

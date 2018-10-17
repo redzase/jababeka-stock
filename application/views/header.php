@@ -48,19 +48,28 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse pull-left" id="navbar-collapse">
           <ul class="nav navbar-nav">
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown"> <i class="fa fa-th"></i> &nbsp; Stock  &nbsp; <span class="caret"></span></a>
-              <ul class="dropdown-menu" role="menu">
-                <li><a href="<?php echo site_url('sector') ?>">Sector</a></li>
-              </ul>
-            </li>
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown"> <i class="fa fa-th"></i> &nbsp; Settings  &nbsp; <span class="caret"></span></a>
-              <ul class="dropdown-menu" role="menu">
-                <li><a href="<?php echo site_url('role') ?>">Role</a></li>
-                <li><a href="<?php echo site_url('user') ?>">User</a></li>
-              </ul>
-            </li>
+
+            <?php 
+            if (isset($this->session->userdata(PREFIX_SESSION . "_ALL_ACCESS")["menu"]["SETTINGS"])):
+            ?>
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown"> <i class="fa fa-th"></i> &nbsp; <?php echo $this->session->userdata(PREFIX_SESSION . "_ALL_ACCESS")["menu"]["SETTINGS"]["name"]; ?>  &nbsp; <span class="caret"></span></a>
+                <ul class="dropdown-menu" role="menu">
+                  <?php 
+                  if (isset($this->session->userdata(PREFIX_SESSION . "_ALL_ACCESS")["module"]["SETTINGS"])):
+                    foreach ($this->session->userdata(PREFIX_SESSION . "_ALL_ACCESS")["module"]["SETTINGS"] as $key => $value):
+                  ?>
+                      <li><a href="<?php echo site_url('sector') ?>"><?php echo $value["name"]; ?></a></li>
+                  <?php 
+                    endforeach;
+                  endif;
+                  ?>
+                </ul>
+              </li>
+            <?php 
+            endif;
+            ?>
+
           </ul>
           
         </div>
