@@ -159,6 +159,18 @@ if(!function_exists("generate_array")) {
     }
 }
 
+if(!function_exists("clean_text_and_space")) 
+{
+    function clean_text_and_space($teks, $separator = "") {
+        $find = array( '|<(.*?)>|', '|</(.*?)>|', '|[_]{1,}|', '|[ ]{1,}|', '|[^a-zA-Z0-9\/\:\-.]|', '|[-]{2,}|', '|[,]|', '|:|', '|quot|', '|039|', '|[.]{2,}|', '|[.]{3,}|', '|[/]|' );
+        $replace = array( $separator, $separator, $separator, $separator, $separator, $separator, $separator, $separator, $separator, $separator, $separator, $separator, $separator );
+
+        $newname = preg_replace( $find, $replace, $teks );
+
+        return $newname;
+    }
+}
+
 
 
 

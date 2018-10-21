@@ -215,8 +215,6 @@ class User extends MY_Controller
 				// "password"       => $password,
 				"role_id"        => $role,
 				"status"         => GLOBAL_STATUS_ACTIVE,
-				// "created_by"  => $this->session->userdata(PREFIX_SESSION . "_USER_ID"), 
-				"created_date"   => date_now(),
 				// "modified_by" => $this->session->userdata(PREFIX_SESSION . "_USER_ID"), 
 				"modified_date"  => date_now(),
             ];

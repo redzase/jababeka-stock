@@ -3,6 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Role extends MY_Controller 
 {
+	
     function __construct()
     {
 		parent::__construct();
@@ -207,8 +208,6 @@ class Role extends MY_Controller
 				"id"             => $id,
 				"name"           => $name,
 				"status"         => GLOBAL_STATUS_ACTIVE,
-				// "created_by"  => $this->session->userdata(PREFIX_SESSION . "_USER_ID"), 
-				"created_date"   => date_now(),
 				// "modified_by" => $this->session->userdata(PREFIX_SESSION . "_USER_ID"), 
 				"modified_date"  => date_now(),
             ];

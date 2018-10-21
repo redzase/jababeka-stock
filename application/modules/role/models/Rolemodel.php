@@ -3,9 +3,11 @@
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
-class Rolemodel extends MY_Model {
+class Rolemodel extends MY_Model 
+{
 
-    public function get_list($params = array()) {
+    public function get_list($params = array()) 
+    {
         $start_limit = (isset($params["start_limit"])) ? $params["start_limit"] : "";
         $end_limit   = (isset($params["end_limit"])) ? $params["end_limit"] : "";
         $get_total   = (isset($params["get_total"])) ? TRUE : FALSE;
@@ -87,7 +89,8 @@ class Rolemodel extends MY_Model {
         }
     }
 
-    public function get_module_permission() {
+    public function get_module_permission() 
+    {
         try {
             $this->db->select("
                 {$this->_table_module_permission}.id,
@@ -111,7 +114,8 @@ class Rolemodel extends MY_Model {
         }
     }
 
-    public function create($data_create = [], $data_role_permission = []) {
+    public function create($data_create = [], $data_role_permission = []) 
+    {
         try {
             // Start database transaction
             $this->db->trans_begin();
@@ -152,7 +156,8 @@ class Rolemodel extends MY_Model {
         }
     }
 
-    public function update($id, $data_update = [], $data_role_permission = []) {
+    public function update($id, $data_update = [], $data_role_permission = []) 
+    {
         try {
             // Start database transaction
             $this->db->trans_begin();
@@ -196,7 +201,8 @@ class Rolemodel extends MY_Model {
         }
     }
 
-    public function delete($id) {
+    public function delete($id) 
+    {
         try {
             $this->db->where("id", $id);
             $this->db->where("total_user", 0); 

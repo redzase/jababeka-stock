@@ -99,3 +99,24 @@ define('GLOBAL_STATUS_NOTACTIVE', 0);
 define('TOTAL_ITEM_PER_PAGE', 10);
 define('TOTAL_NUM_LINKS', 9);
 define('PREFIX_SESSION', "SES_CMS_JABABEKA_STOCK");
+
+
+// Photo
+define('ALLOWED_UPLOAD_TYPE', "jpg|jpeg|png");
+define('PHOTO_UPLOAD_PATH', "./static/uploads/photos");
+define('PHOTO_ORIGINALS_UPLOAD_PATH', "./static/uploads/photos_originals");
+define('MAX_PHOTO_UPLOAD_SIZE', 2048);
+define('MIN_UPLOAD_WIDTH_PHOTO', 380);
+define('MIN_UPLOAD_HEIGHT_PHOTO', 330);
+define('SEPARATOR', '-');
+define('PHOTO_PATH', "/static/uploads/photos");
+define('ORIGINALS_PHOTO_PATH', "/static/uploads/photos_originals");
+
+
+// Master Status
+define('LIST_STATUS_KAVLING', serialize(array(
+	1 => "Available",
+	2 => "Booked",
+	3 => "Sold",
+	))
+);
