@@ -113,6 +113,10 @@ define('PHOTO_PATH', "/static/uploads/photos");
 define('ORIGINALS_PHOTO_PATH', "/static/uploads/photos_originals");
 
 
+// Import CSV
+define('CSV_UPLOAD_PATH', "./static/uploads/csv");
+
+
 // Master Status
 define('LIST_STATUS_KAVLING', serialize(array(
 	1 => "Available",

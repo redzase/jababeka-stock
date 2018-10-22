@@ -49,7 +49,7 @@
 
                   <h3 style="font-weight:bold;text-decoration:underline;">List Kavling</h3>
                   <p class="pull-right" style="margin-left:10px;">
-                      <a href="<?php echo site_url('sector/kavling/add/'. $detail_sector->id) ?>" class="btn btn-primary">
+                      <a href="<?php echo site_url('sector/kavling/import/'. $detail_sector->id) ?>" class="btn btn-primary">
                         Import
                       </a>
                       <a href="<?php echo site_url('sector/kavling/add/'. $detail_sector->id) ?>" class="btn btn-primary">

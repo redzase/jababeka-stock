@@ -105,6 +105,49 @@ class Sectorkavlingmodel extends MY_Model
         }
     }
 
+    public function import($sector_id, $data_import = []) 
+    {
+        $data_kavling = array();
+
+        try {
+            // Start transaction
+            $this->db->trans_begin();
+
+            foreach ($data_import as $key => $value) {
+                $data_kavling[] = [
+                    "sector_id"            => $sector_id,
+                    "reference_kavling_id" => $value["kav_ref"],
+                    "street_name"          => $value["nama_jalan"],
+                    "block_name"           => $value["nama_blok"],
+                    "house_number"         => $value["nomor"],
+                    "status"               => GLOBAL_STATUS_ACTIVE,
+                    // "created_by"        => $this->session->userdata(PREFIX_SESSION . "_USER_ID"), 
+                    "created_date"         => date_now(),
+                    // "modified_by"       => $this->session->userdata(PREFIX_SESSION . "_USER_ID"), 
+                    "modified_date"        => date_now(),
+                ];
+            }
+
+            // JIKA ADA DATA MODULE YANG AKAN DI INSERT
+            if (count($data_kavling) > 0) {
+                $query = $this->db->insert_batch($this->_table_sector_kavling, $data_kavling);
+
+                if($query === FALSE)
+                    throw new Exception();
+            }
+
+            // Commit transaction
+            $this->db->trans_commit();
+
+            return TRUE;
+        } catch(Exception $e) {
+            // Rollback transaction
+            $this->db->trans_rollback();
+
+            return FALSE;
+        }
+    }
+
     // public function delete($id) 
     // {
     //     try {

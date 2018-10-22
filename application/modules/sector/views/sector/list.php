@@ -33,7 +33,7 @@
       <?php foreach ($all_data as $key => $value): ?>
         <div class="box box-info">
           <div class="box-header with-border">
-            <h3 class="box-title"><?php echo $value->name; ?></h3>
+            <h3 class="box-title"><?php echo $value->name; ?> [ <a href="<?php echo site_url('sector/edit/'. $value->id); ?>">edit</a> ]</h3>
 
             <div class="box-tools pull-right">
               <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>

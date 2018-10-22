@@ -242,15 +242,22 @@ class Sector extends MY_Controller
          */
 
         if ($this->form_validation->run()) {
-            $data_update = [
+            $data_sketch = [];
+
+            if (!empty($this->_image_path)) {
+                $data_sketch = [
+                    "sketch" => $this->_image_path,
+                ];
+            }
+            
+            $data_update = array_merge([
                 "id"                  => $id,
                 "reference_sector_id" => $reference_sector_id,
                 "name"                => $name,
-                "sketch"              => $this->_image_path,
                 "status"              => GLOBAL_STATUS_ACTIVE,
                 // "modified_by"      => $this->session->userdata(PREFIX_SESSION . "_USER_ID"), 
                 "modified_date"       => date_now(),
-            ];
+            ], $data_sketch);
 
             $action = $this->Sectormodel->update($id, $data_update);
 

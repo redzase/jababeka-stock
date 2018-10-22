@@ -11,6 +11,7 @@ class Kavling extends MY_Controller
   //           redirect('/auth/logout/');
   //       }
         
+        $this->load->library("upload");
 		$this->load->model('Sectormodel');
         $this->load->model('Sectorkavlingmodel');
 	}
@@ -254,6 +255,73 @@ class Kavling extends MY_Controller
          */
 
         $this->load->view($this->class_metadata["module"] ."/". $this->class_metadata["class"] ."/form", $data_content);
+    }
+
+    private function _do_import($sector_id) 
+    {
+        $uploadPath = CSV_UPLOAD_PATH . "/". date("Y/m/d") ."/";
+
+        if (!is_dir($uploadPath)) {
+            mkdir($uploadPath, 0777, TRUE);
+        }
+
+        $config['upload_path']   = $uploadPath;
+        $config['allowed_types'] = 'csv'; 
+        $config["encrypt_name"]  = TRUE;
+        $config["overwrite"]     = FALSE;
+        $return                  = [
+            "status" => False,
+            "message" => "No data to process.",
+        ];
+
+        // $this->load->library('upload', $config);
+        $this->upload->initialize($config);
+
+        if ( ! $this->upload->do_upload('massupload')) {
+            // pre($this->upload->display_errors()); 
+            $return["status"]  = FALSE;
+            $return["message"] = str_replace(array("<p>", "</p>"), array("", ""), $this->upload->display_errors());
+            // return $return;
+        } 
+        else {
+            $result = $this->upload->data(); 
+            $csv    = csv_to_array($result['full_path'], ',') ; 
+
+            if(count($csv) > 0) {
+                // foreach($csv as $key => $value){
+                //     $result = $this->Sectorkavlingmodel->import($csv);
+                // }
+                $result_insert = $this->Sectorkavlingmodel->import($sector_id, $csv);
+
+                $return["status"]  = $result_insert;
+                $return["message"] = $result_insert ? "Kavling imported successfully." : "Kavling imported failed.";
+            }
+        }
+
+        // SIMPAN KE SESSION
+        $this->session->set_flashdata(PREFIX_SESSION . "_RESULT_PROCESS", $return);
+            
+        redirect($this->class_metadata["module"] ."/". $this->class_metadata["class"] ."/index/". $sector_id, "refresh");
+    }
+
+    public function import($sector_id)
+    {
+        // If submit
+        if ($this->input->post()) {
+            self::_do_import($sector_id);
+        }
+
+        /**
+         * -- Start --
+         * Store data for view
+         */
+        $data_content["sector_id"] = $sector_id;
+        /**
+         * Store data for view
+         * -- End --
+         */
+        
+        $this->load->view($this->class_metadata["module"] ."/". $this->class_metadata["class"] ."/import", $data_content);
     }
 
     // public function delete($id) 

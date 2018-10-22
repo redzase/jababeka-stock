@@ -59,7 +59,7 @@
                   if (isset($this->session->userdata(PREFIX_SESSION . "_ALL_ACCESS")["module"]["SETTINGS"])):
                     foreach ($this->session->userdata(PREFIX_SESSION . "_ALL_ACCESS")["module"]["SETTINGS"] as $key => $value):
                   ?>
-                      <li><a href="<?php echo site_url('sector') ?>"><?php echo $value["name"]; ?></a></li>
+                      <li><a href="<?php echo site_url($value["url"]) ?>"><?php echo $value["name"]; ?></a></li>
                   <?php 
                     endforeach;
                   endif;

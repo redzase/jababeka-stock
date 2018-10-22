@@ -49,6 +49,7 @@ class Authmodel extends MY_Model {
                     {$this->_table_module_permission}.module_id,
                     {$this->_table_module}.name AS module_name,
                     {$this->_table_module}.code AS module_code,
+                    {$this->_table_module}.url AS module_url,
                     {$this->_table_module_permission}.permission_id,
                     {$this->_table_permission}.code AS permission_code,
                     {$this->_table_permission}.name AS permission_name,
@@ -88,6 +89,7 @@ class Authmodel extends MY_Model {
                         $all_access["module"][$value->menu_code][$value->module_code] = [
                             "id" => $value->module_id,
                             "name" => $value->module_name,
+                            "url" => $value->module_url,
                             "code" => $value->module_code,
                         ];
                     }
