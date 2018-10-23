@@ -42,7 +42,7 @@ else {
           <div class="col-md-12">
               <div class="box box-info">
               <div class="box-header ">
-              <!-- <h3 class="box-title">Product Form</h3> -->
+                
               </div>
               <!-- /.box-header -->
               <!-- form start -->
@@ -54,7 +54,10 @@ else {
                     <div class="col-sm-8 input-group">
                         <input type="file" class="form-control" name="massupload">
                     </div>
-                    <label style="color:red;font-size:12px;margin-left: 202px;">*) allowed-ext (csv)</label>
+                    <label style="color:red;font-size:12px;margin-left: 202px;">
+                      *) allowed-ext (csv)<br>
+                      *) download sample csv file [ <a href="<?php echo site_url("static/file/import-csv.csv"); ?>">download</a> ]
+                    </label>
                   </div>
                 
               </div>
