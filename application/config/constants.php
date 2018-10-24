@@ -96,7 +96,7 @@ define('ONE_SIGNAL_TYPE_REPAYMENT', 'repayment');
 // My Constants
 define('GLOBAL_STATUS_ACTIVE', 1);
 define('GLOBAL_STATUS_NOTACTIVE', 0);
-define('TOTAL_ITEM_PER_PAGE', 10);
+define('TOTAL_ITEM_PER_PAGE', 1000000000000);
 define('TOTAL_NUM_LINKS', 9);
 define('PREFIX_SESSION', "SES_CMS_JABABEKA_STOCK");
 

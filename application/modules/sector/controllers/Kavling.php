@@ -16,8 +16,67 @@ class Kavling extends MY_Controller
         $this->load->model('Sectorkavlingmodel');
 	}
 
+    private function _do_add_coordinate($sector_id) 
+    {
+        $select_kavling = $this->input->post("select_kavling");
+        $offset_x       = $this->input->post("offset_x");
+        $offset_y       = $this->input->post("offset_y");
+
+        /**
+         * -- Start -- 
+         * Do validation
+         */
+        $config = array(
+            array(
+                "field" => "select_kavling",
+                "label" => "Pilih Kavling",
+                "rules" => "required",
+                ),
+            array(
+                "field" => "offset_x",
+                "label" => "Koordinat",
+                "rules" => "required",
+                ),
+            array(
+                "field" => "offset_y",
+                "label" => "Koordinat",
+                "rules" => "required",
+                ),
+            );
+
+        $this->form_validation->set_rules($config);
+        /**
+         * Do validation
+         * -- End -- 
+         */
+
+        if ($this->form_validation->run()) {
+            $data_update = [
+                "offset_x"       => $offset_x,
+                "offset_y"       => $offset_y,
+                // "modified_by" => $this->session->userdata(PREFIX_SESSION . "_USER_ID"), 
+                "modified_date"  => date_now(),
+            ];
+
+            $action = $this->Sectorkavlingmodel->update($select_kavling, $data_update);
+
+            $result["status"]  = $action;
+            $result["message"] = ($action) ? "Coordinate successfully updated." : "Coordinate failed updated.";
+
+            // Store session
+            $this->session->set_flashdata(PREFIX_SESSION ."_RESULT_PROCESS", $result);
+
+            redirect($this->class_metadata["module"] ."/". $this->class_metadata["class"] ."/index/". $sector_id, "refresh");
+        }
+    }
+
     public function index($sector_id, $page = 1) 
     {
+        // If submit
+        if ($this->input->post()) {
+            self::_do_add_coordinate($sector_id);
+        }
+
         $page        = ($page < 1) ? 1 : ($page - 1); 
         $start_limit = $page * TOTAL_ITEM_PER_PAGE;
         $end_limit   = TOTAL_ITEM_PER_PAGE;
@@ -35,6 +94,7 @@ class Kavling extends MY_Controller
             "end_limit"   => $end_limit,
             );
         $all_data = $this->Sectorkavlingmodel->get_list($params);
+        $all_data_kavling = $this->Sectorkavlingmodel->get_list(["sector_id" => $sector_id]);
 
         $params = array(
             "sector_id" => $sector_id,
@@ -63,8 +123,23 @@ class Kavling extends MY_Controller
 
         /**
          * -- Start --
+         * Formating for dropdown list kavling
+         */
+        $all_kavling[""] = "-- Pilih Kavling --";
+        foreach ($all_data_kavling as $key => $value) {
+            $all_kavling[$value->id] = $value->street_name .", ". $value->block_name .", ". $value->house_number;
+        }
+        /**
+         * Formating for dropdown list kavling
+         * -- End --
+         */
+
+        /**
+         * -- Start --
          * Store data for view
          */
+        // $data_content["all_kavling"]      = array_merge(["" => "-- Pilih Kavling --"], generate_array($all_data, "id", "street_name"));
+        $data_content["all_kavling"]         = $all_kavling;
         $data_content["list_status_kavling"] = unserialize(LIST_STATUS_KAVLING); 
         $data_content["detail_sector"]       = $detail_sector; 
         $data_content["all_data"]            = $all_data; 
@@ -208,7 +283,6 @@ class Kavling extends MY_Controller
 
         if ($this->form_validation->run()) {
             $data_update = [
-                "id"                   => $id,
                 "sector_id"            => $sector_id,
                 "reference_kavling_id" => $reference_kavling_id,
                 "street_name"          => $street_name,

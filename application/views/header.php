@@ -24,6 +24,7 @@
     <!-- date picker -->
   <link rel="stylesheet" href="<?php echo base_url()?>static/css/bootstrap-datepicker.min.css">
   <link rel="stylesheet" href="<?php echo base_url()?>static/css/show_image.css">
+  <link rel="stylesheet" href="<?php echo base_url()?>static/plugins/bullseye/styles/jquery.bullseye.css">
 
   <!-- jQuery 3 -->
 <script src="<?php echo base_url()?>static/js/jquery.min.js"></script>

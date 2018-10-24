@@ -79,7 +79,7 @@
 <script src="<?php echo base_url()?>static/js/adminlte.min.js"></script>
 
 <script src="<?php echo base_url()?>static/js/bootstrap-datepicker.min.js"></script>
-<script src="http://maps.google.com/maps/api/js?libraries=places&region=uk&language=en&key=AIzaSyBXzpfnUItCDO1GSANoe7qXrC36G5oibdM"></script>
+<script src="<?php echo base_url()?>static/plugins/bullseye/src/jquery.bullseye.js"></script>
 <script src="<?php echo base_url()?>static/js/all.js"></script>
 
 

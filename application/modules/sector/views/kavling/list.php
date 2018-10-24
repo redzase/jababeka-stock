@@ -17,7 +17,8 @@
     <!-- Main content -->
     <section class="content">
       <div class="row">
-        
+
+          <?php echo get_validate_form(); ?>        
           <?php echo get_validate_sess($ses_result_process); ?>
 
           <div class="col-md-12">
@@ -45,7 +46,9 @@
                   </div>     
                 
                   <h3 style="font-weight:bold;text-decoration:underline;">File Denah Perumahan</h3>
-                  <img src="<?php echo ORIGINALS_PHOTO_PATH . "/". $detail_sector->sketch; ?>" width="100%">
+                  <div id="clickable" class="bullseye-coordinate">
+                    <img src="<?php echo ORIGINALS_PHOTO_PATH . "/". $detail_sector->sketch; ?>">
+                  </div>
 
                   <h3 style="font-weight:bold;text-decoration:underline;">List Kavling</h3>
                   <p class="pull-right" style="margin-left:10px;">
@@ -93,6 +96,9 @@
                         <?php endforeach; ?>
                       </tbody>
                   </table>
+                  <div align="center">
+                    <?php echo $pagination; ?>
+                  </div>
               </div>
               <!-- /.box-body -->
               </form>
@@ -107,3 +113,73 @@
 </div>
 <!-- /.content-wrapper -->
 
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <?php echo form_open(uri_string(), array("id" => "form_sample_3", "class" => "form-horizontal")); ?>
+        <div class="modal-content">
+            <div class="modal-header">
+              <!-- <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button> -->
+              <h4 class="modal-title" id="myModalLabel">Pilih Kavling</h4>
+            </div>
+            <div class="modal-body">
+              <div class="box-body">
+                <div class="form-group">
+                  <label for="inputPassword3" class="col-sm-3 control-label">Koordinat<br><span id="selected-coordinate">(x: 0, y: 0)</span></label>
+                  <div class="col-sm-9">
+                    <?php echo form_dropdown('select_kavling', $all_kavling, set_value("select_kavling", ""), 'class="form-control"'); ?>
+                    <input type='hidden' name='offset_x' value='' />
+                    <input type='hidden' name='offset_y' value='' />
+                  </div>
+                </div>
+              </div>
+              <!-- /.box-body -->
+              <div class="box-footer">
+                  <button type="button" class="btn btn-danger" data-dismiss="modal" aria-hidden="true">Cancel</button>
+                  <button type="submit" class="btn btn-primary pull-right" name="submit-coordinat" id="submit-coordinat">Simpan</button>
+              </div>
+              <!-- /.box-footer -->
+            </div>
+        </div> 
+        <?php echo form_close(); ?>
+    </div> 
+</div> 
+
+<!-- <button data-toggle="modal" data-target="#myModal" type="button" class="btn btn-primary">Create Order</button>  -->
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        <?php 
+        foreach ($all_data as $key => $value): 
+          if ($value->offset_x > 0 and $value->offset_y > 0):
+        ?>
+          $('.bullseye-coordinate').bullseye({
+            top: <?php echo $value->offset_y; ?>, // Determines bullseye position from top.
+            left: <?php echo $value->offset_x; ?>, // Determines bullseye position from left.
+            // bottom: 0, // ̊Determines bullseye position from right.
+            heading: "Image Note 1", // Heading content
+            content: "Content 1", // Paragraph content
+            orientation: "left", // <a href="https://www.jqueryscript.net/tooltip/">Tooltip</a> orientation
+            color: "#fzff", // Dot and dot animation color. 
+            // onHoverMarkAsRead: false
+          });
+        <?php 
+          endif;
+        endforeach; 
+        ?>
+
+        $('#clickable').bind('click', function (ev) {
+            var $div = $(ev.target);
+            // var $display = $div.find('.display');
+
+            var offset = $div.offset();
+            var x = ev.clientX - offset.left;
+            var y = ev.clientY - offset.top;
+
+            // $display.text('x: ' + x + ', y: ' + y);
+            $('#myModal').find("#selected-coordinate").text('(x: ' + x + ', y: ' + y +')');
+            $('#myModal').find("input[name=offset_x]").val(x);
+            $('#myModal').find("input[name=offset_y]").val(y);
+            $('#myModal').modal('show');
+        });
+    });
+</script>

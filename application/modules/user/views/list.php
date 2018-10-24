@@ -64,6 +64,9 @@
                   <?php endforeach; ?>
                 </tbody>
             </table>
+            <div align="center">
+              <?php echo $pagination; ?>
+            </div>
           </div>
           <!-- /.box-body -->
           

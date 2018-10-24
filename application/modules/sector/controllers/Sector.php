@@ -251,7 +251,6 @@ class Sector extends MY_Controller
             }
             
             $data_update = array_merge([
-                "id"                  => $id,
                 "reference_sector_id" => $reference_sector_id,
                 "name"                => $name,
                 "status"              => GLOBAL_STATUS_ACTIVE,
