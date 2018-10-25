@@ -95,34 +95,34 @@ class Sector extends MY_Controller
         $total       = 0;
 
         $params = array(
-            "start_limit" => $start_limit,
-            "end_limit"   => $end_limit,
+            // "start_limit" => $start_limit,
+            // "end_limit"   => $end_limit,
             );
         $all_data = $this->Sectormodel->get_list($params);
 
-        $params = array(
-            "get_total" => TRUE,
-            );
-        $total = $this->Sectormodel->get_list($params);  
+  //       $params = array(
+  //           "get_total" => TRUE,
+  //           );
+  //       $total = $this->Sectormodel->get_list($params);  
 
-        /**
-         * -- Start --
-         * Pagination
-         */
-		$base_url    = site_url($this->class_metadata["module"] ."/". $this->class_metadata["class"] ."/". $this->class_metadata["method"]);
-		$uri_segment = 4;
-		$total_rows  = $total;
-		$per_page    = TOTAL_ITEM_PER_PAGE;
-		$suffix      = "";
-		// $suffix   = ($search <> "") ? "?q={$search}" : "";
+  //       /**
+  //        * -- Start --
+  //        * Pagination
+  //        */
+		// $base_url    = site_url($this->class_metadata["module"] ."/". $this->class_metadata["class"] ."/". $this->class_metadata["method"]);
+		// $uri_segment = 4;
+		// $total_rows  = $total;
+		// $per_page    = TOTAL_ITEM_PER_PAGE;
+		// $suffix      = "";
+		// // $suffix   = ($search <> "") ? "?q={$search}" : "";
         
-        $config = set_config_pagination($base_url, $suffix, $uri_segment, $total_rows, $per_page); 
+  //       $config = set_config_pagination($base_url, $suffix, $uri_segment, $total_rows, $per_page); 
 
-        $this->pagination->initialize($config);
-        /**
-         * Pagination
-         * -- End --
-         */
+  //       $this->pagination->initialize($config);
+  //       /**
+  //        * Pagination
+  //        * -- End --
+  //        */
 
         /**
          * -- Start --
@@ -131,7 +131,7 @@ class Sector extends MY_Controller
         $data_content["all_data"]           = $all_data; 
         $data_content["total"]              = $total;
         $data_content["start_no"]           = ($page * TOTAL_ITEM_PER_PAGE) + 1;
-        $data_content["pagination"]         = $this->pagination->create_links();
+        // $data_content["pagination"]         = $this->pagination->create_links();
         $data_content["ses_result_process"] = $this->session->flashdata(PREFIX_SESSION . "_RESULT_PROCESS");
         /**
          * Store data for view

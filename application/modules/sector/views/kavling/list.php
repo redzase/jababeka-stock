@@ -1,5 +1,5 @@
 <!-- Full Width Column -->
-<div class="content-wrapper">
+<div class="content-wrapper" style="overflow: auto;">
   <div class="container">
     <!-- Content Header (Page header) -->
     <section class="content-header">
@@ -74,7 +74,9 @@
                         <?php foreach ($all_data as $key => $value): ?>
                           <tr class="<?php echo ($key % 2) == 0 ? "event" : "odd"; ?>">
                             <td>
-                              <?php echo $value->reference_kavling_id; ?>
+                              <a href="<?php echo site_url('sector/kavling/edit/'. $detail_sector->id .'/'. $value->id); ?>">
+                                <?php echo $value->reference_kavling_id; ?>
+                              </a>
                             </td>
                             <td>
                               <?php echo $value->street_name; ?>
@@ -86,18 +88,31 @@
                               <?php echo $value->house_number; ?>
                             </td>
                             <td>
-                              <?php echo $list_status_kavling[$value->status]; ?>
+                              <?php echo $list_status_kavling[$value->status_valid]; ?>
                             </td>
                             <td>
-                              <!-- <a href="#">View In Map</a> -->
+                              <?php if ($value->status_valid == 1): // Available ?>
+                                <a href="<?php echo site_url("sector/kavling/update_status/". $detail_sector->id ."/". $value->id ."/". STATUS_BOOKING_KAVLING_BOOKING); ?>" class="confirmation" data-confirm-message="Anda yakin ingin mengupdate status menjadi Booking?">Booking</a>&nbsp;&nbsp;~&nbsp;
+                                <a href="<?php echo site_url("sector/kavling/update_status/". $detail_sector->id ."/". $value->id ."/". STATUS_BOOKING_KAVLING_REQUEST_BOOKING); ?>" class="confirmation" data-confirm-message="Anda yakin ingin mengupdate status menjadi Request Booking?">Request Booking</a>
+                              <?php elseif ($value->status_valid == 2): // Booked ?>
+                                <a href="<?php echo site_url("sector/kavling/update_status/". $detail_sector->id ."/". $value->id ."/". STATUS_BOOKING_KAVLING_UNBOOKING); ?>" class="confirmation" data-confirm-message="Anda yakin ingin mengupdate status menjadi Unbooking?">Unbooking</a>&nbsp;&nbsp;~&nbsp;
+                                <a href="#clickable">View In Map</a>
+                              <?php elseif ($value->status_valid == 3): // Sold ?>
+                                <a href="#clickable">View In Map</a>
+                              <?php elseif ($value->status_valid == 4): // Available Requested ?>
+                                <a href="<?php echo site_url("sector/kavling/update_status/". $detail_sector->id ."/". $value->id ."/". STATUS_BOOKING_KAVLING_BOOKING); ?>" class="confirmation" data-confirm-message="Anda yakin ingin mengupdate status menjadi Booking?">Booking</a>&nbsp;&nbsp;~&nbsp;
+                                <a href="<?php echo site_url("sector/kavling/update_status/". $detail_sector->id ."/". $value->id ."/". STATUS_BOOKING_KAVLING_UNBOOKING); ?>" class="confirmation" data-confirm-message="Anda yakin ingin mengupdate status menjadi Unbooking?">Unbooking</a>
+                              <?php endif; ?>
+                              <?php /*
                               <a class="btn default btn-xs purple" href="<?php echo site_url('sector/kavling/edit/'. $detail_sector->id .'/'. $value->id); ?>"><i class="fa fa-edit"></i> Edit </a>
+                              */ ?>
                             </td>
                           </tr>
                         <?php endforeach; ?>
                       </tbody>
                   </table>
                   <div align="center">
-                    <?php echo $pagination; ?>
+                    <?php // echo $pagination; ?>
                   </div>
               </div>
               <!-- /.box-body -->
@@ -124,7 +139,7 @@
             <div class="modal-body">
               <div class="box-body">
                 <div class="form-group">
-                  <label for="inputPassword3" class="col-sm-3 control-label">Koordinat<br><span id="selected-coordinate">(x: 0, y: 0)</span></label>
+                  <label for="inputPassword3" class="col-sm-3 control-label">Kordinat<br><span id="selected-coordinate">(x: 0, y: 0)</span></label>
                   <div class="col-sm-9">
                     <?php echo form_dropdown('select_kavling', $all_kavling, set_value("select_kavling", ""), 'class="form-control"'); ?>
                     <input type='hidden' name='offset_x' value='' />
@@ -151,14 +166,24 @@
         <?php 
         foreach ($all_data as $key => $value): 
           if ($value->offset_x > 0 and $value->offset_y > 0):
+            $content = "";
+            if ($value->status_valid == 1): // Available
+              $content = "~&nbsp;&nbsp;<a href='". site_url("sector/kavling/update_status/". $detail_sector->id ."/". $value->id ."/". STATUS_BOOKING_KAVLING_REMOVE_FROM_MAP) ."' class='confirmation' data-confirm-message='Anda yakin ingin menghapus kordinat ini?'>Hapus dari Peta</a><br>~&nbsp;&nbsp;<a href='". site_url("sector/kavling/update_status/". $detail_sector->id ."/". $value->id ."/". STATUS_BOOKING_KAVLING_BOOKING) ."' class='confirmation' data-confirm-message='Anda yakin ingin mengupdate status menjadi Booking?'>Booking</a><br>~&nbsp;&nbsp;<a href='". site_url("sector/kavling/update_status/". $detail_sector->id ."/". $value->id ."/". STATUS_BOOKING_KAVLING_REQUEST_BOOKING) ."' class='confirmation' data-confirm-message='Anda yakin ingin mengupdate status menjadi Request Booking?'>Request Booking</a>";
+            elseif ($value->status_valid == 2): // Booked
+              $content = "~&nbsp;&nbsp;<a href='". site_url("sector/kavling/update_status/". $detail_sector->id ."/". $value->id ."/". STATUS_BOOKING_KAVLING_REMOVE_FROM_MAP) ."' class='confirmation' data-confirm-message='Anda yakin ingin menghapus kordinat ini?'>Hapus dari Peta</a><br>~&nbsp;&nbsp;<a href='". site_url("sector/kavling/update_status/". $detail_sector->id ."/". $value->id ."/". STATUS_BOOKING_KAVLING_UNBOOKING) ."' class='confirmation' data-confirm-message='Anda yakin ingin mengupdate status menjadi Unbooking?'>Unbooking</a>";
+            elseif ($value->status_valid == 3): // Sold
+              $content = "";
+            elseif ($value->status_valid == 4): // Available Requested
+              $content = "~&nbsp;&nbsp;<a href='". site_url("sector/kavling/update_status/". $detail_sector->id ."/". $value->id ."/". STATUS_BOOKING_KAVLING_REMOVE_FROM_MAP) ."' class='confirmation' data-confirm-message='Anda yakin ingin menghapus kordinat ini?'>Hapus dari Peta</a><br>~&nbsp;&nbsp;<a href='". site_url("sector/kavling/update_status/". $detail_sector->id ."/". $value->id ."/". STATUS_BOOKING_KAVLING_BOOKING) ."' class='confirmation' data-confirm-message='Anda yakin ingin mengupdate status menjadi Booking?'>Booking</a><br>~&nbsp;&nbsp;<a href='". site_url("sector/kavling/update_status/". $detail_sector->id ."/". $value->id ."/". STATUS_BOOKING_KAVLING_UNBOOKING) ."' class='confirmation' data-confirm-message='Anda yakin ingin mengupdate status menjadi Unbooking?'>Unbooking</a>";
+            endif;
         ?>
           $('.bullseye-coordinate').bullseye({
             top: <?php echo $value->offset_y; ?>, // Determines bullseye position from top.
             left: <?php echo $value->offset_x; ?>, // Determines bullseye position from left.
             // bottom: 0, // ̊Determines bullseye position from right.
-            heading: "Image Note 1", // Heading content
-            content: "Content 1", // Paragraph content
-            orientation: "left", // <a href="https://www.jqueryscript.net/tooltip/">Tooltip</a> orientation
+            heading: "<?php echo $value->street_name .", ". $value->block_name .", ". $value->house_number; ?>", // Heading content
+            content: "<?php echo $content; ?>", // Paragraph content
+            orientation: "top", // <a href="https://www.jqueryscript.net/tooltip/">Tooltip</a> orientation
             color: "#fzff", // Dot and dot animation color. 
             // onHoverMarkAsRead: false
           });
@@ -168,18 +193,31 @@
         ?>
 
         $('#clickable').bind('click', function (ev) {
-            var $div = $(ev.target);
-            // var $display = $div.find('.display');
+            // var $div = $(ev.target);
+            // // var $display = $div.find('.display');
 
-            var offset = $div.offset();
-            var x = ev.clientX - offset.left;
-            var y = ev.clientY - offset.top;
+            // var offset = $div.offset();
+            var offset = $(this).offset();
+            var x = ev.pageX - offset.left - 10;
+            var y = ev.pageY - offset.top - 10;
 
             // $display.text('x: ' + x + ', y: ' + y);
             $('#myModal').find("#selected-coordinate").text('(x: ' + x + ', y: ' + y +')');
             $('#myModal').find("input[name=offset_x]").val(x);
             $('#myModal').find("input[name=offset_y]").val(y);
             $('#myModal').modal('show');
+        });
+        
+        $(".confirmation").click(function() {
+          var confirm_message = $(this).data("confirm-message");
+          var answer = confirm(confirm_message);
+
+          if (answer) {
+            $('#clickable').unbind('click');
+            return true;
+          }
+
+          return false;
         });
     });
 </script>

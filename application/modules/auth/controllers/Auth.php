@@ -15,6 +15,9 @@ class Auth extends MX_Controller
 	
 	public function index()
 	{
+		// CEK APAKAH USER SUDAH LOGIN ATAU BELUM
+		is_logged_in(FALSE);
+		
 		// $data['message_display'] = $this->session->flashdata('message_display');
 		// $data['user_data'] = $this->session->flashdata('user_data');
 		$data_content['login_url'] = $this->googleplus->loginURL();

@@ -96,7 +96,7 @@ define('ONE_SIGNAL_TYPE_REPAYMENT', 'repayment');
 // My Constants
 define('GLOBAL_STATUS_ACTIVE', 1);
 define('GLOBAL_STATUS_NOTACTIVE', 0);
-define('TOTAL_ITEM_PER_PAGE', 1000000000000);
+define('TOTAL_ITEM_PER_PAGE', 10);
 define('TOTAL_NUM_LINKS', 9);
 define('PREFIX_SESSION', "SES_CMS_JABABEKA_STOCK");
 
@@ -122,5 +122,10 @@ define('LIST_STATUS_KAVLING', serialize(array(
 	1 => "Available",
 	2 => "Booked",
 	3 => "Sold",
+	4 => "Available Requested",
 	))
 );
+define('STATUS_BOOKING_KAVLING_REMOVE_FROM_MAP', 999999);
+define('STATUS_BOOKING_KAVLING_UNBOOKING', 0);
+define('STATUS_BOOKING_KAVLING_REQUEST_BOOKING', 1);
+define('STATUS_BOOKING_KAVLING_BOOKING', 2);

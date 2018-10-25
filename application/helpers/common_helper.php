@@ -8,6 +8,16 @@ if(!function_exists("pre")){
     }
 }
 
+if(!function_exists("instance"))
+{
+    function instance() 
+    {
+        $ci =& get_instance();
+
+        return $ci;
+    }
+}
+
 if(!function_exists("set_config_pagination")) {
     function set_config_pagination($base_url, $suffix, $uri_segment, $total_rows, $per_page = TOTAL_ITEM_PER_PAGE, $num_links = TOTAL_NUM_LINKS) {
         $config = array();
@@ -194,6 +204,24 @@ if(!function_exists('csv_to_array'))
         return $data;
     }
 }    
+
+if(!function_exists("is_logged_in")) 
+{
+    function is_logged_in($bool = FALSE) 
+    {
+        $ses_user_data = instance()->session->userdata(PREFIX_SESSION . "_USER_ID");
+
+        if($bool === FALSE){
+            if($ses_user_data){
+                redirect("dashboard");
+            }
+        } else if($bool === TRUE){
+            if(!$ses_user_data){
+                redirect("auth");
+            }
+        }
+    }
+}
 
 
 

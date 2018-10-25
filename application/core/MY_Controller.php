@@ -8,7 +8,7 @@ class MY_Controller extends MX_Controller {
 		parent::__construct();
 
 		// // CEK APAKAH USER SUDAH LOGIN ATAU BELUM
-		// is_logged_in(TRUE);
+		is_logged_in(TRUE);
 
 		$router                              =& load_class('Router', 'core');
 		$this->class_metadata["module"]      = $router->fetch_module();

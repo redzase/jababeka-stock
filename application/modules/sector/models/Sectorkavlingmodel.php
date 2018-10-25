@@ -8,10 +8,11 @@ class Sectorkavlingmodel extends MY_Model
 
     public function get_list($params = array()) 
     {
-        $sector_id   = (isset($params["sector_id"])) ? $params["sector_id"] : "";
-        $start_limit = (isset($params["start_limit"])) ? $params["start_limit"] : "";
-        $end_limit   = (isset($params["end_limit"])) ? $params["end_limit"] : "";
-        $get_total   = (isset($params["get_total"])) ? TRUE : FALSE;
+        $sector_id                = (isset($params["sector_id"])) ? $params["sector_id"] : "";
+        $is_show_empty_coordinate = (isset($params["is_show_empty_coordinate"])) ? TRUE : FALSE;
+        $start_limit              = (isset($params["start_limit"])) ? $params["start_limit"] : "";
+        $end_limit                = (isset($params["end_limit"])) ? $params["end_limit"] : "";
+        $get_total                = (isset($params["get_total"])) ? TRUE : FALSE;
 
         try {
             if ($get_total) {
@@ -20,20 +21,31 @@ class Sectorkavlingmodel extends MY_Model
                     ", FALSE);
             } else {
                 $this->db->select("
-                    {$this->_table_sector_kavling}.*
+                    {$this->_table_sector_kavling}.*,
+                    CASE WHEN {$this->_dbase_jababeka_table_kavlings}.kav_ref IS NULL THEN 3
+                         WHEN {$this->_table_sector_kavling}.status_booking = 1 THEN 4
+                         WHEN {$this->_table_sector_kavling}.status_booking = 0 THEN 1
+                         WHEN {$this->_table_sector_kavling}.status_booking = 2 THEN 2
+                         ELSE 1
+                    END 'status_valid'
                     ", FALSE);
             }
             $this->db->from($this->_table_sector_kavling);
-            // $this->db->join($this->_table_sector_kavling_permission, "{$this->_table_sector_kavling}.id = {$this->_table_sector_kavling_permission}.role_id");
+            $this->db->join($this->_dbase_jababeka_table_kavlings, "{$this->_table_sector_kavling}.reference_kavling_id = {$this->_dbase_jababeka_table_kavlings}.kav_ref");
             $this->db->where("{$this->_table_sector_kavling}.sector_id", $sector_id);
             $this->db->where("{$this->_table_sector_kavling}.status", GLOBAL_STATUS_ACTIVE);
+            
+            if ($is_show_empty_coordinate) {
+                $this->db->where("{$this->_table_sector_kavling}.offset_x", 0);
+                $this->db->where("{$this->_table_sector_kavling}.offset_y", 0);
+            }
 
             if ($get_total === FALSE) {
                 if ($start_limit != "" or $end_limit != "")
                     $this->db->limit($end_limit, $start_limit);
             }
 
-            $this->db->order_by("{$this->_table_sector_kavling}.created_date", "DESC");
+            $this->db->order_by("{$this->_table_sector_kavling}.created_date DESC, {$this->_table_sector_kavling}.id DESC");
             $query = $this->db->get();
 
             if($query === FALSE)

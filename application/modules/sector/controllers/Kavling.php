@@ -90,36 +90,36 @@ class Kavling extends MY_Controller
 
         $params = array(
             "sector_id"   => $sector_id,
-            "start_limit" => $start_limit,
-            "end_limit"   => $end_limit,
+            // "start_limit" => $start_limit,
+            // "end_limit"   => $end_limit,
             );
         $all_data = $this->Sectorkavlingmodel->get_list($params);
-        $all_data_kavling = $this->Sectorkavlingmodel->get_list(["sector_id" => $sector_id]);
+        $all_data_kavling = $this->Sectorkavlingmodel->get_list(["sector_id" => $sector_id, "is_show_empty_coordinate" => True]);
 
-        $params = array(
-            "sector_id" => $sector_id,
-            "get_total" => TRUE,
-            );
-        $total = $this->Sectorkavlingmodel->get_list($params);  
+        // $params = array(
+        //     "sector_id" => $sector_id,
+        //     "get_total" => TRUE,
+        //     );
+        // $total = $this->Sectorkavlingmodel->get_list($params);  
 
-        /**
-         * -- Start --
-         * Pagination
-         */
-        $base_url    = site_url($this->class_metadata["module"] ."/". $this->class_metadata["class"] ."/". $this->class_metadata["method"]);
-        $uri_segment = 4;
-        $total_rows  = $total;
-        $per_page    = TOTAL_ITEM_PER_PAGE;
-        $suffix      = "";
-        // $suffix   = ($search <> "") ? "?q={$search}" : "";
+        // /**
+        //  * -- Start --
+        //  * Pagination
+        //  */
+        // $base_url    = site_url($this->class_metadata["module"] ."/". $this->class_metadata["class"] ."/". $this->class_metadata["method"] ."/". $sector_id);
+        // $uri_segment = 5;
+        // $total_rows  = $total;
+        // $per_page    = TOTAL_ITEM_PER_PAGE;
+        // $suffix      = "";
+        // // $suffix   = ($search <> "") ? "?q={$search}" : "";
         
-        $config = set_config_pagination($base_url, $suffix, $uri_segment, $total_rows, $per_page); 
+        // $config = set_config_pagination($base_url, $suffix, $uri_segment, $total_rows, $per_page); 
 
-        $this->pagination->initialize($config);
-        /**
-         * Pagination
-         * -- End --
-         */
+        // $this->pagination->initialize($config);
+        // /**
+        //  * Pagination
+        //  * -- End --
+        //  */
 
         /**
          * -- Start --
@@ -145,7 +145,7 @@ class Kavling extends MY_Controller
         $data_content["all_data"]            = $all_data; 
         $data_content["total"]               = $total;
         $data_content["start_no"]            = ($page * TOTAL_ITEM_PER_PAGE) + 1;
-        $data_content["pagination"]          = $this->pagination->create_links();
+        // $data_content["pagination"]          = $this->pagination->create_links();
         $data_content["ses_result_process"]  = $this->session->flashdata(PREFIX_SESSION . "_RESULT_PROCESS");
         /**
          * Store data for view
@@ -419,4 +419,33 @@ class Kavling extends MY_Controller
     //     redirect($this->class_metadata["module"] ."/". $this->class_metadata["class"], "refresh");
     // }
 
+    public function update_status($sector_id, $kavling_id, $status) 
+    {
+        if ($status == STATUS_BOOKING_KAVLING_REMOVE_FROM_MAP) {
+            $data_update = [
+                "offset_x" => 0,
+                "offset_y" => 0,
+                // "modified_by" => $this->session->userdata(PREFIX_SESSION . "_USER_ID"), 
+                "modified_date"  => date_now(),
+            ];
+        }
+        else {
+            $data_update = [
+                "status_booking" => $status,
+                // "modified_by" => $this->session->userdata(PREFIX_SESSION . "_USER_ID"), 
+                "modified_date"  => date_now(),
+            ];
+        }
+
+        $action = $this->Sectorkavlingmodel->update($kavling_id, $data_update);
+
+        $result["status"]  = $action;
+        $result["message"] = ($action) ? "Status successfully updated." : "Status failed updated.";
+
+        // Store session
+        $this->session->set_flashdata(PREFIX_SESSION ."_RESULT_PROCESS", $result);
+
+        redirect($this->class_metadata["module"] ."/". $this->class_metadata["class"] ."/index/". $sector_id, "refresh");
+    }
+    
 }
