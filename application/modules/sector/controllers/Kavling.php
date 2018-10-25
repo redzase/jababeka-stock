@@ -428,6 +428,8 @@ class Kavling extends MY_Controller
                 // "modified_by" => $this->session->userdata(PREFIX_SESSION . "_USER_ID"), 
                 "modified_date"  => date_now(),
             ];
+ 
+            $response_message = "Coordinate {{SUCCESS_OR_FAILED}} deleted.";
         }
         else {
             $data_update = [
@@ -435,12 +437,14 @@ class Kavling extends MY_Controller
                 // "modified_by" => $this->session->userdata(PREFIX_SESSION . "_USER_ID"), 
                 "modified_date"  => date_now(),
             ];
+
+            $response_message = "Status {{SUCCESS_OR_FAILED}} updated.";
         }
 
         $action = $this->Sectorkavlingmodel->update($kavling_id, $data_update);
 
         $result["status"]  = $action;
-        $result["message"] = ($action) ? "Status successfully updated." : "Status failed updated.";
+        $result["message"] = ($action) ? str_replace('{{SUCCESS_OR_FAILED}}', 'successfully', $response_message) : str_replace('{{SUCCESS_OR_FAILED}}', 'failed', $response_message);
 
         // Store session
         $this->session->set_flashdata(PREFIX_SESSION ."_RESULT_PROCESS", $result);
