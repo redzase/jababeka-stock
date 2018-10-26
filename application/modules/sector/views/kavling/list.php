@@ -96,12 +96,14 @@
                                 <a href="<?php echo site_url("sector/kavling/update_status/". $detail_sector->id ."/". $value->id ."/". STATUS_BOOKING_KAVLING_REQUEST_BOOKING); ?>" class="confirmation" data-confirm-message="Anda yakin ingin mengupdate status menjadi Request Booking?">Request Booking</a>
                               <?php elseif ($value->status_valid == 2): // Booked ?>
                                 <a href="<?php echo site_url("sector/kavling/update_status/". $detail_sector->id ."/". $value->id ."/". STATUS_BOOKING_KAVLING_UNBOOKING); ?>" class="confirmation" data-confirm-message="Anda yakin ingin mengupdate status menjadi Unbooking?">Unbooking</a>&nbsp;&nbsp;~&nbsp;
+                              <?php /* elseif ($value->status_valid == 3): // Sold ?>
                                 <a href="#clickable">View In Map</a>
-                              <?php elseif ($value->status_valid == 3): // Sold ?>
-                                <a href="#clickable">View In Map</a>
-                              <?php elseif ($value->status_valid == 4): // Available Requested ?>
+                              <?php */ elseif ($value->status_valid == 4): // Available Requested ?>
                                 <a href="<?php echo site_url("sector/kavling/update_status/". $detail_sector->id ."/". $value->id ."/". STATUS_BOOKING_KAVLING_BOOKING); ?>" class="confirmation" data-confirm-message="Anda yakin ingin mengupdate status menjadi Booking?">Booking</a>&nbsp;&nbsp;~&nbsp;
                                 <a href="<?php echo site_url("sector/kavling/update_status/". $detail_sector->id ."/". $value->id ."/". STATUS_BOOKING_KAVLING_UNBOOKING); ?>" class="confirmation" data-confirm-message="Anda yakin ingin mengupdate status menjadi Unbooking?">Unbooking</a>
+                              <?php endif; ?>
+                              <?php if ($value->offset_x > 0 or $value->offset_y > 0): // Available Requested ?>
+                                <a href="#clickable">View In Map</a>
                               <?php endif; ?>
                               <?php /*
                               <a class="btn default btn-xs purple" href="<?php echo site_url('sector/kavling/edit/'. $detail_sector->id .'/'. $value->id); ?>"><i class="fa fa-edit"></i> Edit </a>
