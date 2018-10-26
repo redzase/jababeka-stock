@@ -31,7 +31,7 @@ class Sectorkavlingmodel extends MY_Model
                     ", FALSE);
             }
             $this->db->from($this->_table_sector_kavling);
-            $this->db->join($this->_dbase_jababeka_table_kavlings, "{$this->_table_sector_kavling}.reference_kavling_id = {$this->_dbase_jababeka_table_kavlings}.kav_ref");
+            $this->db->join($this->_dbase_jababeka_table_kavlings, "{$this->_table_sector_kavling}.reference_kavling_id = {$this->_dbase_jababeka_table_kavlings}.kav_ref", "LEFT");
             $this->db->where("{$this->_table_sector_kavling}.sector_id", $sector_id);
             $this->db->where("{$this->_table_sector_kavling}.status", GLOBAL_STATUS_ACTIVE);
             
