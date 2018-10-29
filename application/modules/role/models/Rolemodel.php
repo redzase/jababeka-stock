@@ -20,7 +20,7 @@ class Rolemodel extends MY_Model
             } else {
                 $this->db->select("
                     {$this->_table_role}.*,
-                    CASE WHEN {$this->_table_user}.id IS NOT NULL THEN COUNT({$this->_table_user}.id) 
+                    CASE WHEN {$this->_table_user}.id IS NOT NULL AND {$this->_table_user}.status = ". GLOBAL_STATUS_ACTIVE ." THEN COUNT({$this->_table_user}.id) 
                          ELSE 0
                     END AS total_user
                     ", FALSE);
