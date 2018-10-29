@@ -207,22 +207,6 @@
           endif;
         endforeach; 
         ?>
-
-        // $('#clickable').bind('click', function (ev) {
-        //     // var $div = $(ev.target);
-        //     // // var $display = $div.find('.display');
-
-        //     // var offset = $div.offset();
-        //     var offset = $(this).offset();
-        //     var x = ev.pageX - offset.left - 10;
-        //     var y = ev.pageY - offset.top - 10;
-
-        //     // $display.text('x: ' + x + ', y: ' + y);
-        //     $('#myModal').find("#selected-coordinate").text('(x: ' + x + ', y: ' + y +')');
-        //     $('#myModal').find("input[name=offset_x]").val(x);
-        //     $('#myModal').find("input[name=offset_y]").val(y);
-        //     $('#myModal').modal('show');
-        // });
         
         $("#clickable").on("contextmenu",function(ev){
             // var $div = $(ev.target);
