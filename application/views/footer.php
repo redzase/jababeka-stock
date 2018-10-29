@@ -79,6 +79,8 @@
 <script src="<?php echo base_url()?>static/js/adminlte.min.js"></script>
 
 <script src="<?php echo base_url()?>static/js/bootstrap-datepicker.min.js"></script>
+<!-- bootstrap color picker -->
+<script src="<?php echo base_url()?>static/bower_components/bootstrap-colorpicker/dist/js/bootstrap-colorpicker.min.js"></script>
 <script src="<?php echo base_url()?>static/plugins/bullseye/src/jquery.bullseye.js"></script>
 <script src="<?php echo base_url()?>static/js/all.js"></script>
 

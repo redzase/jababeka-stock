@@ -26,6 +26,9 @@
   <link rel="stylesheet" href="<?php echo base_url()?>static/css/show_image.css">
   <link rel="stylesheet" href="<?php echo base_url()?>static/plugins/bullseye/styles/jquery.bullseye.css">
 
+  <!-- Bootstrap Color Picker -->
+  <link rel="stylesheet" href="<?php echo base_url()?>static/bower_components/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css">
+
   <!-- jQuery 3 -->
 <script src="<?php echo base_url()?>static/js/jquery.min.js"></script>
 

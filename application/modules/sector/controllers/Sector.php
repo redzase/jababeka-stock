@@ -143,8 +143,13 @@ class Sector extends MY_Controller
 
 	private function _do_add() 
 	{
-		$reference_sector_id = $this->input->post("reference_sector_id");
-		$name                = $this->input->post("name");
+        $reference_sector_id = $this->input->post("reference_sector_id");
+        $name                = $this->input->post("name");
+        $icon_size           = $this->input->post("icon_size");
+        $color_sold          = $this->input->post("color_sold");
+        $color_available     = $this->input->post("color_available");
+        $color_booked        = $this->input->post("color_booked");
+        $color_requested     = $this->input->post("color_requested");
 
         /**
          * -- Start -- 
@@ -159,6 +164,31 @@ class Sector extends MY_Controller
             array(
                 "field" => "name",
                 "label" => "Nama Sector",
+                "rules" => "required",
+                ),
+            array(
+                "field" => "icon_size",
+                "label" => "Icon Size",
+                "rules" => "required",
+                ),
+            array(
+                "field" => "color_sold",
+                "label" => "Color Sold",
+                "rules" => "required",
+                ),
+            array(
+                "field" => "color_available",
+                "label" => "Color Available",
+                "rules" => "required",
+                ),
+            array(
+                "field" => "color_booked",
+                "label" => "Color Booked",
+                "rules" => "required",
+                ),
+            array(
+                "field" => "color_requested",
+                "label" => "Color Requested",
                 "rules" => "required",
                 ),
             array(
@@ -178,6 +208,11 @@ class Sector extends MY_Controller
             $data_create = [
                 "reference_sector_id" => $reference_sector_id,
                 "name"                => $name,
+                "icon_size"           => $icon_size,
+                "color_sold"          => $color_sold,
+                "color_available"     => $color_available,
+                "color_booked"        => $color_booked,
+                "color_requested"     => $color_requested,
                 "sketch"              => $this->_image_path,
                 "status"              => GLOBAL_STATUS_ACTIVE,
                 // "created_by"       => $this->session->userdata(PREFIX_SESSION . "_USER_ID"), 
@@ -212,6 +247,11 @@ class Sector extends MY_Controller
     {
 		$reference_sector_id = $this->input->post("reference_sector_id");
         $name                = $this->input->post("name");
+        $icon_size           = $this->input->post("icon_size");
+        $color_sold          = $this->input->post("color_sold");
+        $color_available     = $this->input->post("color_available");
+        $color_booked        = $this->input->post("color_booked");
+        $color_requested     = $this->input->post("color_requested");
 
         /**
          * -- Start -- 
@@ -226,6 +266,31 @@ class Sector extends MY_Controller
             array(
                 "field" => "name",
                 "label" => "Nama Sector",
+                "rules" => "required",
+                ),
+            array(
+                "field" => "icon_size",
+                "label" => "Icon Size",
+                "rules" => "required",
+                ),
+            array(
+                "field" => "color_sold",
+                "label" => "Color Sold",
+                "rules" => "required",
+                ),
+            array(
+                "field" => "color_available",
+                "label" => "Color Available",
+                "rules" => "required",
+                ),
+            array(
+                "field" => "color_booked",
+                "label" => "Color Booked",
+                "rules" => "required",
+                ),
+            array(
+                "field" => "color_requested",
+                "label" => "Color Requested",
                 "rules" => "required",
                 ),
             array(
@@ -253,6 +318,11 @@ class Sector extends MY_Controller
             $data_update = array_merge([
                 "reference_sector_id" => $reference_sector_id,
                 "name"                => $name,
+                "icon_size"           => $icon_size,
+                "color_sold"          => $color_sold,
+                "color_available"     => $color_available,
+                "color_booked"        => $color_booked,
+                "color_requested"     => $color_requested,
                 "status"              => GLOBAL_STATUS_ACTIVE,
                 // "modified_by"      => $this->session->userdata(PREFIX_SESSION . "_USER_ID"), 
                 "modified_date"       => date_now(),
