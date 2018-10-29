@@ -398,26 +398,26 @@ class Kavling extends MY_Controller
         $this->load->view($this->class_metadata["module"] ."/". $this->class_metadata["class"] ."/import", $data_content);
     }
 
-    // public function delete($id) 
-    // {
-    //     $action = $this->Sectormodel->delete($id);
+    public function delete($sector_id, $id) 
+    {
+        $action = $this->Sectorkavlingmodel->delete($id);
 
-    //     if ($action === TRUE) {
-    //         $return = array(
-    //             "status"  => TRUE,
-    //             "message" => "Sector successfully deleted.",
-    //             );
-    //     } else {
-    //         $return = array(
-    //             "status"  => FALSE,
-    //             "message" => "Sector failed deleted.",
-    //             );
-    //     }
+        if ($action === TRUE) {
+            $return = array(
+                "status"  => TRUE,
+                "message" => "Kavling successfully deleted.",
+                );
+        } else {
+            $return = array(
+                "status"  => FALSE,
+                "message" => "Kavling failed deleted.",
+                );
+        }
 
-    //     $this->session->set_flashdata(PREFIX_SESSION . "_RESULT_PROCESS", $return);
+        $this->session->set_flashdata(PREFIX_SESSION . "_RESULT_PROCESS", $return);
 
-    //     redirect($this->class_metadata["module"] ."/". $this->class_metadata["class"], "refresh");
-    // }
+        redirect($this->class_metadata["module"] ."/". $this->class_metadata["class"] ."/index/". $sector_id, "refresh");
+    }
 
     public function update_status($sector_id, $kavling_id, $status) 
     {

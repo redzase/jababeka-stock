@@ -16,7 +16,7 @@ else {
   $reference_sector_id = FALSE;
   $name = FALSE;
   $sketch = "#";
-  $icon_size = "20";
+  $icon_size = "10";
   $color_sold = "#000000";
   $color_available = "#0011a1";
   $color_booked = "#a10000";

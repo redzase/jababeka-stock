@@ -18,7 +18,8 @@
         orientation: "top",
 // Toggling onHoverMarkAsRead does not work yet
 //        onHoverMarkAsRead: true,
-        color: "#ee2200"
+        color: "#ee2200",
+        size: 10,
     }
 
     var methods = {
@@ -33,7 +34,7 @@
 
             $selector.prepend(bullseye);
 
-            $('.jqBullseye').on('mouseenter.bullseye', methods.tooltipMouseEnterHandler);
+            $('.jqBullseye').on('click.bullseye', methods.tooltipMouseEnterHandler);
             $('.jqBullseye').on('mouseleave.bullseye', methods.tooltipMouseLeaveHandler);
 
             // $('.jqBullseye').on('mouseenter.bullseye', methods.markAsRead);
@@ -97,10 +98,29 @@
                 content = "<p>" + settings.content + "</p>";
             }
 
+            // Calculate size
+            if (settings.size) {
+                top_left = 5 - (((settings.size-defaults.size)/10)*5);
+                top_left_pulse = -10 + ((((settings.size*3)-30)/30)*-15);
+
+                width_height = settings.size + "px";
+                top_left = top_left + "px";
+                width_height_pulse = (settings.size * 3) + "px";
+                top_left_pulse = top_left_pulse + "px";
+            } 
+            else {
+                width_height = defaults.size + "px";
+                top_left = "5px";
+                width_height_pulse = (defaults.size * 3) + "px";
+                top_left_pulse = "-10px";
+            }
+            bullet_style = "top:"+ top_left +";left:"+ top_left +";width:"+ width_height +";height:"+ width_height +";";
+            bullet_pulse_style = "top:"+ top_left_pulse +";left:"+ top_left_pulse +";width:"+ width_height_pulse +";height:"+ width_height_pulse +";";
+
             bullseye = "<div class='jqBullseye' style='" + pos +"'>" +
                 "<span class='bullseyeTooltip " + orientationClass +"'>"+ headContent + content +"</span>" +
-                "<span class='bullseyeBody' style='background:" + color +"'></span>" +
-                "<span class='bullseyePulse' style='border-color:" + color + "'></span>" +
+                "<span class='bullseyeBody' style='background:" + color + bullet_style + "'></span>" +
+                "<span class='bullseyePulse' style='border-color:" + color + bullet_pulse_style + "'></span>" +
                 "</div>";
         },
         // Tooltip mouseeventhandlers

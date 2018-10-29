@@ -22,15 +22,21 @@ class Sectorkavlingmodel extends MY_Model
             } else {
                 $this->db->select("
                     {$this->_table_sector_kavling}.*,
+                    {$this->_table_sector}.icon_size,
+                    {$this->_table_sector}.color_sold,
+                    {$this->_table_sector}.color_available,
+                    {$this->_table_sector}.color_booked,
+                    {$this->_table_sector}.color_requested,
                     CASE WHEN {$this->_dbase_jababeka_table_kavlings}.kav_ref IS NULL THEN 3
                          WHEN {$this->_table_sector_kavling}.status_booking = 1 THEN 4
                          WHEN {$this->_table_sector_kavling}.status_booking = 0 THEN 1
                          WHEN {$this->_table_sector_kavling}.status_booking = 2 THEN 2
                          ELSE 1
-                    END 'status_valid'
+                    END 'status_valid',
                     ", FALSE);
             }
             $this->db->from($this->_table_sector_kavling);
+            $this->db->join($this->_table_sector, "{$this->_table_sector_kavling}.sector_id = {$this->_table_sector}.id");
             $this->db->join($this->_dbase_jababeka_table_kavlings, "{$this->_table_sector_kavling}.reference_kavling_id = {$this->_dbase_jababeka_table_kavlings}.kav_ref", "LEFT");
             $this->db->where("{$this->_table_sector_kavling}.sector_id", $sector_id);
             $this->db->where("{$this->_table_sector_kavling}.status", GLOBAL_STATUS_ACTIVE);
@@ -160,23 +166,22 @@ class Sectorkavlingmodel extends MY_Model
         }
     }
 
-    // public function delete($id) 
-    // {
-    //     try {
-    //         $this->db->where("id", $id);
-    //         $this->db->where("total_user", 0); 
-    //         $this->db->where("status", GLOBAL_STATUS_ACTIVE); 
-    //         $query = $this->db->update($this->_table_sector_kavling, [
-    //             "status" => GLOBAL_STATUS_NOTACTIVE
-    //         ]);
+    public function delete($id) 
+    {
+        try {
+            $this->db->where("id", $id);
+            $this->db->where("status", GLOBAL_STATUS_ACTIVE); 
+            $query = $this->db->update($this->_table_sector_kavling, [
+                "status" => GLOBAL_STATUS_NOTACTIVE
+            ]);
 
-    //         if($query === FALSE)
-    //             throw new Exception();
+            if($query === FALSE)
+                throw new Exception();
 
-    //         return TRUE;
-    //     } catch(Exception $e) {
-    //         return FALSE;
-    //     }
-    // }
+            return TRUE;
+        } catch(Exception $e) {
+            return FALSE;
+        }
+    }
 
 }
