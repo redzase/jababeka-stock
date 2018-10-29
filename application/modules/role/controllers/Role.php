@@ -3,13 +3,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Role extends MY_Controller 
 {
+	private $_module = "SETTINGS_ROLE";
 	
     function __construct()
     {
 		parent::__construct();
-		// if($this->session->userdata('credential') =='') {
-  //           redirect('/auth/logout/');
-  //       }
+		
 		$this->load->model('Rolemodel');
 
 	}
@@ -24,6 +23,9 @@ class Role extends MY_Controller
 
 	public function index($page = 1) 
 	{
+		// Check access module permission
+		check_access_module_permission($this->_module, PERMISSION_READ, True);
+		
 		$page        = ($page < 1) ? 1 : ($page - 1); 
         $start_limit = $page * TOTAL_ITEM_PER_PAGE;
         $end_limit   = TOTAL_ITEM_PER_PAGE;
@@ -63,11 +65,12 @@ class Role extends MY_Controller
          * -- Start --
          * Store data for view
          */
-        $data_content["all_data"]           = $all_data; 
-        $data_content["total"]              = $total;
-        $data_content["start_no"]           = ($page * TOTAL_ITEM_PER_PAGE) + 1;
-        $data_content["pagination"]         = $this->pagination->create_links();
-        $data_content["ses_result_process"] = $this->session->flashdata(PREFIX_SESSION . "_RESULT_PROCESS");
+		$data_content["all_data"]           = $all_data; 
+		$data_content["total"]              = $total;
+		$data_content["start_no"]           = ($page * TOTAL_ITEM_PER_PAGE) + 1;
+		$data_content["pagination"]         = $this->pagination->create_links();
+		$data_content["ses_result_process"] = $this->session->flashdata(PREFIX_SESSION . "_RESULT_PROCESS");
+		$data_content["module"]             = $this->_module;
         /**
          * Store data for view
          * -- End --

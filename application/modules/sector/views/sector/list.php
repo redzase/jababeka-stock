@@ -22,18 +22,33 @@
       
       <div class="row">
         <div class="col-md-12">
+          <?php 
+          if (check_access_module_permission($module, PERMISSION_CREATE)):
+          ?>
           <p class="pull-right" style="margin-left:10px;">
               <a href="<?php echo site_url('sector/add') ?>" class="btn btn-primary">
                 <i class="fa fa-plus"></i> Sector
               </a> 
           </p>
+          <?php 
+          endif;
+          ?>
         </div>
       </div>
 
       <?php foreach ($all_data as $key => $value): ?>
         <div class="box box-info">
           <div class="box-header with-border">
-            <h3 class="box-title"><?php echo $value->name; ?> [ <a href="<?php echo site_url('sector/edit/'. $value->id); ?>">edit</a> ]</h3>
+            <h3 class="box-title">
+              <?php echo $value->name; ?> 
+              <?php 
+              if (check_access_module_permission($module, PERMISSION_UPDATE)):
+              ?>
+              [ <a href="<?php echo site_url('sector/edit/'. $value->id); ?>">edit</a> ]
+              <?php 
+              endif;
+              ?>
+            </h3>
 
             <div class="box-tools pull-right">
               <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
@@ -75,7 +90,7 @@
               <!-- small box -->
               <div class="small-box bg-aqua">
                 <div class="inner">
-                  <h3 align="center"><?php echo $value->total > 0 ? (($value->sold / $value->total) * 100) : 0; ?>%</h3>
+                  <h3 align="center"><?php echo $value->total > 0 ? round((($value->sold / $value->total) * 100), 2) : 0; ?>%</h3>
                   <hr style="margin:-5px 0 3px 0;">
                   <h3 align="center">SOLD</h3>
                 </div>

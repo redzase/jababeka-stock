@@ -26,11 +26,17 @@
           
           <!-- /.box-header -->
           <div class="box-body">
+          <?php 
+          if (check_access_module_permission($module, PERMISSION_CREATE)):
+          ?>
           <p class="pull-right" style="margin-left:10px;">
               <a href="<?php echo site_url('user/add') ?>" class="btn btn-block btn-primary" >
                 <i class="fa fa-plus"></i> User
               </a> 
           </p>
+          <?php 
+          endif;
+          ?>
             <table id="role" class="table table-bordered table-striped dataTable" role="grid" aria-describedby="example1_info">
                 <thead>
                     <tr role="row">
@@ -57,8 +63,18 @@
                         <?php echo date_now(12, $value->created_date); ?>
                       </td>
                       <td>
+                        <?php 
+                        if (check_access_module_permission($module, PERMISSION_UPDATE)):
+                        ?>
                         <a class="btn default btn-xs purple" href="<?php echo site_url("user/edit/". $value->id); ?>"><i class="fa fa-edit"></i> Edit </a>
+                        <?php 
+                        endif;
+                        if (check_access_module_permission($module, PERMISSION_DELETE)):
+                        ?>
                         <a class="btn default btn-xs black" href="<?php echo site_url("user/delete/". $value->id); ?>" onclick="return confirm('Anda yakin ingin menghapus data ini?');"><i class="fa fa-trash-o"></i> Delete </a>
+                        <?php
+                        endif;
+                        ?>
                       </td>
                     </tr>
                   <?php endforeach; ?>

@@ -3,6 +3,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class User extends MY_Controller 
 {
+	private $_module = "SETTINGS_USER";
+
     function __construct()
     {
 		parent::__construct();
@@ -24,6 +26,9 @@ class User extends MY_Controller
 
 	public function index($page = 1) 
 	{
+		// Check access module permission
+		check_access_module_permission($this->_module, PERMISSION_READ, True);
+
 		$page        = ($page < 1) ? 1 : ($page - 1); 
         $start_limit = $page * TOTAL_ITEM_PER_PAGE;
         $end_limit   = TOTAL_ITEM_PER_PAGE;
@@ -68,6 +73,7 @@ class User extends MY_Controller
         $data_content["start_no"]           = ($page * TOTAL_ITEM_PER_PAGE) + 1;
         $data_content["pagination"]         = $this->pagination->create_links();
         $data_content["ses_result_process"] = $this->session->flashdata(PREFIX_SESSION . "_RESULT_PROCESS");
+        $data_content["module"]             = $this->_module;
         /**
          * Store data for view
          * -- End --

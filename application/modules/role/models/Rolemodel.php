@@ -104,7 +104,7 @@ class Rolemodel extends MY_Model
             $this->db->join($this->_table_module, "{$this->_table_module_permission}.module_id = {$this->_table_module}.id");
             $this->db->join($this->_table_menu, "{$this->_table_module}.menu_id = {$this->_table_menu}.id");
             $this->db->join($this->_table_permission, "{$this->_table_module_permission}.permission_id = {$this->_table_permission}.id");
-            $this->db->order_by("{$this->_table_menu}.sequence", "ASC");
+            $this->db->order_by("{$this->_table_menu}.sequence ASC, {$this->_table_module}.code ASC, {$this->_table_permission}.code ASC");
             $query = $this->db->get();
 
             if($query === FALSE)

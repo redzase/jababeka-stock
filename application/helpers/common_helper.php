@@ -223,6 +223,57 @@ if(!function_exists("is_logged_in"))
     }
 }
 
+if(!function_exists("check_access_module_permission")) 
+{
+    function check_access_module_permission($module, $permission, $redirect = False) 
+    {
+        $all_access = instance()->session->userdata(PREFIX_SESSION . "_ALL_ACCESS")["module_permission"]["SETTINGS_ROLE"];
+
+        if (!isset(instance()->session->userdata(PREFIX_SESSION . "_ALL_ACCESS")["module_permission"][$module][$permission])) {
+            if ($redirect) {
+                redirect("dashboard", "refresh");
+            }
+            else {
+                return False;                
+            }
+        }
+
+        return True;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -109,7 +109,7 @@
                                 <?php if (in_array($value->status_valid, [1, 2, 3, 4])): ?>
                                   &nbsp;&nbsp;~&nbsp;
                                 <?php endif; ?>
-                                <a href="#clickable">View In Map</a>
+                                <a href="#clickable" class="view-in-map" data-uniqueid="<?php echo $value->id; ?>">View In Map</a>
                               <?php endif; ?>
                               <?php /*
                               <a class="btn default btn-xs purple" href="<?php echo site_url('sector/kavling/edit/'. $detail_sector->id .'/'. $value->id); ?>"><i class="fa fa-edit"></i> Edit </a>
@@ -177,6 +177,7 @@
             $content = "";
             $coordinate_color = "#0011a1";
             $coordinate_size = $value->icon_size;
+            $uniqueid = $value->id;
             if ($value->status_valid == 1): // Available
               // $content = "~&nbsp;&nbsp;<a href='". site_url("sector/kavling/update_status/". $detail_sector->id ."/". $value->id ."/". STATUS_BOOKING_KAVLING_REMOVE_FROM_MAP) ."' class='confirmation' data-confirm-message='Anda yakin ingin menghapus kordinat ini?'>Hapus dari Peta</a><br>~&nbsp;&nbsp;<a href='". site_url("sector/kavling/update_status/". $detail_sector->id ."/". $value->id ."/". STATUS_BOOKING_KAVLING_BOOKING) ."' class='confirmation' data-confirm-message='Anda yakin ingin mengupdate status menjadi Booking?'>Booking</a><br>~&nbsp;&nbsp;<a href='". site_url("sector/kavling/update_status/". $detail_sector->id ."/". $value->id ."/". STATUS_BOOKING_KAVLING_REQUEST_BOOKING) ."' class='confirmation' data-confirm-message='Anda yakin ingin mengupdate status menjadi Request Booking?'>Request Booking</a>";
               $content = "~&nbsp;&nbsp;<a href='". site_url("sector/kavling/update_status/". $detail_sector->id ."/". $value->id ."/". STATUS_BOOKING_KAVLING_REMOVE_FROM_MAP) ."' class='confirmation' data-confirm-message='Anda yakin ingin menghapus kordinat ini?'>Hapus dari Peta</a><br>~&nbsp;&nbsp;<a href='". site_url("sector/kavling/update_status/". $detail_sector->id ."/". $value->id ."/". STATUS_BOOKING_KAVLING_BOOKING) ."' class='confirmation' data-confirm-message='Anda yakin ingin mengupdate status menjadi Booking?'>Booking</a>";
@@ -201,12 +202,17 @@
             orientation: "top", // <a href="https://www.jqueryscript.net/tooltip/">Tooltip</a> orientation
             color: "<?php echo $coordinate_color; ?>", // Dot and dot animation color. 
             size: <?php echo $coordinate_size; ?>, // Coordinate size
+            uniqueid: <?php echo $uniqueid; ?>, // Unique ID
             // onHoverMarkAsRead: false
           });
         <?php 
           endif;
         endforeach; 
         ?>
+
+        $(document).on("click",function(ev){
+            $('.jqBullseye').find('.bullseyeTooltip').fadeOut();
+        }); 
         
         $("#clickable").on("contextmenu",function(ev){
             // var $div = $(ev.target);
@@ -224,6 +230,14 @@
             $('#myModal').modal('show');
           return false;
         }); 
+
+        $(".view-in-map").click(function(e) {
+          var uniqueid = $(this).data("uniqueid");
+
+          $('.jqBullseye').on('click.bullseye', $('.uniqueid-'+ uniqueid).find('.bullseyeTooltip').fadeIn());
+          e.stopPropagation();
+          return true;
+        });
 
         $(".confirmation").click(function() {
           var confirm_message = $(this).data("confirm-message");

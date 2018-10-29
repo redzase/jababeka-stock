@@ -35,7 +35,7 @@
             $selector.prepend(bullseye);
 
             $('.jqBullseye').on('click.bullseye', methods.tooltipMouseEnterHandler);
-            $('.jqBullseye').on('mouseleave.bullseye', methods.tooltipMouseLeaveHandler);
+            // $('.jqBullseye').on('mouseleave.bullseye', methods.tooltipMouseLeaveHandler);
 
             // $('.jqBullseye').on('mouseenter.bullseye', methods.markAsRead);
 
@@ -117,15 +117,19 @@
             bullet_style = "top:"+ top_left +";left:"+ top_left +";width:"+ width_height +";height:"+ width_height +";";
             bullet_pulse_style = "top:"+ top_left_pulse +";left:"+ top_left_pulse +";width:"+ width_height_pulse +";height:"+ width_height_pulse +";";
 
-            bullseye = "<div class='jqBullseye' style='" + pos +"'>" +
+            // Unique ID
+            var uniqueid = settings.uniqueid ? settings.uniqueid : 0;
+
+            bullseye = "<div class='jqBullseye uniqueid-"+ uniqueid +"' style='" + pos +"'>" +
                 "<span class='bullseyeTooltip " + orientationClass +"'>"+ headContent + content +"</span>" +
                 "<span class='bullseyeBody' style='background:" + color + bullet_style + "'></span>" +
                 "<span class='bullseyePulse' style='border-color:" + color + bullet_pulse_style + "'></span>" +
                 "</div>";
         },
         // Tooltip mouseeventhandlers
-        tooltipMouseEnterHandler: function() {
+        tooltipMouseEnterHandler: function(e) {
             $(this).find('.bullseyeTooltip').fadeIn();
+            e.stopPropagation();
         },
         tooltipMouseLeaveHandler: function() {
             $(this).find('.bullseyeTooltip').fadeOut();
