@@ -19,11 +19,14 @@ class Rolemodel extends MY_Model
                     ", FALSE);
             } else {
                 $this->db->select("
-                    {$this->_table_role}.*
+                    {$this->_table_role}.*,
+                    CASE WHEN {$this->_table_user}.id IS NOT NULL THEN COUNT({$this->_table_user}.id) 
+                         ELSE 0
+                    END AS total_user
                     ", FALSE);
             }
             $this->db->from($this->_table_role);
-            // $this->db->join($this->_table_role_permission, "{$this->_table_role}.id = {$this->_table_role_permission}.role_id");
+            $this->db->join($this->_table_user, "{$this->_table_role}.id = {$this->_table_user}.role_id", "LEFT");
             $this->db->where("{$this->_table_role}.status", GLOBAL_STATUS_ACTIVE);
 
             if ($get_total === FALSE) {
@@ -31,6 +34,7 @@ class Rolemodel extends MY_Model
                     $this->db->limit($end_limit, $start_limit);
             }
 
+            $this->db->group_by("{$this->_table_role}.id");
             $this->db->order_by("{$this->_table_role}.created_date", "DESC");
             $query = $this->db->get();
 
