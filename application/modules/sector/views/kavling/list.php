@@ -1,5 +1,5 @@
 <!-- Full Width Column -->
-<div class="content-wrapper" style="overflow: auto;">
+<div class="content-wrapper">
   <div class="container">
     <!-- Content Header (Page header) -->
     <section class="content-header">
@@ -47,7 +47,7 @@
                 
                   <h3 style="font-weight:bold;text-decoration:underline;">File Denah Perumahan</h3>
                   <div id="clickable" class="bullseye-coordinate">
-                    <img src="<?php echo ORIGINALS_PHOTO_PATH . "/". $detail_sector->sketch; ?>">
+                    <img src="<?php echo ORIGINALS_PHOTO_PATH . "/". $detail_sector->sketch; ?>" style="width: 100%;">
                   </div>
 
                   <h3 style="font-weight:bold;text-decoration:underline;">List Kavling</h3>
