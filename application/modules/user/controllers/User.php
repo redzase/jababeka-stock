@@ -196,11 +196,11 @@ class User extends MY_Controller
                 "label" => "User name",
                 "rules" => "required",
                 ),
-            array(
-                "field" => "password",
-                "label" => "Password",
-                "rules" => "required",
-                ),
+            // array(
+            //     "field" => "password",
+            //     "label" => "Password",
+            //     "rules" => "required",
+            //     ),
             array(
                 "field" => "select_role",
                 "label" => "Role",

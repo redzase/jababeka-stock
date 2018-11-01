@@ -19,13 +19,13 @@ else {
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-      Role
-        <small>add role </small>
+      User
+        <small>add user </small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li><a href="#">Role</a></li>
-        <li class="active">Add Role</li>
+        <li><a href="#">User</a></li>
+        <li class="active">Add User</li>
       </ol>
     </section>
 
