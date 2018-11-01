@@ -1,3 +1,18 @@
+<?php
+
+if (isset($all_data)) {
+  $reference_kavling_id = $filter["reference_kavling_id"];
+  $street_name = $filter["street_name"];
+  $filter_status = $filter["filter_status"];
+} 
+else {
+  $reference_kavling_id = FALSE;
+  $street_name = FALSE;
+  $filter_status = FALSE;
+}
+
+?>
+
 <!-- Full Width Column -->
 <div class="content-wrapper">
   <div class="container">
@@ -25,32 +40,145 @@
               <div class="box box-info">
 
               <!-- form start -->
-              <form class="form-horizontal" id="form-role">
               <div class="box-body" style="overflow: auto;">
 
-                  <div class="form-group">
-                      <label for="inputPassword3" class="col-sm-2 control-label">Reference Sector</label>
+                  <form class="form-horizontal" id="form-role">
+                    <div class="form-group">
+                        <label for="inputPassword3" class="col-sm-2 control-label">Reference Sector</label>
 
-                      <div class="col-sm-9">
-                          <input type="text" name="name" class="form-control" id="inputPassword3" value="<?php echo $detail_sector->reference_sector_id; ?>" disabled />
-                          <span class="help-inline" style="color:red;" id="err-name"></span>
-                      </div>
-                  </div>     
-                  <div class="form-group">
-                      <label for="inputPassword3" class="col-sm-2 control-label">Name Sector</label>
+                        <div class="col-sm-9">
+                            <input type="text" name="name" class="form-control" id="inputPassword3" value="<?php echo $detail_sector->reference_sector_id; ?>" disabled />
+                            <span class="help-inline" style="color:red;" id="err-name"></span>
+                        </div>
+                    </div>     
+                    <div class="form-group">
+                        <label for="inputPassword3" class="col-sm-2 control-label">Name Sector</label>
 
-                      <div class="col-sm-9">
-                          <input type="text" name="name" class="form-control" id="inputPassword3" value="<?php echo $detail_sector->name; ?>" disabled />
-                          <span class="help-inline" style="color:red;" id="err-name"></span>
+                        <div class="col-sm-9">
+                            <input type="text" name="name" class="form-control" id="inputPassword3" value="<?php echo $detail_sector->name; ?>" disabled />
+                            <span class="help-inline" style="color:red;" id="err-name"></span>
+                        </div>
+                    </div>     
+                  </form>
+
+                  <div class="box box-info">
+                    <!-- /.box-header -->
+                    <div class="box-body">
+                      <div class="col-sm-10">
+                        <div class="table-responsive">
+                          <table class="table no-margin">
+                            <thead>
+                              <tr>
+                                <th>Total</th>
+                                <th>Terjual</th>
+                                <?php /*
+                                <th>Available Requested</th>
+                                */ ?>
+                                <th>Available</th>
+                                <th>Booked</th>
+                              </tr>
+                            </thead>
+                            <tbody style="font-size:36px;font-weight:bold;">
+                              <tr>
+                                <td><?php echo $detail_sector->total; ?></td>
+                                <td><?php echo $detail_sector->sold; ?></td>
+                                <?php /*
+                                <td><?php echo $detail_sector->available_requested; ?></td>
+                                */ ?>
+                                <td><?php echo $detail_sector->available; ?></td>
+                                <td><?php echo $detail_sector->booked; ?></td>
+                              </tr>
+                            </tbody>
+                          </table>
+                          <div align="center">
+                            <?php // echo $pagination; ?>
+                          </div>
+                        </div>
+                        <!-- /.table-responsive -->
                       </div>
-                  </div>     
-                
+                      <div class="col-lg-2 col-xs-4">
+                        <!-- small box -->
+                        <div class="small-box bg-aqua">
+                          <div class="inner">
+                            <h3 align="center"><?php echo $detail_sector->total > 0 ? round((($detail_sector->sold / $detail_sector->total) * 100), 2) : 0; ?>%</h3>
+                            <hr style="margin:-5px 0 3px 0;">
+                            <h3 align="center">SOLD</h3>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- /.box-footer -->
+                  </div>
+
                   <h3 style="font-weight:bold;text-decoration:underline;">File Denah Perumahan</h3>
                   <div id="clickable" class="bullseye-coordinate">
                     <img src="<?php echo ORIGINALS_PHOTO_PATH . "/". $detail_sector->sketch; ?>">
                   </div>
 
                   <h3 style="font-weight:bold;text-decoration:underline;">List Kavling</h3>
+                  <div class="col-md-12">
+                      <div class="box box-info">
+                      <div class="box-header ">
+                      <!-- <h3 class="box-title">Product Form</h3> -->
+                      </div>
+                      <!-- /.box-header -->
+                      <!-- form start -->
+                      <?php echo form_open(uri_string(), array("id" => "form_sample_3", "class" => "form-horizontal", "method" => "GET")); ?>
+                      <div class="box-body">
+
+                          <div class="form-group">
+                              <label for="inputPassword3" class="col-sm-2 control-label">Kavling Ref</label>
+
+                              <div class="col-sm-9">
+                                  <?php echo form_input("reference_kavling_id", set_value("reference_kavling_id", $reference_kavling_id), "data-required='1' class='form-control' placeholder='Kavling Ref'"); ?>
+                              </div>
+                          </div>     
+
+                          <div class="form-group">
+                              <label for="inputPassword3" class="col-sm-2 control-label">Nama Jalan</label>
+
+                              <div class="col-sm-9">
+                                  <?php echo form_input("street_name", set_value("street_name", $street_name), "data-required='1' class='form-control' placeholder='Nama Jalan'"); ?>
+                              </div>
+                          </div>
+
+                          <div class="form-group">
+                              <label for="inputPassword3" class="col-sm-2 control-label">Status</label>
+
+                              <div class="col-sm-9">
+                                <div class="checkbox">
+                                  <label>
+                                    <?php echo form_checkbox('chk_filter_status[]', '3', set_checkbox('chk_filter_status[]', '3', (in_array('3', $filter_status)) ? TRUE : FALSE)); ?> Sold
+                                  </label>
+                                  <label style="margin-left:15px;">
+                                    <?php echo form_checkbox('chk_filter_status[]', '1', set_checkbox('chk_filter_status[]', '1', (in_array('1', $filter_status)) ? TRUE : FALSE)); ?> Available
+                                  </label>
+                                  <label style="margin-left:15px;">
+                                    <?php echo form_checkbox('chk_filter_status[]', '2', set_checkbox('chk_filter_status[]', '2', (in_array('2', $filter_status)) ? TRUE : FALSE)); ?> Booked
+                                  </label>
+                                </div>
+                              </div>
+                          </div>
+                        
+                      </div>
+                      <!-- /.box-body -->
+                      <div class="box-footer">
+                          <div class="pull-right">
+                            <a href="<?php echo site_url("sector/kavling/index/". $detail_sector->id) ?>" class="btn btn-danger">Clear</a>
+                            <button type="submit" class="btn btn-primary" name="submit-filter" id="submit-sector">Filter</button>
+                          </div>
+                      </div>
+                      <!-- /.box-footer -->
+                      <?php echo form_close(); ?>
+                  </div>
+                  </div>
+
+                  <p class="pull-left" style="margin-left:10px;">
+                      <a href="#" class="btn btn-primary">
+                        View Log
+                      </a>
+                  </p>
+
                   <p class="pull-right" style="margin-left:10px;">
                       <a href="<?php echo site_url('sector/kavling/import/'. $detail_sector->id) ?>" class="btn btn-primary">
                         Import
@@ -124,7 +252,6 @@
                   </div>
               </div>
               <!-- /.box-body -->
-              </form>
           </div>
           </div>
       </div>

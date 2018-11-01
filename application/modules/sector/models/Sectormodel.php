@@ -111,7 +111,44 @@ class Sectormodel extends MY_Model
 
         try {
             $this->db->select("
-                {$this->_table_sector}.*
+                {$this->_table_sector}.*,
+                (SELECT COUNT({$this->_table_sector_kavling}.id)
+                 FROM {$this->_table_sector_kavling}
+                 WHERE {$this->_table_sector_kavling}.status = ". GLOBAL_STATUS_ACTIVE ."
+                   AND {$this->_table_sector_kavling}.sector_id = {$this->_table_sector}.id
+                ) AS total,
+                (SELECT COUNT({$this->_table_sector_kavling}.id)
+                 FROM {$this->_table_sector_kavling}
+                 LEFT JOIN {$this->_dbase_jababeka_table_kavlings}      
+                        ON {$this->_table_sector_kavling}.reference_kavling_id = {$this->_dbase_jababeka_table_kavlings}.kav_ref
+                 WHERE {$this->_table_sector_kavling}.status = ". GLOBAL_STATUS_ACTIVE ."
+                   AND {$this->_table_sector_kavling}.sector_id = {$this->_table_sector}.id
+                   AND {$this->_dbase_jababeka_table_kavlings}.kav_ref IS NULL
+                ) AS sold,
+                (SELECT COUNT({$this->_table_sector_kavling}.id)
+                 FROM {$this->_table_sector_kavling}
+                 JOIN {$this->_dbase_jababeka_table_kavlings}      
+                   ON {$this->_table_sector_kavling}.reference_kavling_id = {$this->_dbase_jababeka_table_kavlings}.kav_ref
+                 WHERE {$this->_table_sector_kavling}.status = ". GLOBAL_STATUS_ACTIVE ."
+                   AND {$this->_table_sector_kavling}.sector_id = {$this->_table_sector}.id
+                   AND {$this->_table_sector_kavling}.status_booking = 1
+                ) AS available_requested,
+                (SELECT COUNT({$this->_table_sector_kavling}.id)
+                 FROM {$this->_table_sector_kavling}
+                 JOIN {$this->_dbase_jababeka_table_kavlings}      
+                   ON {$this->_table_sector_kavling}.reference_kavling_id = {$this->_dbase_jababeka_table_kavlings}.kav_ref
+                 WHERE {$this->_table_sector_kavling}.status = ". GLOBAL_STATUS_ACTIVE ."
+                   AND {$this->_table_sector_kavling}.sector_id = {$this->_table_sector}.id
+                   AND {$this->_table_sector_kavling}.status_booking = 0
+                ) AS available,
+                (SELECT COUNT({$this->_table_sector_kavling}.id)
+                 FROM {$this->_table_sector_kavling}
+                 JOIN {$this->_dbase_jababeka_table_kavlings}      
+                   ON {$this->_table_sector_kavling}.reference_kavling_id = {$this->_dbase_jababeka_table_kavlings}.kav_ref
+                 WHERE {$this->_table_sector_kavling}.status = ". GLOBAL_STATUS_ACTIVE ."
+                   AND {$this->_table_sector_kavling}.sector_id = {$this->_table_sector}.id
+                   AND {$this->_table_sector_kavling}.status_booking = 2
+                ) AS booked
                 ", FALSE);
             $this->db->from($this->_table_sector);
             // $this->db->join($this->_table_sector_permission, "{$this->_table_sector}.id = {$this->_table_sector_permission}.role_id");

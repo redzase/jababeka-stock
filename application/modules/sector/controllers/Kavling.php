@@ -73,10 +73,27 @@ class Kavling extends MY_Controller
     public function index($sector_id, $page = 1) 
     {
         // If submit
-        if ($this->input->post()) {
+        if ($this->input->post("submit-coordinat")) {
             self::_do_add_coordinate($sector_id);
         }
+        
+        // Get filter value
+        $reference_kavling_id = $this->input->get("reference_kavling_id") ?: "";
+        $street_name          = $this->input->get("street_name") ?: "";
+        $chk_filter_status    = $this->input->get("chk_filter_status") ?: "";
+        $filter_status        = [];
 
+        if (!empty($chk_filter_status) and is_array($chk_filter_status)) {
+            foreach ($chk_filter_status as $key => $value) {
+                $filter_status[] = $value;
+            }
+        }
+
+        $filter = [
+            "reference_kavling_id" => $reference_kavling_id,
+            "street_name"          => $street_name,
+            "filter_status"        => $filter_status,
+        ];
         $page        = ($page < 1) ? 1 : ($page - 1); 
         $start_limit = $page * TOTAL_ITEM_PER_PAGE;
         $end_limit   = TOTAL_ITEM_PER_PAGE;
@@ -89,9 +106,10 @@ class Kavling extends MY_Controller
         $detail_sector = $this->Sectormodel->get_detail($params);
 
         $params = array(
-            "sector_id"   => $sector_id,
+            "sector_id"      => $sector_id,
             // "start_limit" => $start_limit,
             // "end_limit"   => $end_limit,
+            "filter"         => $filter,
             );
         $all_data = $this->Sectorkavlingmodel->get_list($params);
         $all_data_kavling = $this->Sectorkavlingmodel->get_list(["sector_id" => $sector_id, "is_show_empty_coordinate" => True]);
@@ -139,6 +157,7 @@ class Kavling extends MY_Controller
          * Store data for view
          */
         // $data_content["all_kavling"]      = array_merge(["" => "-- Pilih Kavling --"], generate_array($all_data, "id", "street_name"));
+        $data_content["filter"]              = $filter;
         $data_content["all_kavling"]         = $all_kavling;
         $data_content["list_status_kavling"] = unserialize(LIST_STATUS_KAVLING); 
         $data_content["detail_sector"]       = $detail_sector; 

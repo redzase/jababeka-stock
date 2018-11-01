@@ -9,6 +9,7 @@ class Sectorkavlingmodel extends MY_Model
     public function get_list($params = array()) 
     {
         $sector_id                = (isset($params["sector_id"])) ? $params["sector_id"] : "";
+        $filter                   = (isset($params["filter"])) ? $params["filter"] : [];
         $is_show_empty_coordinate = (isset($params["is_show_empty_coordinate"])) ? TRUE : FALSE;
         $start_limit              = (isset($params["start_limit"])) ? $params["start_limit"] : "";
         $end_limit                = (isset($params["end_limit"])) ? $params["end_limit"] : "";
@@ -35,11 +36,40 @@ class Sectorkavlingmodel extends MY_Model
                     END 'status_valid',
                     ", FALSE);
             }
+            // 1 = Available
+            // 2 = Booked
+            // 3 = Sold
+            // 4 = Available Requested
             $this->db->from($this->_table_sector_kavling);
             $this->db->join($this->_table_sector, "{$this->_table_sector_kavling}.sector_id = {$this->_table_sector}.id");
             $this->db->join($this->_dbase_jababeka_table_kavlings, "{$this->_table_sector_kavling}.reference_kavling_id = {$this->_dbase_jababeka_table_kavlings}.kav_ref", "LEFT");
             $this->db->where("{$this->_table_sector_kavling}.sector_id", $sector_id);
             $this->db->where("{$this->_table_sector_kavling}.status", GLOBAL_STATUS_ACTIVE);
+
+            /**
+             * -- Start --
+             * Filter
+             */
+            if (isset($filter["reference_kavling_id"]) and !empty($filter["reference_kavling_id"])) {
+                $this->db->where("{$this->_table_sector_kavling}.reference_kavling_id", $filter["reference_kavling_id"]);
+            }
+
+            if (isset($filter["street_name"]) and !empty($filter["street_name"])) {
+                $this->db->like("{$this->_table_sector_kavling}.street_name", $filter["street_name"]);
+            }
+
+            if (isset($filter["filter_status"]) and is_array($filter["filter_status"]) and count($filter["filter_status"]) > 0) {
+                $this->db->where_in("CASE WHEN {$this->_dbase_jababeka_table_kavlings}.kav_ref IS NULL THEN 3
+                         WHEN {$this->_table_sector_kavling}.status_booking = 1 THEN 4
+                         WHEN {$this->_table_sector_kavling}.status_booking = 0 THEN 1
+                         WHEN {$this->_table_sector_kavling}.status_booking = 2 THEN 2
+                         ELSE 1
+                    END", $filter["filter_status"]);
+            }
+            /**
+             * Filter
+             * -- End --
+             */
             
             if ($is_show_empty_coordinate) {
                 $this->db->where("{$this->_table_sector_kavling}.offset_x", 0);
