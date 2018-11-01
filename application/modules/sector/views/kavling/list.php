@@ -26,7 +26,7 @@
 
               <!-- form start -->
               <form class="form-horizontal" id="form-role">
-              <div class="box-body">
+              <div class="box-body" style="overflow: auto;">
 
                   <div class="form-group">
                       <label for="inputPassword3" class="col-sm-2 control-label">Reference Sector</label>
@@ -47,7 +47,7 @@
                 
                   <h3 style="font-weight:bold;text-decoration:underline;">File Denah Perumahan</h3>
                   <div id="clickable" class="bullseye-coordinate">
-                    <img src="<?php echo ORIGINALS_PHOTO_PATH . "/". $detail_sector->sketch; ?>" style="width: 100%;">
+                    <img src="<?php echo ORIGINALS_PHOTO_PATH . "/". $detail_sector->sketch; ?>">
                   </div>
 
                   <h3 style="font-weight:bold;text-decoration:underline;">List Kavling</h3>
