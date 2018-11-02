@@ -73,7 +73,7 @@ class Kavling extends MY_Controller
     public function index($sector_id, $page = 1) 
     {
         // If submit
-        if ($this->input->post("submit-coordinat")) {
+        if ($this->input->post()) {
             self::_do_add_coordinate($sector_id);
         }
         
