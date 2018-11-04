@@ -41,10 +41,18 @@
           <div class="box-header with-border">
             <h3 class="box-title">
               <?php echo $value->name; ?> 
+              [ 
               <?php 
               if (check_access_module_permission($module, PERMISSION_UPDATE)):
               ?>
-              [ <a href="<?php echo site_url('sector/edit/'. $value->id); ?>">edit</a> ]
+              <a href="<?php echo site_url('sector/edit/'. $value->id); ?>">edit</a> 
+              <?php 
+              endif;
+              if (check_access_module_permission($module, PERMISSION_DELETE)):
+              ?>
+              |
+              <a href="<?php echo site_url("sector/delete/". $value->id); ?>" class="confirmation" data-confirm-message="Anda yakin ingin menghapus data ini?">delete</a>
+              ]
               <?php 
               endif;
               ?>
@@ -115,4 +123,19 @@
   <!-- /.container -->
 </div>
 <!-- /.content-wrapper -->
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $(".confirmation").click(function() {
+          var confirm_message = $(this).data("confirm-message");
+          var answer = confirm(confirm_message);
+
+          if (answer) {
+            return true;
+          }
+
+          return false;
+        });
+    });
+</script>
 

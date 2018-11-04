@@ -4,6 +4,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Kavling extends MY_Controller 
 {
 
+    private $_module = "STOCK_SECTOR_KAVLING";
+
     public function __construct()
     {
 		parent::__construct();
@@ -72,6 +74,9 @@ class Kavling extends MY_Controller
 
     public function index($sector_id, $page = 1) 
     {
+        // Check access module permission
+        check_access_module_permission($this->_module, PERMISSION_READ, True);
+
         // If submit
         if ($this->input->post()) {
             self::_do_add_coordinate($sector_id);
@@ -166,6 +171,7 @@ class Kavling extends MY_Controller
         $data_content["start_no"]            = ($page * TOTAL_ITEM_PER_PAGE) + 1;
         // $data_content["pagination"]          = $this->pagination->create_links();
         $data_content["ses_result_process"]  = $this->session->flashdata(PREFIX_SESSION . "_RESULT_PROCESS");
+        $data_content["module"]              = $this->_module;
         /**
          * Store data for view
          * -- End --
