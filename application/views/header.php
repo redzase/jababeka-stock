@@ -54,7 +54,7 @@
           <ul class="nav navbar-nav">
 
             <?php 
-            if (isset($this->session->userdata(PREFIX_SESSION . "_ALL_ACCESS")["menu"]["SETTINGS"])):
+            if (isset($this->session->userdata(PREFIX_SESSION . "_ALL_ACCESS")["menu"]["SETTINGS"]) and !strpos(uri_string(), "ector")):
             ?>
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown"> <i class="fa fa-th"></i> &nbsp; <?php echo $this->session->userdata(PREFIX_SESSION . "_ALL_ACCESS")["menu"]["SETTINGS"]["name"]; ?>  &nbsp; <span class="caret"></span></a>
