@@ -179,6 +179,10 @@ else {
                       </a>
                   </p>
 
+                  <p class="pull-left" style="margin-left:10px;">
+                      <?php echo form_dropdown('select_pagination', $arr_pagination, set_value("select_pagination", $per_page), 'class="form-control"'); ?>
+                  </p>
+
                   <p class="pull-right" style="margin-left:10px;">
                       <a href="<?php echo site_url('sector/kavling/import/'. $detail_sector->id) ?>" class="btn btn-primary">
                         Import
@@ -282,7 +286,7 @@ else {
                       </tbody>
                   </table>
                   <div align="center">
-                    <?php // echo $pagination; ?>
+                    <?php echo $pagination; ?>
                   </div>
               </div>
               <!-- /.box-body -->
@@ -321,8 +325,7 @@ if (check_access_module_permission($module, PERMISSION_MAPPING)):
               </div>
               <!-- /.box-body -->
               <div class="box-footer">
-                  <button type="button" class="btn btn-danger" data-dismiss="modal" aria-hidden="true">Cancel</button>
-                  <button type="submit" class="btn btn-primary pull-right" name="submit-coordinat" id="submit-coordinat">Simpan</button>
+                  <button type="button" class="btn btn-primary pull-right" name="submit-coordinat" id="submit-coordinat">Simpan</button>
               </div>
               <!-- /.box-footer -->
             </div>
@@ -444,6 +447,12 @@ endif;
           }
 
           return false;
+        });
+
+        $("select[name=select_pagination]").change(function() {
+          var per_page = $(this).val();
+
+          $(location).attr('href', "<?php echo $site_url; ?>/?perpage=" + per_page);
         });
     });
 </script>

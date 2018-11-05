@@ -86,7 +86,14 @@ class Kavling extends MY_Controller
         $reference_kavling_id = $this->input->get("reference_kavling_id") ?: "";
         $street_name          = $this->input->get("street_name") ?: "";
         $chk_filter_status    = $this->input->get("chk_filter_status") ?: "";
+        $per_page             = $this->input->get("perpage") ?: "50";
         $filter_status        = [];
+        $arr_pagination       = [
+            "10"  => "10",
+            "50"  => "50",
+            "100" => "100",
+            "ALL" => "All",
+        ];
 
         if (!empty($chk_filter_status) and is_array($chk_filter_status)) {
             foreach ($chk_filter_status as $key => $value) {
@@ -100,8 +107,8 @@ class Kavling extends MY_Controller
             "filter_status"        => $filter_status,
         ];
         $page        = ($page < 1) ? 1 : ($page - 1); 
-        $start_limit = $page * TOTAL_ITEM_PER_PAGE;
-        $end_limit   = TOTAL_ITEM_PER_PAGE;
+        $start_limit = $page * $per_page;
+        $end_limit   = $per_page;
         $total       = 0;
 
         // Get detail data
@@ -111,38 +118,39 @@ class Kavling extends MY_Controller
         $detail_sector = $this->Sectormodel->get_detail($params);
 
         $params = array(
-            "sector_id"      => $sector_id,
-            // "start_limit" => $start_limit,
-            // "end_limit"   => $end_limit,
-            "filter"         => $filter,
+            "sector_id"   => $sector_id,
+            "start_limit" => $start_limit,
+            "end_limit"   => $end_limit,
+            "filter"      => $filter,
             );
         $all_data = $this->Sectorkavlingmodel->get_list($params);
         $all_data_kavling = $this->Sectorkavlingmodel->get_list(["sector_id" => $sector_id, "is_show_empty_coordinate" => True]);
 
-        // $params = array(
-        //     "sector_id" => $sector_id,
-        //     "get_total" => TRUE,
-        //     );
-        // $total = $this->Sectorkavlingmodel->get_list($params);  
+        $params = array(
+            "sector_id" => $sector_id,
+            "get_total" => TRUE,
+            "filter"      => $filter,
+            );
+        $total = $this->Sectorkavlingmodel->get_list($params);  
 
-        // /**
-        //  * -- Start --
-        //  * Pagination
-        //  */
-        // $base_url    = site_url($this->class_metadata["module"] ."/". $this->class_metadata["class"] ."/". $this->class_metadata["method"] ."/". $sector_id);
-        // $uri_segment = 5;
-        // $total_rows  = $total;
-        // $per_page    = TOTAL_ITEM_PER_PAGE;
-        // $suffix      = "";
-        // // $suffix   = ($search <> "") ? "?q={$search}" : "";
+        /**
+         * -- Start --
+         * Pagination
+         */
+        $base_url    = site_url($this->class_metadata["module"] ."/". $this->class_metadata["class"] ."/". $this->class_metadata["method"] ."/". $sector_id);
+        $uri_segment = 5;
+        $total_rows  = $total;
+        $per_page    = $per_page;
+        $suffix      = "/?perpage=". $per_page;
+        // $suffix   = ($search <> "") ? "?q={$search}" : "";
         
-        // $config = set_config_pagination($base_url, $suffix, $uri_segment, $total_rows, $per_page); 
+        $config = set_config_pagination($base_url, $suffix, $uri_segment, $total_rows, $per_page); 
 
-        // $this->pagination->initialize($config);
-        // /**
-        //  * Pagination
-        //  * -- End --
-        //  */
+        $this->pagination->initialize($config);
+        /**
+         * Pagination
+         * -- End --
+         */
 
         /**
          * -- Start --
@@ -162,6 +170,8 @@ class Kavling extends MY_Controller
          * Store data for view
          */
         // $data_content["all_kavling"]      = array_merge(["" => "-- Pilih Kavling --"], generate_array($all_data, "id", "street_name"));
+        $data_content["per_page"]            = $per_page;
+        $data_content["arr_pagination"]      = $arr_pagination;
         $data_content["filter"]              = $filter;
         $data_content["all_kavling"]         = $all_kavling;
         $data_content["list_status_kavling"] = unserialize(LIST_STATUS_KAVLING); 
@@ -169,9 +179,10 @@ class Kavling extends MY_Controller
         $data_content["all_data"]            = $all_data; 
         $data_content["total"]               = $total;
         $data_content["start_no"]            = ($page * TOTAL_ITEM_PER_PAGE) + 1;
-        // $data_content["pagination"]          = $this->pagination->create_links();
+        $data_content["pagination"]          = $this->pagination->create_links();
         $data_content["ses_result_process"]  = $this->session->flashdata(PREFIX_SESSION . "_RESULT_PROCESS");
         $data_content["module"]              = $this->_module;
+        $data_content["site_url"]            = site_url($this->class_metadata["module"] ."/". $this->class_metadata["class"] ."/". $this->class_metadata["method"] ."/". $sector_id);
         /**
          * Store data for view
          * -- End --
