@@ -6,6 +6,8 @@ if (!defined('BASEPATH'))
 class Sectorkavlingmodel extends MY_Model 
 {
 
+    private $_module = "STOCK_SECTOR_KAVLING";
+
     public function get_list($params = array()) 
     {
         $sector_id                = (isset($params["sector_id"])) ? $params["sector_id"] : "";
@@ -131,6 +133,9 @@ class Sectorkavlingmodel extends MY_Model
             if($query === FALSE)
                 throw new Exception();
 
+            // Insert activity logs
+            insert_logs($this->_module, LOGS_ACTIVITY_INSERT_FIRST_ROW, $this->db->insert_id());
+
             return True;
         } catch(Exception $e) {
             return FALSE;
@@ -161,8 +166,31 @@ class Sectorkavlingmodel extends MY_Model
             // Start transaction
             $this->db->trans_begin();
 
+            // foreach ($data_import as $key => $value) {
+            //     $data_kavling[] = [
+            //         "sector_id"            => $sector_id,
+            //         "reference_kavling_id" => $value["kav_ref"],
+            //         "street_name"          => $value["nama_jalan"],
+            //         "block_name"           => $value["nama_blok"],
+            //         "house_number"         => $value["nomor"],
+            //         "status"               => GLOBAL_STATUS_ACTIVE,
+            //         // "created_by"        => $this->session->userdata(PREFIX_SESSION . "_USER_ID"), 
+            //         "created_date"         => date_now(),
+            //         // "modified_by"       => $this->session->userdata(PREFIX_SESSION . "_USER_ID"), 
+            //         "modified_date"        => date_now(),
+            //     ];
+            // }
+
+            // // JIKA ADA DATA MODULE YANG AKAN DI INSERT
+            // if (count($data_kavling) > 0) {
+            //     $query = $this->db->insert_batch($this->_table_sector_kavling, $data_kavling);
+
+            //     if($query === FALSE)
+            //         throw new Exception();
+            // }
+
             foreach ($data_import as $key => $value) {
-                $data_kavling[] = [
+                $data_create = [
                     "sector_id"            => $sector_id,
                     "reference_kavling_id" => $value["kav_ref"],
                     "street_name"          => $value["nama_jalan"],
@@ -174,14 +202,14 @@ class Sectorkavlingmodel extends MY_Model
                     // "modified_by"       => $this->session->userdata(PREFIX_SESSION . "_USER_ID"), 
                     "modified_date"        => date_now(),
                 ];
-            }
 
-            // JIKA ADA DATA MODULE YANG AKAN DI INSERT
-            if (count($data_kavling) > 0) {
-                $query = $this->db->insert_batch($this->_table_sector_kavling, $data_kavling);
+                $query = $this->db->insert($this->_table_sector_kavling, $data_create);
 
                 if($query === FALSE)
                     throw new Exception();
+
+                // Insert activity logs
+                insert_logs($this->_module, LOGS_ACTIVITY_INSERT_FIRST_ROW, $this->db->insert_id());
             }
 
             // Commit transaction

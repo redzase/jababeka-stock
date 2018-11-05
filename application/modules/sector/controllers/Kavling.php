@@ -88,6 +88,7 @@ class Kavling extends MY_Controller
         $chk_filter_status    = $this->input->get("chk_filter_status") ?: "";
         $per_page             = $this->input->get("perpage") ?: "50";
         $filter_status        = [];
+        $params_paging        = [];
         $arr_pagination       = [
             "10"  => "10",
             "50"  => "50",
@@ -117,19 +118,27 @@ class Kavling extends MY_Controller
             );
         $detail_sector = $this->Sectormodel->get_detail($params);
 
-        $params = array(
+        // Besides ALL, do pagination
+        if (strtoupper($per_page) <> "ALL") {
+            $params_paging = array(
+                "start_limit" => $start_limit,
+                "end_limit"   => $end_limit,
+                );
+        }
+
+        $params = array_merge($params_paging, [
             "sector_id"   => $sector_id,
-            "start_limit" => $start_limit,
-            "end_limit"   => $end_limit,
+            // "start_limit" => $start_limit,
+            // "end_limit"   => $end_limit,
             "filter"      => $filter,
-            );
+            ]);
         $all_data = $this->Sectorkavlingmodel->get_list($params);
         $all_data_kavling = $this->Sectorkavlingmodel->get_list(["sector_id" => $sector_id, "is_show_empty_coordinate" => True]);
 
         $params = array(
             "sector_id" => $sector_id,
             "get_total" => TRUE,
-            "filter"      => $filter,
+            "filter"    => $filter,
             );
         $total = $this->Sectorkavlingmodel->get_list($params);  
 
@@ -333,6 +342,9 @@ class Kavling extends MY_Controller
             $result["status"]  = $action;
             $result["message"] = ($action) ? "Kavling successfully updated." : "Kavling failed updated.";
 
+            // Insert activity logs
+            insert_logs($this->_module, LOGS_ACTIVITY_EDIT, $id);
+
             // Store session
             $this->session->set_flashdata(PREFIX_SESSION ."_RESULT_PROCESS", $result);
 
@@ -481,6 +493,15 @@ class Kavling extends MY_Controller
 
         $result["status"]  = $action;
         $result["message"] = ($action) ? str_replace('{{SUCCESS_OR_FAILED}}', 'successfully', $response_message) : str_replace('{{SUCCESS_OR_FAILED}}', 'failed', $response_message);
+
+        // Insert activity logs
+        if ($status == STATUS_BOOKING_KAVLING_BOOKING) {
+            insert_logs($this->_module, LOGS_ACTIVITY_BOOKING, $kavling_id);
+        } elseif ($status == STATUS_BOOKING_KAVLING_UNBOOKING) {
+            insert_logs($this->_module, LOGS_ACTIVITY_UNBOOKING, $kavling_id);
+        } elseif ($status == STATUS_BOOKING_KAVLING_REQUEST_BOOKING) {
+            insert_logs($this->_module, LOGS_ACTIVITY_REQUESTED, $kavling_id);
+        }
 
         // Store session
         $this->session->set_flashdata(PREFIX_SESSION ."_RESULT_PROCESS", $result);

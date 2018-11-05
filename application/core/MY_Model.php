@@ -14,5 +14,6 @@ class MY_Model extends CI_Model {
 
 	protected $_table_sector            = "sector";
 	protected $_table_sector_kavling    = "sector_kavling";
+	protected $_table_logs              = "logs";
     
 }
