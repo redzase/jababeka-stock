@@ -16,6 +16,7 @@ class Kavling extends MY_Controller
         $this->load->library("upload");
 		$this->load->model('Sectormodel');
         $this->load->model('Sectorkavlingmodel');
+        $this->load->model('Logsmodel');
 	}
 
     private function _do_add_coordinate($sector_id) 
@@ -54,10 +55,10 @@ class Kavling extends MY_Controller
 
         if ($this->form_validation->run()) {
             $data_update = [
-                "offset_x"       => $offset_x,
-                "offset_y"       => $offset_y,
-                // "modified_by" => $this->session->userdata(PREFIX_SESSION . "_USER_ID"), 
-                "modified_date"  => date_now(),
+                "offset_x"      => $offset_x,
+                "offset_y"      => $offset_y,
+                "modified_by"   => $this->session->userdata(PREFIX_SESSION . "_USER_ID"), 
+                "modified_date" => date_now(),
             ];
 
             $action = $this->Sectorkavlingmodel->update($select_kavling, $data_update);
@@ -248,9 +249,9 @@ class Kavling extends MY_Controller
                 "block_name"           => $block_name,
                 "house_number"         => $house_number,
                 "status"               => GLOBAL_STATUS_ACTIVE,
-                // "created_by"        => $this->session->userdata(PREFIX_SESSION . "_USER_ID"), 
+                "created_by"           => $this->session->userdata(PREFIX_SESSION . "_USER_ID"), 
                 "created_date"         => date_now(),
-                // "modified_by"       => $this->session->userdata(PREFIX_SESSION . "_USER_ID"), 
+                "modified_by"          => $this->session->userdata(PREFIX_SESSION . "_USER_ID"), 
                 "modified_date"        => date_now(),
             ];
 
@@ -333,7 +334,7 @@ class Kavling extends MY_Controller
                 "street_name"          => $street_name,
                 "block_name"           => $block_name,
                 "house_number"         => $house_number,
-                // "modified_by"       => $this->session->userdata(PREFIX_SESSION . "_USER_ID"), 
+                "modified_by"          => $this->session->userdata(PREFIX_SESSION . "_USER_ID"), 
                 "modified_date"        => date_now(),
             ];
 
@@ -471,10 +472,10 @@ class Kavling extends MY_Controller
     {
         if ($status == STATUS_BOOKING_KAVLING_REMOVE_FROM_MAP) {
             $data_update = [
-                "offset_x" => 0,
-                "offset_y" => 0,
-                // "modified_by" => $this->session->userdata(PREFIX_SESSION . "_USER_ID"), 
-                "modified_date"  => date_now(),
+                "offset_x"      => 0,
+                "offset_y"      => 0,
+                "modified_by"   => $this->session->userdata(PREFIX_SESSION . "_USER_ID"), 
+                "modified_date" => date_now(),
             ];
  
             $response_message = "Coordinate {{SUCCESS_OR_FAILED}} deleted.";
@@ -482,7 +483,7 @@ class Kavling extends MY_Controller
         else {
             $data_update = [
                 "status_booking" => $status,
-                // "modified_by" => $this->session->userdata(PREFIX_SESSION . "_USER_ID"), 
+                "modified_by"    => $this->session->userdata(PREFIX_SESSION . "_USER_ID"), 
                 "modified_date"  => date_now(),
             ];
 
@@ -507,6 +508,67 @@ class Kavling extends MY_Controller
         $this->session->set_flashdata(PREFIX_SESSION ."_RESULT_PROCESS", $result);
 
         redirect($this->class_metadata["module"] ."/". $this->class_metadata["class"] ."/index/". $sector_id, "refresh");
+    }
+
+    public function ajax_list_logs($sector_id, $kavling_id = "", $page = 1) 
+    {
+        if ($this->input->is_ajax_request()) {
+            $page        = ($page < 1) ? 1 : ($page - 1); 
+            $start_limit = $page * TOTAL_ITEM_PER_PAGE;
+            $end_limit   = TOTAL_ITEM_PER_PAGE;
+            $total       = 0;
+
+            $params = array(
+                "start_limit" => $start_limit,
+                "end_limit"   => $end_limit,
+                "sector_id"   => $sector_id,
+                "kavling_id"  => $kavling_id,
+                );
+            $all_data = $this->Logsmodel->get_list($params);
+
+            $params = array(
+                "get_total"  => TRUE,
+                "sector_id"  => $sector_id,
+                "kavling_id" => $kavling_id,
+                );
+            $total = $this->Logsmodel->get_list($params);  
+
+            /**
+             * START
+             * PAGINATION
+             */
+            $base_url    = site_url($this->class_metadata["module"] ."/". $this->class_metadata["class"] ."/". $this->class_metadata["method"] ."/". $sector_id ."/". $kavling_id);
+            $uri_segment = 6;
+            $total_rows  = $total;
+            $per_page    = TOTAL_ITEM_PER_PAGE;
+            $suffix      = "";
+            
+            $config = set_config_pagination($base_url, $suffix, $uri_segment, $total_rows, $per_page); 
+
+            $this->pagination->initialize($config);
+            /**
+             * END
+             * PAGINATION
+             */
+
+            /**
+             * START
+             * SIMPAN DATA KE VARIABLE UNTUK DIGUNAKAN DI VIEW
+             */
+            $data_content["all_data"]    = $all_data;
+            $data_content["sector_name"] = count($all_data) > 0 ? (empty($kavling_id)) ? $all_data[0]->sector_name : $all_data[0]->foreign_id_name : "";
+            $data_content["total"]       = $total;
+            $data_content["start_no"]    = ($page * TOTAL_ITEM_PER_PAGE) + 1;
+            $data_content["pagination"]  = $this->pagination->create_links();
+            /**
+             * END
+             * SIMPAN DATA KE VARIABLE UNTUK DIGUNAKAN DI VIEW
+             */
+            
+            $this->load->view($this->class_metadata["module"] ."/". $this->class_metadata["class"] ."/ajax_list_logs", $data_content, array('no-templating' => True));
+        } else {
+            echo "Ajax request needed to do this process!";
+        }
     }
     
 }

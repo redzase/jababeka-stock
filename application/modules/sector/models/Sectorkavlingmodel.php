@@ -197,9 +197,9 @@ class Sectorkavlingmodel extends MY_Model
                     "block_name"           => $value["nama_blok"],
                     "house_number"         => $value["nomor"],
                     "status"               => GLOBAL_STATUS_ACTIVE,
-                    // "created_by"        => $this->session->userdata(PREFIX_SESSION . "_USER_ID"), 
+                    "created_by"           => $this->session->userdata(PREFIX_SESSION . "_USER_ID"), 
                     "created_date"         => date_now(),
-                    // "modified_by"       => $this->session->userdata(PREFIX_SESSION . "_USER_ID"), 
+                    "modified_by"          => $this->session->userdata(PREFIX_SESSION . "_USER_ID"), 
                     "modified_date"        => date_now(),
                 ];
 

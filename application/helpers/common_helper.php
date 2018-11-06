@@ -259,13 +259,13 @@ if(!function_exists("insert_logs"))
 
         if ($all_data) {
             $data_create = [
-                "module_id"      => $all_data->id,
-                "activity"       => $activity,
-                "foreign_id"     => $foreign_id,
-                // "created_by"  => $this->session->userdata(PREFIX_SESSION . "_USER_ID"), 
-                "created_date"   => date_now(),
-                // "modified_by" => $this->session->userdata(PREFIX_SESSION . "_USER_ID"), 
-                "modified_date"  => date_now(),
+                "module_id"     => $all_data->id,
+                "activity"      => $activity,
+                "foreign_id"    => $foreign_id,
+                "created_by"    => instance()->session->userdata(PREFIX_SESSION . "_USER_ID"), 
+                "created_date"  => date_now(),
+                "modified_by"   => instance()->session->userdata(PREFIX_SESSION . "_USER_ID"), 
+                "modified_date" => date_now(),
             ];
 
             $action = instance()->Logsmodel->create($data_create);

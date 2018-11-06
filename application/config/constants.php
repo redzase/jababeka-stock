@@ -143,6 +143,14 @@ define('PERMISSION_REQUEST_BOOKING', 'REQUEST_BOOKING');
 
 
 // Activity Logs
+define('LOGS_ACTIVITY_LIST', serialize(array(
+	"INSERT_FIRST_ROW" => "Input data pertama",
+	"BOOKING"          => "Booking",
+	"UNBOOKING"        => "Unbooking",
+	"REQUESTED"        => "Requested",
+	"EDIT"             => "Edit",
+	))
+);
 define('LOGS_ACTIVITY_INSERT_FIRST_ROW', 'INSERT_FIRST_ROW');
 define('LOGS_ACTIVITY_BOOKING', 'BOOKING');
 define('LOGS_ACTIVITY_UNBOOKING', 'UNBOOKING');

@@ -125,14 +125,14 @@ class User extends MY_Controller
 
         if ($this->form_validation->run()) {
             $data_create = [
-				"username"       => $username,
-				// "password"       => $password,
-				"role_id"        => $role,
-				"status"         => GLOBAL_STATUS_ACTIVE,
-				// "created_by"  => $this->session->userdata(PREFIX_SESSION . "_USER_ID"), 
-				"created_date"   => date_now(),
-				// "modified_by" => $this->session->userdata(PREFIX_SESSION . "_USER_ID"), 
-				"modified_date"  => date_now(),
+				"username"      => $username,
+				// "password"   => $password,
+				"role_id"       => $role,
+				"status"        => GLOBAL_STATUS_ACTIVE,
+				"created_by"    => $this->session->userdata(PREFIX_SESSION . "_USER_ID"), 
+				"created_date"  => date_now(),
+				"modified_by"   => $this->session->userdata(PREFIX_SESSION . "_USER_ID"), 
+				"modified_date" => date_now(),
             ];
 
             $action = $this->Usermodel->create($data_create);
@@ -216,13 +216,13 @@ class User extends MY_Controller
 
         if ($this->form_validation->run()) {
             $data_update = [
-				"id"             => $id,
-				"username"       => $username,
-				// "password"       => $password,
-				"role_id"        => $role,
-				"status"         => GLOBAL_STATUS_ACTIVE,
-				// "modified_by" => $this->session->userdata(PREFIX_SESSION . "_USER_ID"), 
-				"modified_date"  => date_now(),
+				"id"            => $id,
+				"username"      => $username,
+				// "password"   => $password,
+				"role_id"       => $role,
+				"status"        => GLOBAL_STATUS_ACTIVE,
+				"modified_by"   => $this->session->userdata(PREFIX_SESSION . "_USER_ID"), 
+				"modified_date" => date_now(),
             ];
 
             $action = $this->Usermodel->update($id, $data_update);

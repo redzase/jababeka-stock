@@ -327,24 +327,30 @@ class MX_Loader extends CI_Loader
         if ((bool)@ini_get('short_open_tag') === FALSE && CI::$APP->config->item('rewrite_short_tags') == TRUE) {
             echo eval('?>' . preg_replace("/;*\s*\?>/", "; ?>", str_replace('<?=', '<?php echo ', file_get_contents($_ci_path))));
         } else {
+            $no_templating = (isset($_ci_file_include['no-templating']) and isset($_ci_file_include['no-templating']));
 
-            if (isset($_ci_file_include['login-header-footer'])) {
-                $header = APPPATH . "views/login_header.php";
-                include($header);
-            
+            if (!$no_templating) {
+                if (isset($_ci_file_include['login-header-footer'])) {
+                    $header = APPPATH . "views/login_header.php";
+                    include($header);
+                
 
+                    include($_ci_path);
+                    $footer = APPPATH . "views/login_footer.php";
+                    include($footer);
+                   
+                } else {
+                    $header = APPPATH . "views/header.php";
+                    include($header);
+                
+
+                    include($_ci_path);
+                    $footer = APPPATH . "views/footer.php";
+                    include($footer);
+                }
+            }
+            else {
                 include($_ci_path);
-                $footer = APPPATH . "views/login_footer.php";
-                include($footer);
-               
-            } else {
-                $header = APPPATH . "views/header.php";
-                include($header);
-            
-
-                include($_ci_path);
-                $footer = APPPATH . "views/footer.php";
-                include($footer);
             }
         }
 

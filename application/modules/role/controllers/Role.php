@@ -115,21 +115,21 @@ class Role extends MY_Controller
 
         if ($this->form_validation->run()) {
             $data_create = [
-				"name"           => $name,
-				"status"         => GLOBAL_STATUS_ACTIVE,
-				// "created_by"  => $this->session->userdata(PREFIX_SESSION . "_USER_ID"), 
-				"created_date"   => date_now(),
-				// "modified_by" => $this->session->userdata(PREFIX_SESSION . "_USER_ID"), 
-				"modified_date"  => date_now(),
+				"name"          => $name,
+				"status"        => GLOBAL_STATUS_ACTIVE,
+				"created_by"    => $this->session->userdata(PREFIX_SESSION . "_USER_ID"), 
+				"created_date"  => date_now(),
+				"modified_by"   => $this->session->userdata(PREFIX_SESSION . "_USER_ID"), 
+				"modified_date" => date_now(),
             ];
 
             $data_role_permission = [];
             foreach ($chk_module_permission as $key => $value) {
 	            $data_role_permission[] = [
 					"module_permission_id" => $value,
-					// "created_by"        => $this->session->userdata(PREFIX_SESSION . "_USER_ID"), 
+					"created_by"           => $this->session->userdata(PREFIX_SESSION . "_USER_ID"), 
 					"created_date"         => date_now(),
-					// "modified_by"       => $this->session->userdata(PREFIX_SESSION . "_USER_ID"), 
+					"modified_by"          => $this->session->userdata(PREFIX_SESSION . "_USER_ID"), 
 					"modified_date"        => date_now(),
 	            ];
 	        }
@@ -208,20 +208,20 @@ class Role extends MY_Controller
 
         if ($this->form_validation->run()) {
             $data_update = [
-				"id"             => $id,
-				"name"           => $name,
-				"status"         => GLOBAL_STATUS_ACTIVE,
-				// "modified_by" => $this->session->userdata(PREFIX_SESSION . "_USER_ID"), 
-				"modified_date"  => date_now(),
+				"id"            => $id,
+				"name"          => $name,
+				"status"        => GLOBAL_STATUS_ACTIVE,
+				"modified_by"   => $this->session->userdata(PREFIX_SESSION . "_USER_ID"), 
+				"modified_date" => date_now(),
             ];
 
             $data_role_permission = [];
             foreach ($chk_module_permission as $key => $value) {
 	            $data_role_permission[] = [
 					"module_permission_id" => $value,
-					// "created_by"        => $this->session->userdata(PREFIX_SESSION . "_USER_ID"), 
+					"created_by"           => $this->session->userdata(PREFIX_SESSION . "_USER_ID"), 
 					"created_date"         => date_now(),
-					// "modified_by"       => $this->session->userdata(PREFIX_SESSION . "_USER_ID"), 
+					"modified_by"          => $this->session->userdata(PREFIX_SESSION . "_USER_ID"), 
 					"modified_date"        => date_now(),
 	            ];
 	        }

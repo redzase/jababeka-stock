@@ -220,9 +220,9 @@ class Sector extends MY_Controller
                 "color_requested"     => $color_requested,
                 "sketch"              => $this->_image_path,
                 "status"              => GLOBAL_STATUS_ACTIVE,
-                // "created_by"       => $this->session->userdata(PREFIX_SESSION . "_USER_ID"), 
+                "created_by"          => $this->session->userdata(PREFIX_SESSION . "_USER_ID"), 
                 "created_date"        => date_now(),
-                // "modified_by"      => $this->session->userdata(PREFIX_SESSION . "_USER_ID"), 
+                "modified_by"         => $this->session->userdata(PREFIX_SESSION . "_USER_ID"), 
                 "modified_date"       => date_now(),
             ];
 
@@ -329,7 +329,7 @@ class Sector extends MY_Controller
                 "color_booked"        => $color_booked,
                 "color_requested"     => $color_requested,
                 "status"              => GLOBAL_STATUS_ACTIVE,
-                // "modified_by"      => $this->session->userdata(PREFIX_SESSION . "_USER_ID"), 
+                "modified_by"         => $this->session->userdata(PREFIX_SESSION . "_USER_ID"), 
                 "modified_date"       => date_now(),
             ], $data_sketch);
 

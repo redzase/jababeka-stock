@@ -174,7 +174,7 @@ else {
                   </div>
 
                   <p class="pull-left" style="margin-left:10px;">
-                      <a href="#" class="btn btn-primary">
+                      <a class="btn btn-primary view-log" data-toggle="modal" data-target="#myModalLogs" data-url="<?php echo site_url('sector/kavling/ajax_list_logs/'. $detail_sector->id); ?>">
                         View Log
                       </a>
                   </p>
@@ -240,7 +240,8 @@ else {
                                 <?php 
                                 if (check_access_module_permission($module, PERMISSION_BOOKING)):
                                 ?>
-                                &nbsp;&nbsp;~&nbsp<a href="<?php echo site_url("sector/kavling/update_status/". $detail_sector->id ."/". $value->id ."/". STATUS_BOOKING_KAVLING_BOOKING); ?>" class="confirmation" data-confirm-message="Anda yakin ingin mengupdate status menjadi Booking?">Booking</a>
+                                &nbsp;~&nbsp;
+                                <a href="<?php echo site_url("sector/kavling/update_status/". $detail_sector->id ."/". $value->id ."/". STATUS_BOOKING_KAVLING_BOOKING); ?>" class="confirmation" data-confirm-message="Anda yakin ingin mengupdate status menjadi Booking?">Booking</a>
                                 <?php /*
                                 <a href="<?php echo site_url("sector/kavling/update_status/". $detail_sector->id ."/". $value->id ."/". STATUS_BOOKING_KAVLING_REQUEST_BOOKING); ?>" class="confirmation" data-confirm-message="Anda yakin ingin mengupdate status menjadi Request Booking?">Request Booking</a>
                                 */ ?>
@@ -251,32 +252,37 @@ else {
                                 <?php 
                                 if (check_access_module_permission($module, PERMISSION_UNBOOKING)):
                                 ?>
-                                &nbsp;&nbsp;~&nbsp<a href="<?php echo site_url("sector/kavling/update_status/". $detail_sector->id ."/". $value->id ."/". STATUS_BOOKING_KAVLING_UNBOOKING); ?>" class="confirmation" data-confirm-message="Anda yakin ingin mengupdate status menjadi Unbooking?">Unbooking</a>
+                                &nbsp;~&nbsp;
+                                <a href="<?php echo site_url("sector/kavling/update_status/". $detail_sector->id ."/". $value->id ."/". STATUS_BOOKING_KAVLING_UNBOOKING); ?>" class="confirmation" data-confirm-message="Anda yakin ingin mengupdate status menjadi Unbooking?">Unbooking</a>
                                 <?php 
                                 endif;
                                 ?>
                               <?php /* elseif ($value->status_valid == 3): // Sold ?>
-                                &nbsp;&nbsp;~&nbsp<a href="#clickable">View In Map</a>
+                                &nbsp;~&nbsp;<a href="#clickable">View In Map</a>
                               <?php */ elseif ($value->status_valid == 4): // Available Requested ?>
                                 <?php 
                                 if (check_access_module_permission($module, PERMISSION_BOOKING)):
                                 ?>
-                                &nbsp;&nbsp;~&nbsp<a href="<?php echo site_url("sector/kavling/update_status/". $detail_sector->id ."/". $value->id ."/". STATUS_BOOKING_KAVLING_BOOKING); ?>" class="confirmation" data-confirm-message="Anda yakin ingin mengupdate status menjadi Booking?">Booking</a>
+                                &nbsp;~&nbsp;
+                                <a href="<?php echo site_url("sector/kavling/update_status/". $detail_sector->id ."/". $value->id ."/". STATUS_BOOKING_KAVLING_BOOKING); ?>" class="confirmation" data-confirm-message="Anda yakin ingin mengupdate status menjadi Booking?">Booking</a>
                                 <?php 
                                 endif;
                                 if (check_access_module_permission($module, PERMISSION_UNBOOKING)):
                                 ?>
-                                &nbsp;&nbsp;~&nbsp<a href="<?php echo site_url("sector/kavling/update_status/". $detail_sector->id ."/". $value->id ."/". STATUS_BOOKING_KAVLING_UNBOOKING); ?>" class="confirmation" data-confirm-message="Anda yakin ingin mengupdate status menjadi Unbooking?">Unbooking</a>
+                                &nbsp;~&nbsp;
+                                <a href="<?php echo site_url("sector/kavling/update_status/". $detail_sector->id ."/". $value->id ."/". STATUS_BOOKING_KAVLING_UNBOOKING); ?>" class="confirmation" data-confirm-message="Anda yakin ingin mengupdate status menjadi Unbooking?">Unbooking</a>
                                 <?php 
                                 endif;
                                 ?>
                               <?php endif; ?>
                               <?php if ($value->offset_x > 0 or $value->offset_y > 0): // Available Requested ?>
                                 <?php if (in_array($value->status_valid, [1, 2, 3, 4])): ?>
-                                  &nbsp;&nbsp;~&nbsp;
+                                  &nbsp;~&nbsp;
                                 <?php endif; ?>
                                 <a href="#clickable" class="view-in-map" data-uniqueid="<?php echo $value->id; ?>">View In Map</a>
                               <?php endif; ?>
+                              &nbsp;~&nbsp;
+                              <a href="#" class="view-log" data-toggle="modal" data-target="#myModalLogs" data-url="<?php echo site_url('sector/kavling/ajax_list_logs/'. $detail_sector->id ."/". $value->id); ?>">View Log</a>
                               <?php /*
                               <a class="btn default btn-xs purple" href="<?php echo site_url('sector/kavling/edit/'. $detail_sector->id .'/'. $value->id); ?>"><i class="fa fa-edit"></i> Edit </a>
                               */ ?>
@@ -336,6 +342,20 @@ if (check_access_module_permission($module, PERMISSION_MAPPING)):
 <?php 
 endif;
 ?>
+
+<!-- Modal -->
+<div class="modal fade" id="myModalLogs" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body">
+        Loading...
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
 
 <!-- <button data-toggle="modal" data-target="#myModal" type="button" class="btn btn-primary">Create Order</button>  -->
 
@@ -453,6 +473,24 @@ endif;
           var per_page = $(this).val();
 
           $(location).attr('href', "<?php echo $site_url; ?>/?perpage=" + per_page);
+        });
+
+        $(".view-log").click(function() {
+          var url = $(this).data("url");
+          
+          // $("#notification").empty();
+          // $("#myModal").find(".modal-dialog").css("width", "800px");
+          
+          $.ajax({
+            type: "POST",
+            url: url,
+            cache: false,
+            success: function(data) {
+              $("#myModalLogs .modal-content").html(data);
+            }
+          });
+
+          return true;
         });
     });
 </script>
