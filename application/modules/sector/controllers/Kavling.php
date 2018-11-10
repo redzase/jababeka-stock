@@ -470,44 +470,68 @@ class Kavling extends MY_Controller
 
     public function update_status($sector_id, $kavling_id, $status) 
     {
-        if ($status == STATUS_BOOKING_KAVLING_REMOVE_FROM_MAP) {
-            $data_update = [
-                "offset_x"      => 0,
-                "offset_y"      => 0,
-                "modified_by"   => $this->session->userdata(PREFIX_SESSION . "_USER_ID"), 
-                "modified_date" => date_now(),
+        if ($this->input->is_ajax_request()) {
+            $note = $this->input->post("note");
+
+            if ($status == STATUS_BOOKING_KAVLING_REMOVE_FROM_MAP) {
+                $data_update = [
+                    "offset_x"      => 0,
+                    "offset_y"      => 0,
+                    "note"          => null,
+                    "modified_by"   => $this->session->userdata(PREFIX_SESSION . "_USER_ID"), 
+                    "modified_date" => date_now(),
+                ];
+     
+                $response_message = "Coordinate {{SUCCESS_OR_FAILED}} deleted.";
+            }
+            else {
+                $data_update = [
+                    "status_booking" => $status,
+                    "note"           => $note,
+                    "modified_by"    => $this->session->userdata(PREFIX_SESSION . "_USER_ID"), 
+                    "modified_date"  => date_now(),
+                ];
+
+                $response_message = "Status {{SUCCESS_OR_FAILED}} updated.";
+            }
+
+            $action = $this->Sectorkavlingmodel->update($kavling_id, $data_update);
+
+            $result["status"]  = $action;
+            $result["message"] = ($action) ? str_replace('{{SUCCESS_OR_FAILED}}', 'successfully', $response_message) : str_replace('{{SUCCESS_OR_FAILED}}', 'failed', $response_message);
+
+            // Insert activity logs
+            if ($status == STATUS_BOOKING_KAVLING_BOOKING) {
+                insert_logs($this->_module, LOGS_ACTIVITY_BOOKING, $kavling_id, $note);
+            } elseif ($status == STATUS_BOOKING_KAVLING_UNBOOKING) {
+                insert_logs($this->_module, LOGS_ACTIVITY_UNBOOKING, $kavling_id, $note);
+            } elseif ($status == STATUS_BOOKING_KAVLING_REQUEST_BOOKING) {
+                insert_logs($this->_module, LOGS_ACTIVITY_REQUESTED, $kavling_id, $note);
+            }
+
+            // Store session
+            $this->session->set_flashdata(PREFIX_SESSION ."_RESULT_PROCESS", $result);
+
+            // redirect($this->class_metadata["module"] ."/". $this->class_metadata["class"] ."/index/". $sector_id, "refresh");
+
+            $result['status'] = true;
+            $result['message'] = "Success!";
+            $result['data'] = [
+                'href' => site_url($this->class_metadata["module"] ."/". $this->class_metadata["class"] ."/index/". $sector_id),
             ];
- 
-            $response_message = "Coordinate {{SUCCESS_OR_FAILED}} deleted.";
         }
         else {
-            $data_update = [
-                "status_booking" => $status,
-                "modified_by"    => $this->session->userdata(PREFIX_SESSION . "_USER_ID"), 
-                "modified_date"  => date_now(),
-            ];
-
-            $response_message = "Status {{SUCCESS_OR_FAILED}} updated.";
+            $result['status'] = false;
+            $result['message'] = "Ajax request needed to do this process!";
+            $result['data'] = "";
         }
 
-        $action = $this->Sectorkavlingmodel->update($kavling_id, $data_update);
-
-        $result["status"]  = $action;
-        $result["message"] = ($action) ? str_replace('{{SUCCESS_OR_FAILED}}', 'successfully', $response_message) : str_replace('{{SUCCESS_OR_FAILED}}', 'failed', $response_message);
-
-        // Insert activity logs
-        if ($status == STATUS_BOOKING_KAVLING_BOOKING) {
-            insert_logs($this->_module, LOGS_ACTIVITY_BOOKING, $kavling_id);
-        } elseif ($status == STATUS_BOOKING_KAVLING_UNBOOKING) {
-            insert_logs($this->_module, LOGS_ACTIVITY_UNBOOKING, $kavling_id);
-        } elseif ($status == STATUS_BOOKING_KAVLING_REQUEST_BOOKING) {
-            insert_logs($this->_module, LOGS_ACTIVITY_REQUESTED, $kavling_id);
-        }
-
-        // Store session
-        $this->session->set_flashdata(PREFIX_SESSION ."_RESULT_PROCESS", $result);
-
-        redirect($this->class_metadata["module"] ."/". $this->class_metadata["class"] ."/index/". $sector_id, "refresh");
+        $this->output
+             ->set_status_header(200)
+             ->set_content_type('application/json', 'utf-8')
+             ->set_output(json_encode($result, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES))
+             ->_display();
+        exit;
     }
 
     public function ajax_list_logs($sector_id, $kavling_id = "", $page = 1) 

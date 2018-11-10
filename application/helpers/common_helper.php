@@ -242,7 +242,7 @@ if(!function_exists("check_access_module_permission"))
 
 if(!function_exists("insert_logs")) 
 {
-    function insert_logs($module_code, $activity, $foreign_id) 
+    function insert_logs($module_code, $activity, $foreign_id, $note = null) 
     {
         instance()->load->model("sector/Logsmodel");
 
@@ -261,6 +261,7 @@ if(!function_exists("insert_logs"))
             $data_create = [
                 "module_id"     => $all_data->id,
                 "activity"      => $activity,
+                "note"          => $note,
                 "foreign_id"    => $foreign_id,
                 "created_by"    => instance()->session->userdata(PREFIX_SESSION . "_USER_ID"), 
                 "created_date"  => date_now(),

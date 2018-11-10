@@ -368,39 +368,40 @@ endif;
             $coordinate_color = "#0011a1";
             $coordinate_size = $value->icon_size;
             $uniqueid = $value->id;
+            $heading = $value->street_name .", ". $value->block_name .", ". $value->house_number;
             if ($value->status_valid == 1): // Available
               // $content = "~&nbsp;&nbsp;<a href='". site_url("sector/kavling/update_status/". $detail_sector->id ."/". $value->id ."/". STATUS_BOOKING_KAVLING_REMOVE_FROM_MAP) ."' class='confirmation' data-confirm-message='Anda yakin ingin menghapus kordinat ini?'>Hapus dari Peta</a><br>~&nbsp;&nbsp;<a href='". site_url("sector/kavling/update_status/". $detail_sector->id ."/". $value->id ."/". STATUS_BOOKING_KAVLING_BOOKING) ."' class='confirmation' data-confirm-message='Anda yakin ingin mengupdate status menjadi Booking?'>Booking</a>";
               if (check_access_module_permission($module, PERMISSION_DELETE)):
-                $content .= "~&nbsp;&nbsp;<a href='". site_url("sector/kavling/update_status/". $detail_sector->id ."/". $value->id ."/". STATUS_BOOKING_KAVLING_REMOVE_FROM_MAP) ."' class='confirmation' data-confirm-message='Anda yakin ingin menghapus kordinat ini?'>Hapus dari Peta</a><br>";
+                $content .= "~&nbsp;&nbsp;<a href='". site_url("sector/kavling/update_status/". $detail_sector->id ."/". $value->id ."/". STATUS_BOOKING_KAVLING_REMOVE_FROM_MAP) ."' class='confirmation' data-confirm-message='Anda yakin ingin menghapus kordinat ini?' data-heading='". $heading ."'>Hapus dari Peta</a><br>";
               endif;
               if (check_access_module_permission($module, PERMISSION_BOOKING)):
-                $content .= "~&nbsp;&nbsp;<a href='". site_url("sector/kavling/update_status/". $detail_sector->id ."/". $value->id ."/". STATUS_BOOKING_KAVLING_BOOKING) ."' class='confirmation' data-confirm-message='Anda yakin ingin mengupdate status menjadi Booking?'>Booking</a>";
+                $content .= "~&nbsp;&nbsp;<a href='". site_url("sector/kavling/update_status/". $detail_sector->id ."/". $value->id ."/". STATUS_BOOKING_KAVLING_BOOKING) ."' class='confirmation' data-confirm-message='Anda yakin ingin mengupdate status menjadi Booking?' data-heading='". $heading ."'>Booking</a>";
               endif;
               $coordinate_color = $value->color_available;
             elseif ($value->status_valid == 2): // Booked
               // $content = "~&nbsp;&nbsp;<a href='". site_url("sector/kavling/update_status/". $detail_sector->id ."/". $value->id ."/". STATUS_BOOKING_KAVLING_REMOVE_FROM_MAP) ."' class='confirmation' data-confirm-message='Anda yakin ingin menghapus kordinat ini?'>Hapus dari Peta</a><br>~&nbsp;&nbsp;<a href='". site_url("sector/kavling/update_status/". $detail_sector->id ."/". $value->id ."/". STATUS_BOOKING_KAVLING_UNBOOKING) ."' class='confirmation' data-confirm-message='Anda yakin ingin mengupdate status menjadi Unbooking?'>Unbooking</a>";
               if (check_access_module_permission($module, PERMISSION_DELETE)):
-                $content .= "~&nbsp;&nbsp;<a href='". site_url("sector/kavling/update_status/". $detail_sector->id ."/". $value->id ."/". STATUS_BOOKING_KAVLING_REMOVE_FROM_MAP) ."' class='confirmation' data-confirm-message='Anda yakin ingin menghapus kordinat ini?'>Hapus dari Peta</a><br>";
+                $content .= "~&nbsp;&nbsp;<a href='". site_url("sector/kavling/update_status/". $detail_sector->id ."/". $value->id ."/". STATUS_BOOKING_KAVLING_REMOVE_FROM_MAP) ."' class='confirmation' data-confirm-message='Anda yakin ingin menghapus kordinat ini?' data-heading='". $heading ."'>Hapus dari Peta</a><br>";
               endif;
               if (check_access_module_permission($module, PERMISSION_UNBOOKING)):
-                $content .= "~&nbsp;&nbsp;<a href='". site_url("sector/kavling/update_status/". $detail_sector->id ."/". $value->id ."/". STATUS_BOOKING_KAVLING_UNBOOKING) ."' class='confirmation' data-confirm-message='Anda yakin ingin mengupdate status menjadi Unbooking?'>Unbooking</a>";
+                $content .= "~&nbsp;&nbsp;<a href='". site_url("sector/kavling/update_status/". $detail_sector->id ."/". $value->id ."/". STATUS_BOOKING_KAVLING_UNBOOKING) ."' class='confirmation' data-confirm-message='Anda yakin ingin mengupdate status menjadi Unbooking?' data-heading='". $heading ."'>Unbooking</a>";
               endif;
               $coordinate_color = $value->color_booked;
             elseif ($value->status_valid == 3): // Sold
               if (check_access_module_permission($module, PERMISSION_DELETE)):
-                $content .= "~&nbsp;&nbsp;<a href='". site_url("sector/kavling/update_status/". $detail_sector->id ."/". $value->id ."/". STATUS_BOOKING_KAVLING_REMOVE_FROM_MAP) ."' class='confirmation' data-confirm-message='Anda yakin ingin menghapus kordinat ini?'>Hapus dari Peta</a>";
+                $content .= "~&nbsp;&nbsp;<a href='". site_url("sector/kavling/update_status/". $detail_sector->id ."/". $value->id ."/". STATUS_BOOKING_KAVLING_REMOVE_FROM_MAP) ."' class='confirmation' data-confirm-message='Anda yakin ingin menghapus kordinat ini?' data-heading='". $heading ."'>Hapus dari Peta</a>";
               endif;
               $coordinate_color = $value->color_sold;
             elseif ($value->status_valid == 4): // Available Requested
               // $content = "~&nbsp;&nbsp;<a href='". site_url("sector/kavling/update_status/". $detail_sector->id ."/". $value->id ."/". STATUS_BOOKING_KAVLING_REMOVE_FROM_MAP) ."' class='confirmation' data-confirm-message='Anda yakin ingin menghapus kordinat ini?'>Hapus dari Peta</a><br>~&nbsp;&nbsp;<a href='". site_url("sector/kavling/update_status/". $detail_sector->id ."/". $value->id ."/". STATUS_BOOKING_KAVLING_BOOKING) ."' class='confirmation' data-confirm-message='Anda yakin ingin mengupdate status menjadi Booking?'>Booking</a><br>~&nbsp;&nbsp;<a href='". site_url("sector/kavling/update_status/". $detail_sector->id ."/". $value->id ."/". STATUS_BOOKING_KAVLING_UNBOOKING) ."' class='confirmation' data-confirm-message='Anda yakin ingin mengupdate status menjadi Unbooking?'>Unbooking</a>";
               if (check_access_module_permission($module, PERMISSION_DELETE)):
-                $content = "~&nbsp;&nbsp;<a href='". site_url("sector/kavling/update_status/". $detail_sector->id ."/". $value->id ."/". STATUS_BOOKING_KAVLING_REMOVE_FROM_MAP) ."' class='confirmation' data-confirm-message='Anda yakin ingin menghapus kordinat ini?'>Hapus dari Peta</a><br>";
+                $content = "~&nbsp;&nbsp;<a href='". site_url("sector/kavling/update_status/". $detail_sector->id ."/". $value->id ."/". STATUS_BOOKING_KAVLING_REMOVE_FROM_MAP) ."' class='confirmation' data-confirm-message='Anda yakin ingin menghapus kordinat ini?' data-heading='". $heading ."'>Hapus dari Peta</a><br>";
               endif;
               if (check_access_module_permission($module, PERMISSION_BOOKING)):
-                $content = "~&nbsp;&nbsp;<a href='". site_url("sector/kavling/update_status/". $detail_sector->id ."/". $value->id ."/". STATUS_BOOKING_KAVLING_BOOKING) ."' class='confirmation' data-confirm-message='Anda yakin ingin mengupdate status menjadi Booking?'>Booking</a><br>";
+                $content = "~&nbsp;&nbsp;<a href='". site_url("sector/kavling/update_status/". $detail_sector->id ."/". $value->id ."/". STATUS_BOOKING_KAVLING_BOOKING) ."' class='confirmation' data-confirm-message='Anda yakin ingin mengupdate status menjadi Booking?' data-heading='". $heading ."'>Booking</a><br>";
               endif;
               if (check_access_module_permission($module, PERMISSION_UNBOOKING)):
-                $content = "~&nbsp;&nbsp;<a href='". site_url("sector/kavling/update_status/". $detail_sector->id ."/". $value->id ."/". STATUS_BOOKING_KAVLING_UNBOOKING) ."' class='confirmation' data-confirm-message='Anda yakin ingin mengupdate status menjadi Unbooking?'>Unbooking</a>";
+                $content = "~&nbsp;&nbsp;<a href='". site_url("sector/kavling/update_status/". $detail_sector->id ."/". $value->id ."/". STATUS_BOOKING_KAVLING_UNBOOKING) ."' class='confirmation' data-confirm-message='Anda yakin ingin mengupdate status menjadi Unbooking?' data-heading='". $heading ."'>Unbooking</a>";
               endif;
               $coordinate_color = $value->color_requested;
             endif;
@@ -409,7 +410,7 @@ endif;
             top: <?php echo $value->offset_y; ?>, // Determines bullseye position from top.
             left: <?php echo $value->offset_x; ?>, // Determines bullseye position from left.
             // bottom: 0, // ̊Determines bullseye position from right.
-            heading: "<?php echo $value->street_name .", ". $value->block_name .", ". $value->house_number; ?>", // Heading content
+            heading: "<?php echo $heading; ?>", // Heading content
             content: "<?php echo $content; ?>", // Paragraph content
             orientation: "top", // <a href="https://www.jqueryscript.net/tooltip/">Tooltip</a> orientation
             color: "<?php echo $coordinate_color; ?>", // Dot and dot animation color. 
@@ -457,16 +458,85 @@ endif;
           return true;
         });
 
-        $(".confirmation").click(function() {
-          var confirm_message = $(this).data("confirm-message");
-          var answer = confirm(confirm_message);
+        // $(".confirmation").click(function() {
+        //   var confirm_message = $(this).data("confirm-message");
+        //   var answer = confirm(confirm_message);
 
-          if (answer) {
-            $('#clickable').unbind('click');
-            return true;
-          }
+        //   if (answer) {
+        //     $('#clickable').unbind('click');
+        //     return true;
+        //   }
 
-          return false;
+        //   return false;
+        // });
+
+        $('.confirmation').on('click', function () {
+            var confirm_message = $(this).data("confirm-message");
+            var heading = $(this).data("heading");
+            var href = $(this).attr("href");
+
+            $.confirm({
+                title: heading,
+                content: '' +
+                '<form action="" class="formName">' +
+                '<div class="form-group">' +
+                '<label>'+ confirm_message +'</label>' +
+                '<textarea class="note form-control" rows="3" placeholder="Note ..." name="note" required></textarea>' +
+                '</div>' +
+                '</form>',
+                buttons: {
+                    // confirm: {
+                    //   text: 'Ya',
+                    //   action: function(){
+                    //     $('#clickable').unbind('click');
+                    //     $(location).attr('href', href);
+                    //     return true;
+                    //   }
+                    // },
+                    formSubmit: {
+                        text: 'Ya',
+                        btnClass: 'btn-blue',
+                        action: function () {
+                          var note = this.$content.find('.note').val();
+                          if(!note){
+                              $.alert('Isi note terlebih dahulu!');
+                              return false;
+                          }
+                          console.log(note);
+                          $.ajax({
+                            type:'POST',
+                            url: href,
+                            data: {
+                              "note": note
+                            },
+                            cache: false,
+                            success:function(res) {
+                                if (res.status == false) {
+                                    $.alert(res.message);
+                                }
+                                else {
+                                    $(location).attr('href', res.data.href);
+                                    return true;
+                                }
+                            },
+                            error:function(){
+                                $.alert("An error occured. Try again!");
+                            }
+                          })
+
+                          return false;
+                        }
+                    },
+                    cancel: {
+                      text: 'Tidak',
+                      action: function(){
+
+                      }
+                    }
+                }
+            });
+
+            return false;
         });
 
         $("select[name=select_pagination]").change(function() {

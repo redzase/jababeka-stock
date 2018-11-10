@@ -11,6 +11,7 @@
         <th><center>Date Time</center></th>
         <th><center>Kavling</center></th>
         <th><center>User</center></th>
+        <th><center>Note</center></th>
         <th><center>Action</center></th>
       </tr>
     </thead>
@@ -21,6 +22,7 @@
           <td><?php echo date_now(12, $value->created_date); ?></td>
           <td><?php echo $value->foreign_id_name; ?></td>
           <td><?php echo $value->username; ?></td>
+          <td><?php echo $value->note; ?></td>
           <td><?php echo unserialize(LOGS_ACTIVITY_LIST)[$value->activity]; ?></td>
         </tr>
       <?php endforeach; ?>
