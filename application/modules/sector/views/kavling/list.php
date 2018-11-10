@@ -209,7 +209,10 @@ else {
                           </tr>
                       </thead>
                       <tbody>
-                        <?php foreach ($all_data as $key => $value): ?>
+                        <?php 
+                        foreach ($all_data as $key => $value): 
+                          $heading = $value->street_name .", ". $value->block_name .", ". $value->house_number;
+                        ?>
                           <tr class="<?php echo ($key % 2) == 0 ? "event" : "odd"; ?>">
                             <td>
                               <a href="<?php echo site_url('sector/kavling/edit/'. $detail_sector->id .'/'. $value->id); ?>">
@@ -232,7 +235,7 @@ else {
                               <?php 
                               if (check_access_module_permission($module, PERMISSION_DELETE)):
                               ?>
-                              <a href="<?php echo site_url("sector/kavling/delete/". $detail_sector->id ."/". $value->id); ?>" class="confirmation" data-confirm-message="Anda yakin ingin menghapus data ini?">Delete</a>
+                              <a href="<?php echo site_url("sector/kavling/delete/". $detail_sector->id ."/". $value->id); ?>" class="confirmation" data-confirm-message="Anda yakin ingin menghapus data ini?" data-heading="<?php echo $heading; ?>">Delete</a>
                               <?php 
                               endif;
                               ?>
@@ -241,9 +244,9 @@ else {
                                 if (check_access_module_permission($module, PERMISSION_BOOKING)):
                                 ?>
                                 &nbsp;~&nbsp;
-                                <a href="<?php echo site_url("sector/kavling/update_status/". $detail_sector->id ."/". $value->id ."/". STATUS_BOOKING_KAVLING_BOOKING); ?>" class="confirmation" data-confirm-message="Anda yakin ingin mengupdate status menjadi Booking?">Booking</a>
+                                <a href="<?php echo site_url("sector/kavling/update_status/". $detail_sector->id ."/". $value->id ."/". STATUS_BOOKING_KAVLING_BOOKING); ?>" class="confirmation" data-confirm-message="Anda yakin ingin mengupdate status menjadi Booking?" data-heading="<?php echo $heading; ?>">Booking</a>
                                 <?php /*
-                                <a href="<?php echo site_url("sector/kavling/update_status/". $detail_sector->id ."/". $value->id ."/". STATUS_BOOKING_KAVLING_REQUEST_BOOKING); ?>" class="confirmation" data-confirm-message="Anda yakin ingin mengupdate status menjadi Request Booking?">Request Booking</a>
+                                <a href="<?php echo site_url("sector/kavling/update_status/". $detail_sector->id ."/". $value->id ."/". STATUS_BOOKING_KAVLING_REQUEST_BOOKING); ?>" class="confirmation" data-confirm-message="Anda yakin ingin mengupdate status menjadi Request Booking?" data-heading="<?php echo $heading; ?>">Request Booking</a>
                                 */ ?>
                                 <?php 
                                 endif;
@@ -253,7 +256,7 @@ else {
                                 if (check_access_module_permission($module, PERMISSION_UNBOOKING)):
                                 ?>
                                 &nbsp;~&nbsp;
-                                <a href="<?php echo site_url("sector/kavling/update_status/". $detail_sector->id ."/". $value->id ."/". STATUS_BOOKING_KAVLING_UNBOOKING); ?>" class="confirmation" data-confirm-message="Anda yakin ingin mengupdate status menjadi Unbooking?">Unbooking</a>
+                                <a href="<?php echo site_url("sector/kavling/update_status/". $detail_sector->id ."/". $value->id ."/". STATUS_BOOKING_KAVLING_UNBOOKING); ?>" class="confirmation" data-confirm-message="Anda yakin ingin mengupdate status menjadi Unbooking?" data-heading="<?php echo $heading; ?>">Unbooking</a>
                                 <?php 
                                 endif;
                                 ?>
@@ -264,13 +267,13 @@ else {
                                 if (check_access_module_permission($module, PERMISSION_BOOKING)):
                                 ?>
                                 &nbsp;~&nbsp;
-                                <a href="<?php echo site_url("sector/kavling/update_status/". $detail_sector->id ."/". $value->id ."/". STATUS_BOOKING_KAVLING_BOOKING); ?>" class="confirmation" data-confirm-message="Anda yakin ingin mengupdate status menjadi Booking?">Booking</a>
+                                <a href="<?php echo site_url("sector/kavling/update_status/". $detail_sector->id ."/". $value->id ."/". STATUS_BOOKING_KAVLING_BOOKING); ?>" class="confirmation" data-confirm-message="Anda yakin ingin mengupdate status menjadi Booking?" data-heading="<?php echo $heading; ?>">Booking</a>
                                 <?php 
                                 endif;
                                 if (check_access_module_permission($module, PERMISSION_UNBOOKING)):
                                 ?>
                                 &nbsp;~&nbsp;
-                                <a href="<?php echo site_url("sector/kavling/update_status/". $detail_sector->id ."/". $value->id ."/". STATUS_BOOKING_KAVLING_UNBOOKING); ?>" class="confirmation" data-confirm-message="Anda yakin ingin mengupdate status menjadi Unbooking?">Unbooking</a>
+                                <a href="<?php echo site_url("sector/kavling/update_status/". $detail_sector->id ."/". $value->id ."/". STATUS_BOOKING_KAVLING_UNBOOKING); ?>" class="confirmation" data-confirm-message="Anda yakin ingin mengupdate status menjadi Unbooking?" data-heading="<?php echo $heading; ?>">Unbooking</a>
                                 <?php 
                                 endif;
                                 ?>
