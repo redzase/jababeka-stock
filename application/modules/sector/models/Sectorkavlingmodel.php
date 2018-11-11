@@ -36,6 +36,14 @@ class Sectorkavlingmodel extends MY_Model
                          WHEN {$this->_table_sector_kavling}.status_booking = 2 THEN 2
                          ELSE 1
                     END 'status_valid',
+                    (SELECT {$this->_table_logs}.created_date
+                     FROM {$this->_table_logs} JOIN {$this->_table_module}
+                                                 ON {$this->_table_logs}.module_id = {$this->_table_module}.id
+                     WHERE {$this->_table_module}.code = '". MODULE_CODE_STOCK_SECTOR_KAVLING ."'
+                       AND {$this->_table_logs}.foreign_id = {$this->_table_sector_kavling}.id
+                       AND {$this->_table_logs}.activity = '". LOGS_ACTIVITY_BOOKING ."'
+                     ORDER BY {$this->_table_logs}.created_date DESC 
+                     LIMIT 1) AS 'booking_date'
                     ", FALSE);
             }
             // 1 = Available
@@ -53,11 +61,27 @@ class Sectorkavlingmodel extends MY_Model
              * Filter
              */
             if (isset($filter["reference_kavling_id"]) and !empty($filter["reference_kavling_id"])) {
-                $this->db->where("{$this->_table_sector_kavling}.reference_kavling_id", $filter["reference_kavling_id"]);
+                $this->db->like("{$this->_table_sector_kavling}.reference_kavling_id", $filter["reference_kavling_id"]);
             }
 
             if (isset($filter["street_name"]) and !empty($filter["street_name"])) {
                 $this->db->like("{$this->_table_sector_kavling}.street_name", $filter["street_name"]);
+            }
+
+            if (isset($filter["block_name"]) and !empty($filter["block_name"])) {
+                $this->db->where("{$this->_table_sector_kavling}.block_name", $filter["block_name"]);
+            }
+
+            if (isset($filter["start_booking_date"]) and !empty($filter["start_booking_date"])
+                and isset($filter["end_booking_date"]) and !empty($filter["end_booking_date"])) {
+                $this->db->where("(SELECT {$this->_table_logs}.created_date
+                     FROM {$this->_table_logs} JOIN {$this->_table_module}
+                                                 ON {$this->_table_logs}.module_id = {$this->_table_module}.id
+                     WHERE {$this->_table_module}.code = '". MODULE_CODE_STOCK_SECTOR_KAVLING ."'
+                       AND {$this->_table_logs}.foreign_id = {$this->_table_sector_kavling}.id
+                       AND {$this->_table_logs}.activity = '". LOGS_ACTIVITY_BOOKING ."'
+                     ORDER BY {$this->_table_logs}.created_date DESC 
+                     LIMIT 1) BETWEEN '". $filter["start_booking_date"] ."' AND '". $filter["end_booking_date"] ."'", '', false);
             }
 
             if (isset($filter["filter_status"]) and is_array($filter["filter_status"]) and count($filter["filter_status"]) > 0) {

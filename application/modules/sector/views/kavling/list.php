@@ -3,12 +3,16 @@
 if (isset($all_data)) {
   $reference_kavling_id = $filter["reference_kavling_id"];
   $street_name = $filter["street_name"];
+  $block_name = $filter["block_name"];
   $filter_status = $filter["filter_status"];
+  $booking_date = $filter["booking_date"];
 } 
 else {
   $reference_kavling_id = FALSE;
   $street_name = FALSE;
+  $block_name = FALSE;
   $filter_status = FALSE;
+  $booking_date = FALSE;
 }
 
 ?>
@@ -143,6 +147,27 @@ else {
                           </div>
 
                           <div class="form-group">
+                              <label for="inputPassword3" class="col-sm-2 control-label">Blok</label>
+
+                              <div class="col-sm-9">
+                                  <?php echo form_input("block_name", set_value("block_name", $block_name), "data-required='1' class='form-control' placeholder='Blok'"); ?>
+                              </div>
+                          </div>
+
+                          <div class="form-group">
+                              <label for="inputPassword3" class="col-sm-2 control-label">Booking Date</label>
+
+                              <div class="col-sm-9">
+                                  <div class="input-group">
+                                    <div class="input-group-addon">
+                                      <i class="fa fa-calendar"></i>
+                                    </div>
+                                    <?php echo form_input("booking_date", set_value("booking_date", $booking_date), "data-required='1' class='form-control pull-right' id='booking-date' readonly style='cursor:pointer; background-color: #FFFFFF'"); ?>
+                                  </div>
+                              </div>
+                          </div>
+
+                          <div class="form-group">
                               <label for="inputPassword3" class="col-sm-2 control-label">Status</label>
 
                               <div class="col-sm-9">
@@ -197,7 +222,7 @@ else {
                       endif;
                       ?>
                   </p>
-                  <table id="role" class="table table-bordered table-striped dataTable" role="grid" aria-describedby="example1_info">
+                  <table id="datatable-kavling" class="table table-bordered table-striped dataTable" role="grid" aria-describedby="example1_info">
                       <thead>
                           <tr role="row">
                               <th width="8%">Kavling Ref</th>
@@ -205,7 +230,8 @@ else {
                               <th>Blok</th>
                               <th>Nomor</th>
                               <th>Status</th>
-                              <th width="20%">Action</th>
+                              <th class="no-sort">Booking Date</th>
+                              <th class="no-sort" width="20%">Action</th>
                           </tr>
                       </thead>
                       <tbody>
@@ -230,6 +256,9 @@ else {
                             </td>
                             <td>
                               <?php echo $list_status_kavling[$value->status_valid]; ?>
+                            </td>
+                            <td>
+                              <?php echo date_now(12, $value->booking_date); ?>
                             </td>
                             <td>
                               <?php 
@@ -564,6 +593,34 @@ endif;
           });
 
           return true;
+        });
+
+        $('#booking-date').daterangepicker({
+          autoUpdateInput: false,
+          locale: {
+            cancelLabel: 'Clear'
+          }
+        });
+
+        $('#booking-date').on('apply.daterangepicker', function(ev, picker) {
+            $(this).val(picker.startDate.format('D MMMM YYYY') + ' - ' + picker.endDate.format('D MMMM YYYY'));
+        });
+
+        $('#booking-date').on('cancel.daterangepicker', function(ev, picker) {
+            $(this).val('');
+        });
+
+        $('#datatable-kavling').DataTable({
+          "columnDefs": [{
+            "orderable": false,
+            "targets": "no-sort"
+          }],
+          'paging'      : false,
+          'lengthChange': false,
+          'searching'   : false,
+          'ordering'    : true,
+          'info'        : false,
+          'autoWidth'   : false
         });
     });
 </script>

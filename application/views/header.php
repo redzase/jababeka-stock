@@ -21,11 +21,15 @@
   <link rel="stylesheet" href="<?php echo base_url()?>static/css/AdminLTE.min.css">
     <!-- all skin -->
   <link rel="stylesheet" href="<?php echo base_url()?>static/css/_all-skins.min.css">
+  <!-- daterange picker -->
+  <link rel="stylesheet" href="<?php echo base_url()?>static/bower_components/bootstrap-daterangepicker/daterangepicker.css">
     <!-- date picker -->
   <link rel="stylesheet" href="<?php echo base_url()?>static/css/bootstrap-datepicker.min.css">
   <link rel="stylesheet" href="<?php echo base_url()?>static/css/show_image.css">
   <link rel="stylesheet" href="<?php echo base_url()?>static/plugins/bullseye/styles/jquery.bullseye.css">
   <link rel="stylesheet" type="text/css" href="<?php echo base_url()?>static/plugins/jquery-confirm/dist/jquery-confirm.min.css"/>
+  <!-- DataTables -->
+  <link rel="stylesheet" href="<?php echo base_url()?>static/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">
 
   <!-- Bootstrap Color Picker -->
   <link rel="stylesheet" href="<?php echo base_url()?>static/bower_components/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css">

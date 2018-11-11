@@ -84,13 +84,9 @@ defined('EXIT_DATABASE')       OR define('EXIT_DATABASE', 8); // database error
 defined('EXIT__AUTO_MIN')      OR define('EXIT__AUTO_MIN', 9); // lowest automatically-assigned error code
 defined('EXIT__AUTO_MAX')      OR define('EXIT__AUTO_MAX', 125); // highest automatically-assigned error code
 
+
 // Others
-define('ONE_SIGNAL_URL', 'https://onesignal.com/api/v1/notifications');
-define('ONE_SIGNAL_APPID', '18a0fb34-6358-4439-b1e4-541812c2b2d4');
-define('ONE_SIGNAL_APPKEY', 'MGE2ZTIxYTktNDczZi00ZDVjLThlNTYtODAzYzMwZmFiMDRl');
-define('ONE_SIGNAL_TYPE_PROMOTION', 'promotion');
-define('ONE_SIGNAL_TYPE_NEWS', 'news');
-define('ONE_SIGNAL_TYPE_REPAYMENT', 'repayment');
+define('MODULE_CODE_STOCK_SECTOR_KAVLING', 'STOCK_SECTOR_KAVLING');
 
 
 // My Constants

@@ -86,6 +86,8 @@ class Kavling extends MY_Controller
         // Get filter value
         $reference_kavling_id = $this->input->get("reference_kavling_id") ?: "";
         $street_name          = $this->input->get("street_name") ?: "";
+        $block_name           = $this->input->get("block_name") ?: "";
+        $booking_date         = $this->input->get("booking_date") ?: "";
         $chk_filter_status    = $this->input->get("chk_filter_status") ?: "";
         $per_page             = $this->input->get("perpage") ?: "50";
         $filter_status        = [];
@@ -96,6 +98,15 @@ class Kavling extends MY_Controller
             "100" => "100",
             "ALL" => "All",
         ];
+        $start_booking_date = "";
+        $end_booking_date = "";
+
+        // Reformat booking_date
+        $arr_booking_date = explode("-", $booking_date);
+        if (count($arr_booking_date) == 2) {
+            $start_booking_date = DateTime::createFromFormat('d F Y', trim($arr_booking_date[0]))->format('Y-m-d');
+            $end_booking_date = DateTime::createFromFormat('d F Y', trim($arr_booking_date[1]))->format('Y-m-d');
+        }
 
         if (!empty($chk_filter_status) and is_array($chk_filter_status)) {
             foreach ($chk_filter_status as $key => $value) {
@@ -106,6 +117,10 @@ class Kavling extends MY_Controller
         $filter = [
             "reference_kavling_id" => $reference_kavling_id,
             "street_name"          => $street_name,
+            "block_name"           => $block_name,
+            "start_booking_date"   => $start_booking_date,
+            "end_booking_date"     => $end_booking_date,
+            "booking_date"         => $booking_date,
             "filter_status"        => $filter_status,
         ];
         $page        = ($page < 1) ? 1 : ($page - 1); 
