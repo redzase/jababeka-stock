@@ -615,7 +615,8 @@ endif;
         $('#booking-date').daterangepicker({
           autoUpdateInput: false,
           locale: {
-            cancelLabel: 'Clear'
+            cancelLabel: 'Clear',
+            format: 'D MMMM YYYY'
           }
         });
 
