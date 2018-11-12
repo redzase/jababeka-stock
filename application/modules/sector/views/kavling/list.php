@@ -264,7 +264,7 @@ else {
                               <?php 
                               if (check_access_module_permission($module, PERMISSION_DELETE)):
                               ?>
-                              <a href="<?php echo site_url("sector/kavling/delete/". $detail_sector->id ."/". $value->id); ?>" class="confirmation" data-confirm-message="Anda yakin ingin menghapus data ini?" data-heading="<?php echo $heading; ?>">Delete</a>
+                              <a href="<?php echo site_url("sector/kavling/delete/". $detail_sector->id ."/". $value->id); ?>" class="confirmation2" data-confirm-message="Anda yakin ingin menghapus data ini?" data-heading="<?php echo $heading; ?>">Delete</a>
                               <?php 
                               endif;
                               ?>
@@ -490,17 +490,34 @@ endif;
           return true;
         });
 
-        // $(".confirmation").click(function() {
-        //   var confirm_message = $(this).data("confirm-message");
-        //   var answer = confirm(confirm_message);
+        $('.confirmation2').on('click', function () {
+            var confirm_message = $(this).data("confirm-message");
+            var heading = $(this).data("heading");
+            var href = $(this).attr("href");
 
-        //   if (answer) {
-        //     $('#clickable').unbind('click');
-        //     return true;
-        //   }
+            $.confirm({
+                title: heading,
+                content: confirm_message,
+                buttons: {
+                    confirm: {
+                      text: 'Ya',
+                      action: function(){
+                        $('#clickable').unbind('click');
+                        $(location).attr('href', href);
+                        return true;
+                      }
+                    },
+                    cancel: {
+                      text: 'Tidak',
+                      action: function(){
 
-        //   return false;
-        // });
+                      }
+                    }
+                }
+            });
+
+            return false;
+        });
 
         $('.confirmation').on('click', function () {
             var confirm_message = $(this).data("confirm-message");
