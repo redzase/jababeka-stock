@@ -1,0 +1,22 @@
+{
+    "name": "jasny/php-code-quality",
+    "description": "Quality assurance toolchain",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Arnold Daniels",
+            "email": "arnold@jasny.net"
+        }
+    ],
+    "require": {
+        "phpunit/phpunit": "4.*",
+        "mikey179/vfsStream": "1.*",
+        "squizlabs/php_codesniffer": "2.*",
+        "phake/phake": "^2.1"
+    },
+    "config": {
+        "use-include-path": true,
+        "bin-dir": "bin"
+    }
+}
