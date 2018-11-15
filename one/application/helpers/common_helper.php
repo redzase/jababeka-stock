@@ -1,7 +1,7 @@
 <?php
 
 require_once FCPATH . 'vendor/autoload.php';
-use Third_party\Sso\NotAttachedException;
+use third_party\sso\NotAttachedException;
 // use Jasny\SSO\Exception as SsoException;
 
 if(!function_exists("pre")){
@@ -237,7 +237,7 @@ if(!function_exists("is_logged_in"))
 
         $is_exist = True;
 
-        $broker = new Third_party\Sso\Broker(SSO_SERVER, SSO_BROKER_ID, SSO_BROKER_SECRET);
+        $broker = new third_party\sso\Broker(SSO_SERVER, SSO_BROKER_ID, SSO_BROKER_SECRET);
         $broker->attach(true);
         
         try {

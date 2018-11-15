@@ -51,7 +51,7 @@ class Auth extends MX_Controller
 				// $this->session->set_userdata($session_data);
 				
 				// Set SSO Session
-				$broker = new Third_party\Sso\Broker(SSO_SERVER, SSO_BROKER_ID, SSO_BROKER_SECRET);
+				$broker = new third_party\sso\Broker(SSO_SERVER, SSO_BROKER_ID, SSO_BROKER_SECRET);
 				$broker->attach(true);
 				$broker->login($email, $email);
 
@@ -89,7 +89,7 @@ class Auth extends MX_Controller
 
 	public function logout()
     {
-    	$broker = new Third_party\Sso\Broker(SSO_SERVER, SSO_BROKER_ID, SSO_BROKER_SECRET);
+    	$broker = new third_party\sso\Broker(SSO_SERVER, SSO_BROKER_ID, SSO_BROKER_SECRET);
         $broker->attach(true);
         $broker->logout();
         
@@ -108,7 +108,7 @@ class Auth extends MX_Controller
   //   	$email = "carrypandin@gmail.com";
 
   //   	// Set SSO Session
-		// $broker = new Third_party\Sso\Broker("http://cms.jababeka-stock.com/auth/sso", "stock", "C6wkZ29gBXQ2Xb0FYEbWHw");
+		// $broker = new third_party\sso\Broker("http://cms.jababeka-stock.com/auth/sso", "stock", "C6wkZ29gBXQ2Xb0FYEbWHw");
 		// $broker->attach(true);
 		// // $broker->logout();die;
 		// echo json_encode($broker->login($email, $email));

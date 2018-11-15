@@ -1,7 +1,7 @@
 <?php
 
 use Jasny\ValidationResult;
-use Third_party\Sso;
+use third_party\sso;
 
 /**
  * Example SSO server.

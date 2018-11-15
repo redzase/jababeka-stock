@@ -1,5 +1,5 @@
 <?php
-namespace Third_party\Sso;
+namespace third_party\sso;
 
 use Desarrolla2\Cache\Cache;
 use Desarrolla2\Cache\Adapter;

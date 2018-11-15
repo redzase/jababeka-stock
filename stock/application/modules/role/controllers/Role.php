@@ -2,7 +2,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 // require_once FCPATH . 'vendor/autoload.php';
-// use Third_party\Sso\NotAttachedException;
+// use third_party\sso\NotAttachedException;
 // use Jasny\SSO\Exception as SsoException;
 
 class Role extends MY_Controller 
@@ -30,7 +30,7 @@ class Role extends MY_Controller
 	// 	// use Jasny\SSO\NotAttachedException;
 	// 	// require_once FCPATH . 'vendor/autoload.php';
 
-	// 	$broker = new Third_party\Sso\Broker("http://cms.jababeka-stock.com/auth/sso", "stock", "C6wkZ29gBXQ2Xb0FYEbWHw");
+	// 	$broker = new third_party\sso\Broker("http://cms.jababeka-stock.com/auth/sso", "stock", "C6wkZ29gBXQ2Xb0FYEbWHw");
 	// 	$broker->attach(true);
 		
 	// 	try {
