@@ -265,7 +265,7 @@ if(!function_exists("is_logged_in"))
             }
         } else if($bool === TRUE) {
             if(!$is_exist) {
-                redirect("http://cms.jababeka-stock.com/auth");
+                redirect(SSO_SERVER_LOGIN);
             }
         }
     }
