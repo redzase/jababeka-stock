@@ -2,7 +2,7 @@
 
 class MY_Model extends CI_Model {
 
-	protected $_dbase_jababeka_table_kavlings = "jbbkresi_salestock.kavlings";
+	protected $_dbase_jababeka_table_kavlings = "stocksync.kavlings";
 	
 	protected $_table_permission        = "permission";
 	protected $_table_module            = "module";
