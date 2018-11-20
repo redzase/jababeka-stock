@@ -9,7 +9,7 @@ class Auth extends MX_Controller
 		parent::__construct();
 		
 		// $this->load->model('Authmodel');
-		$this->load->library('googleplus');
+		// $this->load->library('googleplus');
 
 	}
 	
