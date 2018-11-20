@@ -3,7 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Stocksetting extends MY_Controller 
 {
-	private $_module = "SETTINGS_ROLE";
+	private $_module = "SETTINGS_STOCK_SETTING";
 	
     function __construct()
     {
