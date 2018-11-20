@@ -66,8 +66,8 @@
           </div>
           <!-- /.box-header -->
           <div class="box-body">
-            <div class="col-sm-10">
-              <div class="table-responsive">
+            <div class="table-responsive">
+              <div class="col-sm-10">
                 <table class="table no-margin">
                   <thead>
                     <tr>
@@ -96,18 +96,18 @@
                   <?php // echo $pagination; ?>
                 </div>
               </div>
-              <!-- /.table-responsive -->
-            </div>
-            <div class="col-lg-2 col-xs-4">
-              <!-- small box -->
-              <div class="small-box bg-aqua">
-                <div class="inner">
-                  <h3 align="center"><?php echo $value->total > 0 ? round((($value->sold / $value->total) * 100), 2) : 0; ?>%</h3>
-                  <hr style="margin:-5px 0 3px 0;">
-                  <h3 align="center">SOLD</h3>
+              <div class="col-lg-2 col-xs-4">
+                <!-- small box -->
+                <div class="small-box bg-aqua">
+                  <div class="inner">
+                    <h3 align="center"><?php echo $value->total > 0 ? round((($value->sold / $value->total) * 100), 2) : 0; ?>%</h3>
+                    <hr style="margin:-5px 0 3px 0;">
+                    <h3 align="center">SOLD</h3>
+                  </div>
                 </div>
               </div>
             </div>
+            <!-- /.table-responsive -->
           </div>
           <!-- /.box-footer -->
           <div class="box-footer clearfix" align="center">

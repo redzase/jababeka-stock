@@ -33,10 +33,12 @@
                   <i class="fa fa-plus"></i> Role
                 </a> 
             </p>
+            <div style="clear:both;"></div>
             <?php 
             endif;
             ?>
-            <table id="role" class="table table-bordered table-striped dataTable" role="grid" aria-describedby="example1_info">
+            <div class="table-responsive no-padding">
+              <table class="table table-hover">
                 <thead>
                     <tr role="row">
                         <th style="width: 10px">#</th>
@@ -83,7 +85,8 @@
                   <?php endforeach; ?>
                   </tr>
                 </tbody>
-            </table>
+              </table>
+            </div>
             <div align="center">
               <?php echo $pagination; ?>
             </div>
