@@ -92,19 +92,15 @@
             <li class="dropdown user user-menu">
               <!-- Menu Toggle Button -->
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                <!-- The user image in the navbar-->
-                <img src="<?php echo base_url()?>static/images/user2-160x160.jpg" class="user-image" alt="User Image">
                 <!-- hidden-xs hides the username on small devices so only the image appears. -->
-                <span class="hidden-xs">Jeremiah Carry Pandin</span>
+                <span class="hidden-xs"><?php echo $this->session->userdata(PREFIX_SESSION . "_USER_USERNAME"); ?></span>
               </a>
               <ul class="dropdown-menu">
                 <!-- The user image in the menu -->
-                <li class="user-header">
-                  <img src="<?php echo base_url()?>static/images/user2-160x160.jpg" class="img-circle" alt="User Image">
+                <li class="user-header" style="height:100%;">
                   <p>
                   
-                    Jeremiah Carry Pandin - Super Admin
-                    <small>Last Login : 2018-10-06 00:09:11</small>
+                    <?php echo $this->session->userdata(PREFIX_SESSION . "_USER_USERNAME"); ?>
                   </p>
                 </li>
                 

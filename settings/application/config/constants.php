@@ -138,6 +138,10 @@ define('PERMISSION_UNBOOKING', 'UNBOOKING');
 define('PERMISSION_REQUEST_BOOKING', 'REQUEST_BOOKING');
 
 
+// Code table setting
+define('SETTING_CODE_AUTOMATIC_UNBOOKING', 'AUTOMATIC_UNBOOKING');
+
+
 // Activity Logs
 define('LOGS_ACTIVITY_LIST', serialize(array(
 	"INSERT_FIRST_ROW" => "Input data pertama",
