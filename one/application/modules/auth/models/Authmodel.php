@@ -65,6 +65,7 @@ class Authmodel extends MY_Model {
                 $this->db->join($this->_table_menu, "{$this->_table_module}.menu_id = {$this->_table_menu}.id");
                 $this->db->join($this->_table_permission, "{$this->_table_module_permission}.permission_id = {$this->_table_permission}.id");
                 $this->db->where("{$this->_table_role}.id", $result->role_id);
+                $this->db->order_by("{$this->_table_module}.id ASC");
                 $query = $this->db->get();
 
                 if($query === FALSE)
