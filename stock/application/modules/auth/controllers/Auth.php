@@ -30,7 +30,7 @@ class Auth extends MX_Controller
         
     	$this->load->library('session');
     	$this->session->sess_destroy();
-		$this->googleplus->revokeToken();
+		// $this->googleplus->revokeToken();
 		redirect(SSO_SERVER_LOGIN);
 
         // // Removing session data
