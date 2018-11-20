@@ -78,7 +78,7 @@ class Sectorkavlingmodel extends MY_Model
             if (isset($filter["start_booking_date"]) and !empty($filter["start_booking_date"])
                 and isset($filter["end_booking_date"]) and !empty($filter["end_booking_date"])) {
                 $this->db->where("(SELECT CASE WHEN {$this->_table_logs}.activity = '". LOGS_ACTIVITY_BOOKING ."'
-                                                THEN {$this->_table_logs}.created_date
+                                                THEN DATE_FORMAT({$this->_table_logs}.created_date, '%Y-%m-%d')
                                              ELSE
                                                 ''
                                         END
