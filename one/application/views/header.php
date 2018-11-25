@@ -13,7 +13,7 @@
   <!-- Font Awesome -->
   <link rel="stylesheet" href="<?php echo base_url()?>static/css/font-awesome.min.css">
   <!-- Ionicons -->
-  <link rel="stylesheet" href="<?php echo base_url()?>static/css/ionicons.min.css">
+  <link rel="stylesheet" href="<?php echo base_url()?>static/bower_components/Ionicons/css/ionicons.min.css">
 
   <link rel="stylesheet" href="<?php echo base_url()?>static/css/dataTables.bootstrap.min.css">
 

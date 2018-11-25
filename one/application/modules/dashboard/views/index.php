@@ -22,6 +22,32 @@
         if (isset($this->session->userdata(PREFIX_SESSION . "_ALL_ACCESS")["menu"])):
           foreach ($this->session->userdata(PREFIX_SESSION . "_ALL_ACCESS")["menu"] as $key => $value):
         ?>
+        <div class="col-md-3 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-aqua"><i class="ion <?php echo $value["icon"]; ?>"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text"><h4><?php echo $value["name"]; ?></h4></span>
+              <span class="info-box-number">
+                <a href="<?php echo $value["url"]; ?>" target="_blank" class="small-box-footer">
+                  <small>More info <i class="fa fa-arrow-circle-right"></i></small>
+                </a>
+              </span>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+        <?php 
+          endforeach;
+        endif;
+        ?>
+
+        <?php /*
+        if (isset($this->session->userdata(PREFIX_SESSION . "_ALL_ACCESS")["menu"])):
+          foreach ($this->session->userdata(PREFIX_SESSION . "_ALL_ACCESS")["menu"] as $key => $value):
+        ?>
             <div class="col-lg-2 col-xs-4">
               <!-- small box -->
               <div class="small-box bg-aqua">
@@ -36,7 +62,7 @@
         <?php 
           endforeach;
         endif;
-        ?>
+        */ ?>
 
       </div>
       <!-- /.box -->

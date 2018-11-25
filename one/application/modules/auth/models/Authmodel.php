@@ -57,6 +57,7 @@ class Authmodel extends MY_Model {
                     {$this->_table_menu}.name AS menu_name,
                     {$this->_table_menu}.code AS menu_code,
                     {$this->_table_menu}.url AS menu_url,
+                    {$this->_table_menu}.icon AS menu_icon,
                     ");
                 $this->db->from($this->_table_role_permission);
                 $this->db->join($this->_table_role, "{$this->_table_role_permission}.role_id = {$this->_table_role}.id");
@@ -82,6 +83,7 @@ class Authmodel extends MY_Model {
                             "name" => $value->menu_name,
                             "code" => $value->menu_code,
                             "url" => $value->menu_url,
+                            "icon" => $value->menu_icon,
                         ];
                     }
 
