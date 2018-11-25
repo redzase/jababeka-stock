@@ -67,7 +67,7 @@
           <!-- /.box-header -->
           <div class="box-body">
             <div class="table-responsive">
-              <div class="col-sm-10">
+              <div class="col-sm-9">
                 <table class="table no-margin">
                   <thead>
                     <tr>
@@ -96,6 +96,25 @@
                   <?php // echo $pagination; ?>
                 </div>
               </div>
+
+              <div class="col-md-3 col-sm-6 col-xs-12">
+                <div class="info-box">
+                  <span class="info-box-icon bg-aqua"><i class="ion ion-ios-checkmark"></i></span>
+
+                  <div class="info-box-content">
+                    <span class="info-box-text"><h4 style="margin-top:1px;"><?php echo $value->total > 0 ? round((($value->sold / $value->total) * 100), 2) : 0; ?>%</h4></span>
+                    <span class="info-box-number">
+                      <hr style="margin:3px 0 0 0;">
+                      <h3 style="margin-top:10px;">SOLD</h3>
+                    </span>
+                  </div>
+                  <!-- /.info-box-content -->
+                </div>
+                <!-- /.info-box -->
+              </div>
+              <!-- /.col -->
+
+              <?php /*
               <div class="col-lg-2 col-xs-4">
                 <!-- small box -->
                 <div class="small-box bg-aqua">
@@ -106,6 +125,7 @@
                   </div>
                 </div>
               </div>
+              */ ?>
             </div>
             <!-- /.table-responsive -->
           </div>
