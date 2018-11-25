@@ -164,7 +164,7 @@ class Sectorkavlingmodel extends MY_Model
                 throw new Exception();
 
             // Insert activity logs
-            insert_logs($this->_module, LOGS_ACTIVITY_INSERT_FIRST_ROW, $this->db->insert_id());
+            insert_logs($this->_module, LOGS_ACTIVITY_INSERT_FIRST_ROW, $this->db->insert_id(), $this->session->userdata(PREFIX_SESSION . "_USER_ID"));
 
             return True;
         } catch(Exception $e) {
@@ -239,7 +239,7 @@ class Sectorkavlingmodel extends MY_Model
                     throw new Exception();
 
                 // Insert activity logs
-                insert_logs($this->_module, LOGS_ACTIVITY_INSERT_FIRST_ROW, $this->db->insert_id());
+                insert_logs($this->_module, LOGS_ACTIVITY_INSERT_FIRST_ROW, $this->db->insert_id(), $this->session->userdata(PREFIX_SESSION . "_USER_ID"));
             }
 
             // Commit transaction

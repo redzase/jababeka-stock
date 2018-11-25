@@ -159,3 +159,7 @@ define('SSO_SERVER_LOGIN', 'http://one.jababeka-stock.com');
 define('SSO_SERVER', 'http://one.jababeka-stock.com/auth/sso');
 define('SSO_BROKER_ID', 'stock');
 define('SSO_BROKER_SECRET', 'C6wkZ29gBXQ2Xb0FYEbWHw');
+
+
+// Code table setting
+define('SETTING_CODE_AUTOMATIC_UNBOOKING', 'AUTOMATIC_UNBOOKING');

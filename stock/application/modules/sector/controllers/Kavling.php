@@ -359,7 +359,7 @@ class Kavling extends MY_Controller
             $result["message"] = ($action) ? "Kavling successfully updated." : "Kavling failed updated.";
 
             // Insert activity logs
-            insert_logs($this->_module, LOGS_ACTIVITY_EDIT, $id);
+            insert_logs($this->_module, LOGS_ACTIVITY_EDIT, $id, $this->session->userdata(PREFIX_SESSION . "_USER_ID"));
 
             // Store session
             $this->session->set_flashdata(PREFIX_SESSION ."_RESULT_PROCESS", $result);
@@ -517,11 +517,11 @@ class Kavling extends MY_Controller
 
             // Insert activity logs
             if ($status == STATUS_BOOKING_KAVLING_BOOKING) {
-                insert_logs($this->_module, LOGS_ACTIVITY_BOOKING, $kavling_id, $note);
+                insert_logs($this->_module, LOGS_ACTIVITY_BOOKING, $kavling_id, $this->session->userdata(PREFIX_SESSION . "_USER_ID"), $note);
             } elseif ($status == STATUS_BOOKING_KAVLING_UNBOOKING) {
-                insert_logs($this->_module, LOGS_ACTIVITY_UNBOOKING, $kavling_id, $note);
+                insert_logs($this->_module, LOGS_ACTIVITY_UNBOOKING, $kavling_id, $this->session->userdata(PREFIX_SESSION . "_USER_ID"), $note);
             } elseif ($status == STATUS_BOOKING_KAVLING_REQUEST_BOOKING) {
-                insert_logs($this->_module, LOGS_ACTIVITY_REQUESTED, $kavling_id, $note);
+                insert_logs($this->_module, LOGS_ACTIVITY_REQUESTED, $kavling_id, $this->session->userdata(PREFIX_SESSION . "_USER_ID"), $note);
             }
 
             // Store session
