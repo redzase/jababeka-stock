@@ -44,7 +44,7 @@ else {
               <div class="box box-info">
 
               <!-- form start -->
-              <div class="box-body" style="overflow: auto;">
+              <div class="box-body">
 
                   <form class="form-horizontal" id="form-role">
                     <div class="form-group">
@@ -134,8 +134,10 @@ else {
                   </div>
 
                   <h3 style="font-weight:bold;text-decoration:underline;">File Denah Perumahan</h3>
-                  <div <?php echo check_access_module_permission($module, PERMISSION_MAPPING) ? "id='clickable'" : ""; ?>  class="bullseye-coordinate">
-                    <img src="<?php echo ORIGINALS_PHOTO_PATH . "/". $detail_sector->sketch; ?>">
+                  <div style="overflow: auto;">
+                    <div <?php echo check_access_module_permission($module, PERMISSION_MAPPING) ? "id='clickable'" : ""; ?>  class="bullseye-coordinate">
+                      <img src="<?php echo ORIGINALS_PHOTO_PATH . "/". $detail_sector->sketch; ?>">
+                    </div>
                   </div>
 
                   <h3 style="font-weight:bold;text-decoration:underline;">List Kavling</h3>
@@ -241,109 +243,111 @@ else {
                       endif;
                       ?>
                   </p>
-                  <table id="datatable-kavling" class="table table-bordered table-striped dataTable" role="grid" aria-describedby="example1_info">
-                      <thead>
-                          <tr role="row">
-                              <th width="8%">Kavling Ref</th>
-                              <th>Nama Jalan</th>
-                              <th>Blok</th>
-                              <th>Nomor</th>
-                              <th>Status</th>
-                              <th class="no-sort">Booking Date</th>
-                              <th class="no-sort" width="20%">Action</th>
-                          </tr>
-                      </thead>
-                      <tbody>
-                        <?php 
-                        foreach ($all_data as $key => $value): 
-                          $heading = $value->street_name .", ". $value->block_name .", ". $value->house_number;
-                        ?>
-                          <tr class="<?php echo ($key % 2) == 0 ? "event" : "odd"; ?>">
-                            <td>
-                              <a href="<?php echo site_url('sector/kavling/edit/'. $detail_sector->id .'/'. $value->id); ?>">
-                                <?php echo $value->reference_kavling_id; ?>
-                              </a>
-                            </td>
-                            <td>
-                              <?php echo $value->street_name; ?>
-                            </td>
-                            <td>
-                              <?php echo $value->block_name; ?>
-                            </td>
-                            <td>
-                              <?php echo $value->house_number; ?>
-                            </td>
-                            <td>
-                              <?php echo $list_status_kavling[$value->status_valid]; ?>
-                            </td>
-                            <td>
-                              <?php echo date_now(12, $value->booking_date); ?>
-                            </td>
-                            <td>
-                              <?php 
-                              if (check_access_module_permission($module, PERMISSION_DELETE)):
-                              ?>
-                              <a href="<?php echo site_url("sector/kavling/delete/". $detail_sector->id ."/". $value->id); ?>" class="confirmation2" data-confirm-message="Anda yakin ingin menghapus data ini?" data-heading="<?php echo $heading; ?>">Delete</a>
-                              <?php 
-                              endif;
-                              ?>
-                              <?php if ($value->status_valid == 1): // Available ?>
+                  <div class="table-responsive no-padding">
+                    <table id="datatable-kavling" class="table table-hover table-striped dataTable" role="grid" aria-describedby="example1_info">
+                        <thead>
+                            <tr role="row">
+                                <th width="8%">Kavling Ref</th>
+                                <th>Nama Jalan</th>
+                                <th>Blok</th>
+                                <th>Nomor</th>
+                                <th>Status</th>
+                                <th class="no-sort">Booking Date</th>
+                                <th class="no-sort" width="20%">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                          <?php 
+                          foreach ($all_data as $key => $value): 
+                            $heading = $value->street_name .", ". $value->block_name .", ". $value->house_number;
+                          ?>
+                            <tr class="<?php echo ($key % 2) == 0 ? "event" : "odd"; ?>">
+                              <td>
+                                <a href="<?php echo site_url('sector/kavling/edit/'. $detail_sector->id .'/'. $value->id); ?>">
+                                  <?php echo $value->reference_kavling_id; ?>
+                                </a>
+                              </td>
+                              <td>
+                                <?php echo $value->street_name; ?>
+                              </td>
+                              <td>
+                                <?php echo $value->block_name; ?>
+                              </td>
+                              <td>
+                                <?php echo $value->house_number; ?>
+                              </td>
+                              <td>
+                                <?php echo $list_status_kavling[$value->status_valid]; ?>
+                              </td>
+                              <td>
+                                <?php echo date_now(12, $value->booking_date); ?>
+                              </td>
+                              <td>
                                 <?php 
-                                if (check_access_module_permission($module, PERMISSION_BOOKING)):
+                                if (check_access_module_permission($module, PERMISSION_DELETE)):
                                 ?>
-                                &nbsp;~&nbsp;
-                                <a href="<?php echo site_url("sector/kavling/update_status/". $detail_sector->id ."/". $value->id ."/". STATUS_BOOKING_KAVLING_BOOKING); ?>" class="confirmation" data-confirm-message="Anda yakin ingin mengupdate status menjadi Booking?" data-heading="<?php echo $heading; ?>">Booking</a>
-                                <?php /*
-                                <a href="<?php echo site_url("sector/kavling/update_status/". $detail_sector->id ."/". $value->id ."/". STATUS_BOOKING_KAVLING_REQUEST_BOOKING); ?>" class="confirmation" data-confirm-message="Anda yakin ingin mengupdate status menjadi Request Booking?" data-heading="<?php echo $heading; ?>">Request Booking</a>
-                                */ ?>
+                                <a href="<?php echo site_url("sector/kavling/delete/". $detail_sector->id ."/". $value->id); ?>" class="confirmation2" data-confirm-message="Anda yakin ingin menghapus data ini?" data-heading="<?php echo $heading; ?>">Delete</a>
                                 <?php 
                                 endif;
                                 ?>
-                              <?php elseif ($value->status_valid == 2): // Booked ?>
-                                <?php 
-                                if (check_access_module_permission($module, PERMISSION_UNBOOKING)):
-                                ?>
-                                &nbsp;~&nbsp;
-                                <a href="<?php echo site_url("sector/kavling/update_status/". $detail_sector->id ."/". $value->id ."/". STATUS_BOOKING_KAVLING_UNBOOKING); ?>" class="confirmation" data-confirm-message="Anda yakin ingin mengupdate status menjadi Unbooking?" data-heading="<?php echo $heading; ?>">Unbooking</a>
-                                <?php 
-                                endif;
-                                ?>
-                              <?php /* elseif ($value->status_valid == 3): // Sold ?>
-                                &nbsp;~&nbsp;<a href="#clickable">View In Map</a>
-                              <?php */ elseif ($value->status_valid == 4): // Available Requested ?>
-                                <?php 
-                                if (check_access_module_permission($module, PERMISSION_BOOKING)):
-                                ?>
-                                &nbsp;~&nbsp;
-                                <a href="<?php echo site_url("sector/kavling/update_status/". $detail_sector->id ."/". $value->id ."/". STATUS_BOOKING_KAVLING_BOOKING); ?>" class="confirmation" data-confirm-message="Anda yakin ingin mengupdate status menjadi Booking?" data-heading="<?php echo $heading; ?>">Booking</a>
-                                <?php 
-                                endif;
-                                if (check_access_module_permission($module, PERMISSION_UNBOOKING)):
-                                ?>
-                                &nbsp;~&nbsp;
-                                <a href="<?php echo site_url("sector/kavling/update_status/". $detail_sector->id ."/". $value->id ."/". STATUS_BOOKING_KAVLING_UNBOOKING); ?>" class="confirmation" data-confirm-message="Anda yakin ingin mengupdate status menjadi Unbooking?" data-heading="<?php echo $heading; ?>">Unbooking</a>
-                                <?php 
-                                endif;
-                                ?>
-                              <?php endif; ?>
-                              <?php if ($value->offset_x > 0 or $value->offset_y > 0): // Available Requested ?>
-                                <?php if (in_array($value->status_valid, [1, 2, 3, 4])): ?>
+                                <?php if ($value->status_valid == 1): // Available ?>
+                                  <?php 
+                                  if (check_access_module_permission($module, PERMISSION_BOOKING)):
+                                  ?>
                                   &nbsp;~&nbsp;
+                                  <a href="<?php echo site_url("sector/kavling/update_status/". $detail_sector->id ."/". $value->id ."/". STATUS_BOOKING_KAVLING_BOOKING); ?>" class="confirmation" data-confirm-message="Anda yakin ingin mengupdate status menjadi Booking?" data-heading="<?php echo $heading; ?>">Booking</a>
+                                  <?php /*
+                                  <a href="<?php echo site_url("sector/kavling/update_status/". $detail_sector->id ."/". $value->id ."/". STATUS_BOOKING_KAVLING_REQUEST_BOOKING); ?>" class="confirmation" data-confirm-message="Anda yakin ingin mengupdate status menjadi Request Booking?" data-heading="<?php echo $heading; ?>">Request Booking</a>
+                                  */ ?>
+                                  <?php 
+                                  endif;
+                                  ?>
+                                <?php elseif ($value->status_valid == 2): // Booked ?>
+                                  <?php 
+                                  if (check_access_module_permission($module, PERMISSION_UNBOOKING)):
+                                  ?>
+                                  &nbsp;~&nbsp;
+                                  <a href="<?php echo site_url("sector/kavling/update_status/". $detail_sector->id ."/". $value->id ."/". STATUS_BOOKING_KAVLING_UNBOOKING); ?>" class="confirmation" data-confirm-message="Anda yakin ingin mengupdate status menjadi Unbooking?" data-heading="<?php echo $heading; ?>">Unbooking</a>
+                                  <?php 
+                                  endif;
+                                  ?>
+                                <?php /* elseif ($value->status_valid == 3): // Sold ?>
+                                  &nbsp;~&nbsp;<a href="#clickable">View In Map</a>
+                                <?php */ elseif ($value->status_valid == 4): // Available Requested ?>
+                                  <?php 
+                                  if (check_access_module_permission($module, PERMISSION_BOOKING)):
+                                  ?>
+                                  &nbsp;~&nbsp;
+                                  <a href="<?php echo site_url("sector/kavling/update_status/". $detail_sector->id ."/". $value->id ."/". STATUS_BOOKING_KAVLING_BOOKING); ?>" class="confirmation" data-confirm-message="Anda yakin ingin mengupdate status menjadi Booking?" data-heading="<?php echo $heading; ?>">Booking</a>
+                                  <?php 
+                                  endif;
+                                  if (check_access_module_permission($module, PERMISSION_UNBOOKING)):
+                                  ?>
+                                  &nbsp;~&nbsp;
+                                  <a href="<?php echo site_url("sector/kavling/update_status/". $detail_sector->id ."/". $value->id ."/". STATUS_BOOKING_KAVLING_UNBOOKING); ?>" class="confirmation" data-confirm-message="Anda yakin ingin mengupdate status menjadi Unbooking?" data-heading="<?php echo $heading; ?>">Unbooking</a>
+                                  <?php 
+                                  endif;
+                                  ?>
                                 <?php endif; ?>
-                                <a href="#clickable" class="view-in-map" data-uniqueid="<?php echo $value->id; ?>">View In Map</a>
-                              <?php endif; ?>
-                              &nbsp;~&nbsp;
-                              <a href="#" class="view-log" data-toggle="modal" data-target="#myModalLogs" data-url="<?php echo site_url('sector/kavling/ajax_list_logs/'. $detail_sector->id ."/". $value->id); ?>">View Log</a>
-                              <?php /*
-                              <a class="btn default btn-xs purple" href="<?php echo site_url('sector/kavling/edit/'. $detail_sector->id .'/'. $value->id); ?>"><i class="fa fa-edit"></i> Edit </a>
-                              */ ?>
-                            </td>
-                          </tr>
-                        <?php endforeach; ?>
-                      </tbody>
-                  </table>
-                  <div align="center">
-                    <?php echo $pagination; ?>
+                                <?php if ($value->offset_x > 0 or $value->offset_y > 0): // Available Requested ?>
+                                  <?php if (in_array($value->status_valid, [1, 2, 3, 4])): ?>
+                                    &nbsp;~&nbsp;
+                                  <?php endif; ?>
+                                  <a href="#clickable" class="view-in-map" data-uniqueid="<?php echo $value->id; ?>">View In Map</a>
+                                <?php endif; ?>
+                                &nbsp;~&nbsp;
+                                <a href="#" class="view-log" data-toggle="modal" data-target="#myModalLogs" data-url="<?php echo site_url('sector/kavling/ajax_list_logs/'. $detail_sector->id ."/". $value->id); ?>">View Log</a>
+                                <?php /*
+                                <a class="btn default btn-xs purple" href="<?php echo site_url('sector/kavling/edit/'. $detail_sector->id .'/'. $value->id); ?>"><i class="fa fa-edit"></i> Edit </a>
+                                */ ?>
+                              </td>
+                            </tr>
+                          <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                    <div align="center">
+                      <?php echo $pagination; ?>
+                    </div>
                   </div>
               </div>
               <!-- /.box-body -->
