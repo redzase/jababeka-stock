@@ -68,7 +68,7 @@ else {
                   <div class="box box-info">
                     <!-- /.box-header -->
                     <div class="box-body">
-                      <div class="col-sm-10">
+                      <div class="col-sm-9">
                         <div class="table-responsive">
                           <table class="table no-margin">
                             <thead>
@@ -100,6 +100,25 @@ else {
                         </div>
                         <!-- /.table-responsive -->
                       </div>
+
+                      <div class="col-md-3 col-sm-6 col-xs-12">
+                        <div class="info-box">
+                          <span class="info-box-icon bg-aqua"><i class="ion ion-ios-checkmark"></i></span>
+
+                          <div class="info-box-content">
+                            <span class="info-box-text"><h4 style="margin-top:1px;"><?php echo $detail_sector->total > 0 ? round((($detail_sector->sold / $detail_sector->total) * 100), 2) : 0; ?>%</h4></span>
+                            <span class="info-box-number">
+                              <hr style="margin:3px 0 0 0;">
+                              <h3 style="margin-top:10px;">SOLD</h3>
+                            </span>
+                          </div>
+                          <!-- /.info-box-content -->
+                        </div>
+                        <!-- /.info-box -->
+                      </div>
+                      <!-- /.col -->
+
+                      <?php /*
                       <div class="col-lg-2 col-xs-4">
                         <!-- small box -->
                         <div class="small-box bg-aqua">
@@ -111,7 +130,7 @@ else {
                         </div>
                       </div>
                     </div>
-                    <!-- /.box-footer -->
+                    */ ?>
                   </div>
 
                   <h3 style="font-weight:bold;text-decoration:underline;">File Denah Perumahan</h3>
