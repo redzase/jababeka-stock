@@ -243,6 +243,7 @@ else {
                       endif;
                       ?>
                   </p>
+                  <div style="clear:both;"></div>
                   <div class="table-responsive no-padding">
                     <table id="datatable-kavling" class="table table-hover table-striped dataTable" role="grid" aria-describedby="example1_info">
                         <thead>
