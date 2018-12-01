@@ -48,7 +48,7 @@
     <nav class="navbar navbar-static-top">
       <div class="container">
         <div class="navbar-header">
-          <a href="<?php echo site_url('dashboard') ?>" class="navbar-brand"><b>JABABEKA</b>&nbsp Stock</a>
+          <a href="<?php echo SSO_SERVER_LOGIN; ?>" class="navbar-brand"><b>JABABEKA</b>&nbsp Stock</a>
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
             <i class="fa fa-bars"></i>
           </button>
@@ -59,7 +59,7 @@
           <ul class="nav navbar-nav">
 
             <?php 
-            if (isset($this->session->userdata(PREFIX_SESSION . "_ALL_ACCESS")["menu"]["SETTINGS"]) and !strpos(uri_string(), "ector")):
+            if (isset($this->session->userdata(PREFIX_SESSION . "_ALL_ACCESS")["menu"]["SETTINGS"])):
             ?>
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown"> <i class="fa fa-th"></i> &nbsp; <?php echo $this->session->userdata(PREFIX_SESSION . "_ALL_ACCESS")["menu"]["SETTINGS"]["name"]; ?>  &nbsp; <span class="caret"></span></a>

@@ -40,7 +40,7 @@
         <div class="box box-info">
           <div class="box-header with-border">
             <h3 class="box-title">
-              <?php echo $value->name; ?> 
+              <?php echo htmlspecialchars_decode($value->name, ENT_NOQUOTES); ?> 
               [ 
               <?php 
               if (check_access_module_permission($module, PERMISSION_UPDATE)):

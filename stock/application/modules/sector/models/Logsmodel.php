@@ -49,7 +49,7 @@ class Logsmodel extends MY_Model
             $this->db->join($this->_table_sector, "{$this->_table_sector_kavling}.sector_id = {$this->_table_sector}.id");
             $this->db->where("{$this->_table_sector_kavling}.sector_id", $sector_id);
 
-            if (!empty($kavling_id)) {
+            if (!empty($kavling_id) and $kavling_id <> "no_kavling") {
                 $this->db->where("{$this->_table_sector_kavling}.id", $kavling_id);
             }
 

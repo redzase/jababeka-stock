@@ -32,3 +32,28 @@
     <?php echo $pagination; ?>
   </div>
 </div>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+
+    $(".paginate_button").click(function() {
+      var url = $(this).children("a").attr("href");
+
+      // JIKA HREF KOSONG ATAU '#'
+      if (url == "" || url == "#")
+        return false;
+
+      $.ajax({
+        type: "POST",
+        url: url,
+        cache: false,
+        success: function(data) {
+          $("#myModalLogs .modal-content").html(data);
+        }
+      });
+
+      return false;
+    });
+
+  });
+</script>

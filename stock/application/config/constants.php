@@ -146,6 +146,7 @@ define('LOGS_ACTIVITY_LIST', serialize(array(
 	"UNBOOKING"        => "Unbooking",
 	"REQUESTED"        => "Requested",
 	"EDIT"             => "Edit",
+	"REMOVE_FROM_MAP"  => "Hapus dari peta",
 	))
 );
 define('LOGS_ACTIVITY_INSERT_FIRST_ROW', 'INSERT_FIRST_ROW');
@@ -153,6 +154,7 @@ define('LOGS_ACTIVITY_BOOKING', 'BOOKING');
 define('LOGS_ACTIVITY_UNBOOKING', 'UNBOOKING');
 define('LOGS_ACTIVITY_REQUESTED', 'REQUESTED');
 define('LOGS_ACTIVITY_EDIT', 'EDIT');
+define('LOGS_ACTIVITY_REMOVE_FROM_MAP', 'REMOVE_FROM_MAP');
 
 
 // SSO

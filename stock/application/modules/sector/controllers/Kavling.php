@@ -89,7 +89,7 @@ class Kavling extends MY_Controller
         $block_name           = $this->input->get("block_name") ?: "";
         $booking_date         = $this->input->get("booking_date") ?: "";
         $chk_filter_status    = $this->input->get("chk_filter_status") ?: "";
-        $per_page             = $this->input->get("perpage") ?: "50";
+        $per_page             = $this->input->get("perpage") ?: "ALL";
         $filter_status        = [];
         $params_paging        = [];
         $arr_pagination       = [
@@ -518,10 +518,15 @@ class Kavling extends MY_Controller
             // Insert activity logs
             if ($status == STATUS_BOOKING_KAVLING_BOOKING) {
                 insert_logs($this->_module, LOGS_ACTIVITY_BOOKING, $kavling_id, $this->session->userdata(PREFIX_SESSION . "_USER_ID"), $note);
-            } elseif ($status == STATUS_BOOKING_KAVLING_UNBOOKING) {
+            } 
+            elseif ($status == STATUS_BOOKING_KAVLING_UNBOOKING) {
                 insert_logs($this->_module, LOGS_ACTIVITY_UNBOOKING, $kavling_id, $this->session->userdata(PREFIX_SESSION . "_USER_ID"), $note);
-            } elseif ($status == STATUS_BOOKING_KAVLING_REQUEST_BOOKING) {
+            } 
+            elseif ($status == STATUS_BOOKING_KAVLING_REQUEST_BOOKING) {
                 insert_logs($this->_module, LOGS_ACTIVITY_REQUESTED, $kavling_id, $this->session->userdata(PREFIX_SESSION . "_USER_ID"), $note);
+            }
+            elseif ($status == STATUS_BOOKING_KAVLING_REMOVE_FROM_MAP) {
+                insert_logs($this->_module, LOGS_ACTIVITY_REMOVE_FROM_MAP, $kavling_id, $this->session->userdata(PREFIX_SESSION . "_USER_ID"), $note);
             }
 
             // Store session
@@ -549,7 +554,7 @@ class Kavling extends MY_Controller
         exit;
     }
 
-    public function ajax_list_logs($sector_id, $kavling_id = "", $page = 1) 
+    public function ajax_list_logs($sector_id, $kavling_id = "no_kavling", $page = 1) 
     {
         if ($this->input->is_ajax_request()) {
             $page        = ($page < 1) ? 1 : ($page - 1); 
@@ -595,7 +600,7 @@ class Kavling extends MY_Controller
              * SIMPAN DATA KE VARIABLE UNTUK DIGUNAKAN DI VIEW
              */
             $data_content["all_data"]    = $all_data;
-            $data_content["sector_name"] = count($all_data) > 0 ? (empty($kavling_id)) ? $all_data[0]->sector_name : $all_data[0]->foreign_id_name : "";
+            $data_content["sector_name"] = count($all_data) > 0 ? (empty($kavling_id) or $kavling_id == "no_kavling") ? $all_data[0]->sector_name : $all_data[0]->foreign_id_name : "";
             $data_content["total"]       = $total;
             $data_content["start_no"]    = ($page * TOTAL_ITEM_PER_PAGE) + 1;
             $data_content["pagination"]  = $this->pagination->create_links();
