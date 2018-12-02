@@ -254,7 +254,7 @@ else {
                                 <th>Nomor</th>
                                 <th>Status</th>
                                 <th class="no-sort">Booking Date</th>
-                                <th class="no-sort" width="20%">Action</th>
+                                <th class="no-sort" width="18%">Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -291,7 +291,7 @@ else {
                                 <?php 
                                 if (check_access_module_permission($module, PERMISSION_DELETE)):
                                 ?>
-                                <a href="<?php echo site_url("sector/kavling/delete/". $detail_sector->id ."/". $value->id); ?>" class="confirmation2" data-confirm-message="Anda yakin ingin menghapus data ini?" data-heading="<?php echo $heading; ?>">Delete</a>
+                                <button type='button' data-href="<?php echo site_url("sector/kavling/delete/". $detail_sector->id ."/". $value->id); ?>" class="confirmation2 btn btn-default btn-xs" data-confirm-message="Anda yakin ingin menghapus data ini?" data-heading="<?php echo $heading; ?>">Delete</button>
                                 <?php 
                                 endif;
                                 ?>
@@ -299,10 +299,8 @@ else {
                                   <?php 
                                   if (check_access_module_permission($module, PERMISSION_BOOKING)):
                                   ?>
-                                  &nbsp;~&nbsp;
-                                  <a href="<?php echo site_url("sector/kavling/update_status/". $detail_sector->id ."/". $value->id ."/". STATUS_BOOKING_KAVLING_BOOKING); ?>" class="confirmation" data-confirm-message="Anda yakin ingin mengupdate status menjadi Booking?" data-heading="<?php echo $heading; ?>">Booking</a>
+                                  <button type='button' data-href="<?php echo site_url("sector/kavling/update_status/". $detail_sector->id ."/". $value->id ."/". STATUS_BOOKING_KAVLING_BOOKING); ?>" class="confirmation btn btn-default btn-xs" data-confirm-message="Anda yakin ingin mengupdate status menjadi Booking?" data-heading="<?php echo $heading; ?>">Booking</button>
                                   <?php /*
-                                  <a href="<?php echo site_url("sector/kavling/update_status/". $detail_sector->id ."/". $value->id ."/". STATUS_BOOKING_KAVLING_REQUEST_BOOKING); ?>" class="confirmation" data-confirm-message="Anda yakin ingin mengupdate status menjadi Request Booking?" data-heading="<?php echo $heading; ?>">Request Booking</a>
                                   */ ?>
                                   <?php 
                                   endif;
@@ -311,37 +309,32 @@ else {
                                   <?php 
                                   if (check_access_module_permission($module, PERMISSION_UNBOOKING)):
                                   ?>
-                                  &nbsp;~&nbsp;
-                                  <a href="<?php echo site_url("sector/kavling/update_status/". $detail_sector->id ."/". $value->id ."/". STATUS_BOOKING_KAVLING_UNBOOKING); ?>" class="confirmation" data-confirm-message="Anda yakin ingin mengupdate status menjadi Unbooking?" data-heading="<?php echo $heading; ?>">Unbooking</a>
+                                  <button type='button' data-href="<?php echo site_url("sector/kavling/update_status/". $detail_sector->id ."/". $value->id ."/". STATUS_BOOKING_KAVLING_UNBOOKING); ?>" class="confirmation btn btn-default btn-xs" data-confirm-message="Anda yakin ingin mengupdate status menjadi Unbooking?" data-heading="<?php echo $heading; ?>">Unbooking</button>
                                   <?php 
                                   endif;
                                   ?>
                                 <?php /* elseif ($value->status_valid == 3): // Sold ?>
-                                  &nbsp;~&nbsp;<a href="#clickable">View In Map</a>
+                                  &nbsp;~&nbsp;<button type='button' data-href="#clickable">View In Map</button>
                                 <?php */ elseif ($value->status_valid == 4): // Available Requested ?>
                                   <?php 
                                   if (check_access_module_permission($module, PERMISSION_BOOKING)):
                                   ?>
-                                  &nbsp;~&nbsp;
-                                  <a href="<?php echo site_url("sector/kavling/update_status/". $detail_sector->id ."/". $value->id ."/". STATUS_BOOKING_KAVLING_BOOKING); ?>" class="confirmation" data-confirm-message="Anda yakin ingin mengupdate status menjadi Booking?" data-heading="<?php echo $heading; ?>">Booking</a>
+                                  <button type='button' data-href="<?php echo site_url("sector/kavling/update_status/". $detail_sector->id ."/". $value->id ."/". STATUS_BOOKING_KAVLING_BOOKING); ?>" class="confirmation btn btn-default btn-xs" data-confirm-message="Anda yakin ingin mengupdate status menjadi Booking?" data-heading="<?php echo $heading; ?>">Booking</button>
                                   <?php 
                                   endif;
                                   if (check_access_module_permission($module, PERMISSION_UNBOOKING)):
                                   ?>
-                                  &nbsp;~&nbsp;
-                                  <a href="<?php echo site_url("sector/kavling/update_status/". $detail_sector->id ."/". $value->id ."/". STATUS_BOOKING_KAVLING_UNBOOKING); ?>" class="confirmation" data-confirm-message="Anda yakin ingin mengupdate status menjadi Unbooking?" data-heading="<?php echo $heading; ?>">Unbooking</a>
+                                  <button type='button' data-href="<?php echo site_url("sector/kavling/update_status/". $detail_sector->id ."/". $value->id ."/". STATUS_BOOKING_KAVLING_UNBOOKING); ?>" class="confirmation btn btn-default btn-xs" data-confirm-message="Anda yakin ingin mengupdate status menjadi Unbooking?" data-heading="<?php echo $heading; ?>">Unbooking</button>
                                   <?php 
                                   endif;
                                   ?>
                                 <?php endif; ?>
                                 <?php if ($value->offset_x > 0 or $value->offset_y > 0): // Available Requested ?>
                                   <?php if (in_array($value->status_valid, [1, 2, 3, 4])): ?>
-                                    &nbsp;~&nbsp;
                                   <?php endif; ?>
-                                  <a href="#clickable" class="view-in-map" data-uniqueid="<?php echo $value->id; ?>">View In Map</a>
+                                  <a type='button' href="#clickable" class="view-in-map btn btn-default btn-xs" data-uniqueid="<?php echo $value->id; ?>">View In Map</a>
                                 <?php endif; ?>
-                                &nbsp;~&nbsp;
-                                <a href="#" class="view-log" data-toggle="modal" data-target="#myModalLogs" data-url="<?php echo site_url('sector/kavling/ajax_list_logs/'. $detail_sector->id ."/". $value->id); ?>">View Log</a>
+                                <button type='button' class="view-log btn btn-default btn-xs" data-toggle="modal" data-target="#myModalLogs" data-url="<?php echo site_url('sector/kavling/ajax_list_logs/'. $detail_sector->id ."/". $value->id); ?>">View Log</button>
                                 <?php /*
                                 <a class="btn default btn-xs purple" href="<?php echo site_url('sector/kavling/edit/'. $detail_sector->id .'/'. $value->id); ?>"><i class="fa fa-edit"></i> Edit </a>
                                 */ ?>
@@ -518,7 +511,7 @@ endif;
         $('.confirmation2').on('click', function () {
             var confirm_message = $(this).data("confirm-message");
             var heading = $(this).data("heading");
-            var href = $(this).attr("href");
+            var href = $(this).data("href");
 
             $.confirm({
                 title: heading,
