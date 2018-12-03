@@ -252,6 +252,8 @@ else {
                                 <th>Nama Jalan</th>
                                 <th>Blok</th>
                                 <th>Nomor</th>
+                                <th>Luas Bangunan</th>
+                                <th>Luas Tanah</th>
                                 <th>Status</th>
                                 <th class="no-sort">Booking Date</th>
                                 <th class="no-sort" width="18%">Action</th>
@@ -280,6 +282,12 @@ else {
                               </td>
                               <td>
                                 <?php echo $value->house_number; ?>
+                              </td>
+                              <td>
+                                <?php echo $value->lb; ?>
+                              </td>
+                              <td>
+                                <?php echo $value->lt; ?>
                               </td>
                               <td>
                                 <?php echo $list_status_kavling[$value->status_valid]; ?>
@@ -421,7 +429,7 @@ endif;
             $coordinate_color = "#0011a1";
             $coordinate_size = $value->icon_size;
             $uniqueid = $value->id;
-            $heading = $value->street_name .", ". $value->block_name .", ". $value->house_number;
+            $heading = $value->street_name .", ". $value->block_name .", ". $value->house_number .", ". $value->lb ."/". $value->lt;
             if ($value->status_valid == 1): // Available
               if (check_access_module_permission($module, PERMISSION_DELETE)):
                 $content .= "<button type='button' data-href='". site_url("sector/kavling/update_status/". $detail_sector->id ."/". $value->id ."/". STATUS_BOOKING_KAVLING_REMOVE_FROM_MAP) ."' class='confirmation btn btn-default btn-xs' style='margin-right:10px;' data-confirm-message='Anda yakin ingin menghapus kordinat ini?' data-heading='". $heading ."'>Hapus dari Peta</button>";

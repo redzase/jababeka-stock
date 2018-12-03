@@ -6,6 +6,8 @@ if (isset($all_data)) {
   $street_name = $all_data->street_name;
   $block_name = $all_data->block_name;
   $house_number = $all_data->house_number;
+  $lb = $all_data->lb;
+  $lt = $all_data->lt;
 } 
 else {
   $page = "Add";
@@ -13,6 +15,8 @@ else {
   $street_name = FALSE;
   $block_name = FALSE;
   $house_number = FALSE;
+  $lb = FALSE;
+  $lt = FALSE;
 }
 
 ?>
@@ -90,6 +94,22 @@ else {
                           <!-- <input type="text" name="name" class="form-control" id="inputPassword3" placeholder="Role Name" >
                           <span class="help-inline" style="color:red;" id="err-name"></span> -->
 
+                      </div>
+                  </div>
+
+                  <div class="form-group">
+                      <label for="inputPassword3" class="col-sm-2 control-label">Luas Bangunan</label>
+
+                      <div class="col-sm-9">
+                          <?php echo form_input("lb", set_value("lb", $lb), "data-required='1' class='form-control' placeholder='Luas Bangunan'"); ?>
+                      </div>
+                  </div>
+
+                  <div class="form-group">
+                      <label for="inputPassword3" class="col-sm-2 control-label">Luas Tanah</label>
+
+                      <div class="col-sm-9">
+                          <?php echo form_input("lt", set_value("lt", $lt), "data-required='1' class='form-control' placeholder='Luas Tanah'"); ?>
                       </div>
                   </div>
                 

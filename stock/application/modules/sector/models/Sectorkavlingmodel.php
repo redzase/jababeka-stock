@@ -226,6 +226,8 @@ class Sectorkavlingmodel extends MY_Model
                     "street_name"          => $value["nama_jalan"],
                     "block_name"           => $value["nama_blok"],
                     "house_number"         => $value["nomor"],
+                    "lb"                   => $value["luas_bangunan"],
+                    "lt"                   => $value["luas_tanah"],
                     "status"               => GLOBAL_STATUS_ACTIVE,
                     "created_by"           => $this->session->userdata(PREFIX_SESSION . "_USER_ID"), 
                     "created_date"         => date_now(),

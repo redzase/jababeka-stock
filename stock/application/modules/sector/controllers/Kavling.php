@@ -222,6 +222,8 @@ class Kavling extends MY_Controller
         $street_name          = $this->input->post("street_name");
         $block_name           = $this->input->post("block_name");
         $house_number         = $this->input->post("house_number");
+        $lb                   = $this->input->post("lb");
+        $lt                   = $this->input->post("lt");
 
         /**
          * -- Start -- 
@@ -248,6 +250,16 @@ class Kavling extends MY_Controller
                 "label" => "Nomor Rumah",
                 "rules" => "required",
                 ),
+            array(
+                "field" => "lb",
+                "label" => "Luas Bangunan",
+                "rules" => "required",
+                ),
+            array(
+                "field" => "lt",
+                "label" => "Luas Tanah",
+                "rules" => "required",
+                ),
             );
 
         $this->form_validation->set_rules($config);
@@ -263,6 +275,8 @@ class Kavling extends MY_Controller
                 "street_name"          => $street_name,
                 "block_name"           => $block_name,
                 "house_number"         => $house_number,
+                "lb"                   => $lb,
+                "lt"                   => $lt,
                 "status"               => GLOBAL_STATUS_ACTIVE,
                 "created_by"           => $this->session->userdata(PREFIX_SESSION . "_USER_ID"), 
                 "created_date"         => date_now(),
@@ -308,6 +322,8 @@ class Kavling extends MY_Controller
         $street_name          = $this->input->post("street_name");
         $block_name           = $this->input->post("block_name");
         $house_number         = $this->input->post("house_number");
+        $lb                   = $this->input->post("lb");
+        $lt                   = $this->input->post("lt");
 
         /**
          * -- Start -- 
@@ -334,6 +350,16 @@ class Kavling extends MY_Controller
                 "label" => "Nomor Rumah",
                 "rules" => "required",
                 ),
+            array(
+                "field" => "lb",
+                "label" => "Luas Bangunan",
+                "rules" => "required",
+                ),
+            array(
+                "field" => "lt",
+                "label" => "Luas Tanah",
+                "rules" => "required",
+                ),
             );
 
         $this->form_validation->set_rules($config);
@@ -349,6 +375,8 @@ class Kavling extends MY_Controller
                 "street_name"          => $street_name,
                 "block_name"           => $block_name,
                 "house_number"         => $house_number,
+                "lb"                   => $lb,
+                "lt"                   => $lt,
                 "modified_by"          => $this->session->userdata(PREFIX_SESSION . "_USER_ID"), 
                 "modified_date"        => date_now(),
             ];
