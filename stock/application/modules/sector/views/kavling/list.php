@@ -392,7 +392,7 @@ if (check_access_module_permission($module, PERMISSION_MAPPING)):
               </div>
               <!-- /.box-body -->
               <div class="box-footer">
-                  <button type="button" class="btn btn-primary pull-right" name="submit-coordinat" id="submit-coordinat">Simpan</button>
+                  <button type="submit" class="btn btn-primary pull-right" name="submit-coordinat" id="submit-coordinat">Simpan</button> 
               </div>
               <!-- /.box-footer -->
             </div>
