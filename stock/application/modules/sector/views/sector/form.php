@@ -72,7 +72,7 @@ else {
                       <label for="inputPassword3" class="col-sm-2 control-label">Nama Sector</label>
 
                       <div class="col-sm-9">
-                          <?php echo form_input("name", set_value("name", $name), "data-required='1' class='form-control' placeholder='Nama Sector'"); ?>
+                          <?php echo form_input("name", set_value("name", $name, False), "data-required='1' class='form-control' placeholder='Nama Sector'"); ?>
                           <!-- <input type="text" name="name" class="form-control" id="inputPassword3" placeholder="Role Name" >
                           <span class="help-inline" style="color:red;" id="err-name"></span> -->
 

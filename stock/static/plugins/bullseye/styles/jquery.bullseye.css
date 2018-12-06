@@ -9,7 +9,7 @@
     opacity: 1;
     top: 300px;
     font-family: inherit;
-    z-index: 1000;
+    /*z-index: 1000;*/
 }
 span.bullseyePulse {
     position: absolute;
@@ -69,11 +69,12 @@ span.bullseyeTooltip {
     padding:10px;
     display: none;
     width: 200px;
+    z-index: 99999;
 }
 
 .defaultOrientation {
     bottom: 30px;
-    left: -75px;
+    left: -100px;
 }
 
 .bottomOrientation {
