@@ -41,7 +41,13 @@
           <div class="box-header with-border">
             <h3 class="box-title">
               <?php echo htmlspecialchars_decode($value->name, ENT_NOQUOTES); ?> 
+              <?php 
+              if (check_access_module_permission($module, PERMISSION_UPDATE) or check_access_module_permission($module, PERMISSION_DELETE)):
+              ?>
               [ 
+              <?php 
+              endif;
+              ?>
               <?php 
               if (check_access_module_permission($module, PERMISSION_UPDATE)):
               ?>
@@ -52,7 +58,13 @@
               ?>
               |
               <a href="<?php echo site_url("sector/delete/". $value->id); ?>" class="confirmation" data-confirm-message="Anda yakin ingin menghapus data ini?">delete</a>
+              <?php 
+              if (check_access_module_permission($module, PERMISSION_UPDATE) or check_access_module_permission($module, PERMISSION_DELETE)):
+              ?>
               ]
+              <?php 
+              endif;
+              ?>
               <?php 
               endif;
               ?>
