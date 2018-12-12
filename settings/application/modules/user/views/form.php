@@ -24,7 +24,7 @@ else {
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li><a href="#">User</a></li>
+        <li><a href="<?php echo site_url("user"); ?>">User</a></li>
         <li class="active">Add User</li>
       </ol>
     </section>

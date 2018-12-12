@@ -31,8 +31,9 @@ else {
         <small>add kavling </small>
       </h1>
       <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li><a href="#">Kavling</a></li>
+        <li><a href="<?php echo site_url("dashboard"); ?>"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="<?php echo site_url("sector"); ?>">Sector</a></li>
+        <li><a href="<?php echo site_url("sector/kavling/index/". $sector_id) ?>">Detail Sector</a></li>
         <li class="active">Add Kavling</li>
       </ol>
     </section>
