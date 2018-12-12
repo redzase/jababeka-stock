@@ -58,7 +58,7 @@
         <div class="collapse navbar-collapse pull-left" id="navbar-collapse">
           <ul class="nav navbar-nav">
 
-            <?php 
+            <?php /*
             if (isset($this->session->userdata(PREFIX_SESSION . "_ALL_ACCESS")["menu"]["SETTINGS"])):
             ?>
               <li class="dropdown">
@@ -77,6 +77,13 @@
               </li>
             <?php 
             endif;
+            */ ?>
+           
+           <?php
+
+            $all_menu = $this->menu->index($this->session->userdata(PREFIX_SESSION . "_MENU"));
+            echo $this->menu->generate($all_menu);
+
             ?>
 
           </ul>

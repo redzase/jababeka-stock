@@ -75,6 +75,7 @@ class Authmodel extends MY_Model {
                 $result_access = $query->result();
 
                 $all_access = [];
+                $arr_menu_module = [];
                 foreach ($result_access as $key => $value) {
                     // Get list menu by role
                     if (!isset($all_access["menu"][$value->menu_code])) {
@@ -105,11 +106,50 @@ class Authmodel extends MY_Model {
                             "code" => $value->permission_code,
                         ];
                     }
+
+                    $arr_menu_module[] = $value->menu_id ."#". $value->module_id;
                 }
 
                 $result->{"all_access"} = $all_access;
                 /**
                  * Get menu role module permission
+                 * -- End --
+                 */
+                
+                /**
+                 * -- Start --
+                 * Get menu 
+                 */
+                // Remove duplicate value
+                $arr_menu_module = array_unique($arr_menu_module);
+
+                $this->db->select("
+                    {$this->_table_menu}.code AS menu_code,
+                    {$this->_table_menu_module}.id,
+                    {$this->_table_menu_module}.name,
+                    {$this->_table_menu_module}.url,
+                    {$this->_table_menu_module}.parent_id,
+                    {$this->_table_menu_module}.url,
+                    {$this->_table_menu_module}.level,
+                    {$this->_table_menu_module}.lineage,
+                    {$this->_table_menu_module}.sequence,
+                    ");
+                $this->db->from($this->_table_menu_module);
+                $this->db->join($this->_table_menu, "{$this->_table_menu_module}.menu_id = {$this->_table_menu}.id");
+                $this->db->where_in("CONCAT({$this->_table_menu_module}.menu_id, '#', {$this->_table_menu_module}.module_id)", $arr_menu_module);
+                $this->db->or_where("{$this->_table_menu_module}.module_id IS NULL", Null, False);
+                $this->db->where("{$this->_table_menu_module}.status", GLOBAL_STATUS_ACTIVE);
+                $this->db->order_by("{$this->_table_menu_module}.sequence", "ASC");
+                $query = $this->db->get();
+
+                if($query === FALSE)
+                    throw new Exception();
+
+                $result_menu = $query->result();
+
+                $result->{"menu"} = $result_menu;
+                /**
+                 * Get menu 
                  * -- End --
                  */
             }

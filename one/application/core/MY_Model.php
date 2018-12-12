@@ -11,6 +11,7 @@ class MY_Model extends CI_Model {
 	protected $_table_role_permission   = "role_permission";
 	protected $_table_user              = "user";
 	protected $_table_menu              = "menu";
+	protected $_table_menu_module       = "menu_module";
 
 	protected $_table_sector            = "sector";
 	protected $_table_sector_kavling    = "sector_kavling";

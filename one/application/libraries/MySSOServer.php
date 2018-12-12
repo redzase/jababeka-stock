@@ -107,6 +107,7 @@ class MySSOServer extends SSO\Server
                 PREFIX_SESSION . "_USER_ID"       => $all_data->id,
                 PREFIX_SESSION . "_USER_USERNAME" => $all_data->username,
                 PREFIX_SESSION . "_ALL_ACCESS"    => $all_data->all_access,
+                PREFIX_SESSION . "_MENU"          => $all_data->menu,
             );
         } 
 
