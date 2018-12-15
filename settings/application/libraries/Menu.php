@@ -18,7 +18,7 @@ class Menu {
             if ($row['menu_code'] == MENU_CODE) {
                 $arr[] = array(
                     'MN_ID'        => $row['id'],
-                    // 'ROLES'     => $row["ROLES"],
+                    'MN_MODULE_ID' => $row["module_id"],
                     'MN_PARENT'    => $row['parent_id'],
                     'MN_NAME'      => $row['name'],
                     // 'MN_TEASER' => $row->teaser,
@@ -81,7 +81,9 @@ class Menu {
                     </ul>
                 </li>';
             } else {
-                $result .= '<li><a href="'. site_url($row["MN_LINK"]) .'">'. $row["MN_NAME"] .'</a></li>';
+                if (!empty($row["MN_URL"])) {
+                    $result .= '<li><a href="'. site_url($row["MN_LINK"]) .'">'. $row["MN_NAME"] .'</a></li>';
+                }
             }
         }
 

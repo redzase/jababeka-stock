@@ -126,6 +126,7 @@ class Authmodel extends MY_Model {
                 $this->db->select("
                     {$this->_table_menu}.code AS menu_code,
                     {$this->_table_menu_module}.id,
+                    {$this->_table_menu_module}.module_id,
                     {$this->_table_menu_module}.name,
                     {$this->_table_menu_module}.url,
                     {$this->_table_menu_module}.parent_id,
