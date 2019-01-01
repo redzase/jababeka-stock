@@ -120,12 +120,12 @@ define('LIST_STATUS_KAVLING', serialize(array(
 	1 => "Available",
 	2 => "Booked",
 	3 => "Sold",
-	4 => "Available Requested",
+	4 => "Reserved",
 	))
 );
 define('STATUS_BOOKING_KAVLING_REMOVE_FROM_MAP', 999999);
 define('STATUS_BOOKING_KAVLING_UNBOOKING', 0);
-define('STATUS_BOOKING_KAVLING_REQUEST_BOOKING', 1);
+define('STATUS_BOOKING_KAVLING_RESERVED', 1);
 define('STATUS_BOOKING_KAVLING_BOOKING', 2);
 
 
@@ -137,7 +137,8 @@ define('PERMISSION_DELETE', 'DELETE');
 define('PERMISSION_MAPPING', 'MAPPING');
 define('PERMISSION_BOOKING', 'BOOKING');
 define('PERMISSION_UNBOOKING', 'UNBOOKING');
-define('PERMISSION_REQUEST_BOOKING', 'REQUEST_BOOKING');
+define('PERMISSION_RESERVED', 'RESERVED');
+define('PERMISSION_AVAILABLE', 'AVAILABLE');
 
 
 // Activity Logs
@@ -145,7 +146,7 @@ define('LOGS_ACTIVITY_LIST', serialize(array(
 	"INSERT_FIRST_ROW" => "Input data pertama",
 	"BOOKING"          => "Booking",
 	"UNBOOKING"        => "Unbooking",
-	"REQUESTED"        => "Requested",
+	"RESERVED"         => "Reserved",
 	"EDIT"             => "Edit",
 	"REMOVE_FROM_MAP"  => "Hapus dari peta",
 	))
@@ -153,7 +154,7 @@ define('LOGS_ACTIVITY_LIST', serialize(array(
 define('LOGS_ACTIVITY_INSERT_FIRST_ROW', 'INSERT_FIRST_ROW');
 define('LOGS_ACTIVITY_BOOKING', 'BOOKING');
 define('LOGS_ACTIVITY_UNBOOKING', 'UNBOOKING');
-define('LOGS_ACTIVITY_REQUESTED', 'REQUESTED');
+define('LOGS_ACTIVITY_RESERVED', 'RESERVED');
 define('LOGS_ACTIVITY_EDIT', 'EDIT');
 define('LOGS_ACTIVITY_REMOVE_FROM_MAP', 'REMOVE_FROM_MAP');
 

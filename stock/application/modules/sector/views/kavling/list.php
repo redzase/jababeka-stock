@@ -75,22 +75,18 @@ else {
                               <tr>
                                 <th>Total</th>
                                 <th>Terjual</th>
-                                <?php /*
-                                <th>Available Requested</th>
-                                */ ?>
                                 <th>Available</th>
                                 <th>Booked</th>
+                                <th>Reserved</th>
                               </tr>
                             </thead>
                             <tbody style="font-size:36px;font-weight:bold;">
                               <tr>
                                 <td><?php echo $detail_sector->total; ?></td>
                                 <td><?php echo $detail_sector->sold; ?></td>
-                                <?php /*
-                                <td><?php echo $detail_sector->available_requested; ?></td>
-                                */ ?>
                                 <td><?php echo $detail_sector->available; ?></td>
                                 <td><?php echo $detail_sector->booked; ?></td>
+                                <td><?php echo $detail_sector->reserved; ?></td>
                               </tr>
                             </tbody>
                           </table>
@@ -202,6 +198,9 @@ else {
                                   <label style="margin-left:15px;">
                                     <?php echo form_checkbox('chk_filter_status[]', '2', set_checkbox('chk_filter_status[]', '2', (in_array('2', $filter_status)) ? TRUE : FALSE)); ?> Booked
                                   </label>
+                                  <label style="margin-left:15px;">
+                                    <?php echo form_checkbox('chk_filter_status[]', '4', set_checkbox('chk_filter_status[]', '4', (in_array('4', $filter_status)) ? TRUE : FALSE)); ?> Reserved
+                                  </label>
                                 </div>
                               </div>
                           </div>
@@ -308,8 +307,13 @@ else {
                                   if (check_access_module_permission($module, PERMISSION_BOOKING)):
                                   ?>
                                   <button type='button' data-href="<?php echo site_url("sector/kavling/update_status/". $detail_sector->id ."/". $value->id ."/". STATUS_BOOKING_KAVLING_BOOKING); ?>" class="confirmation btn btn-default btn-xs" data-confirm-message="Anda yakin ingin mengupdate status menjadi Booking?" data-heading="<?php echo $heading; ?>">Booking</button>
-                                  <?php /*
-                                  */ ?>
+                                  <?php 
+                                  endif;
+                                  ?>
+                                  <?php 
+                                  if (check_access_module_permission($module, PERMISSION_RESERVED)):
+                                  ?>
+                                  <button type='button' data-href="<?php echo site_url("sector/kavling/update_status/". $detail_sector->id ."/". $value->id ."/". STATUS_BOOKING_KAVLING_RESERVED); ?>" class="confirmation btn btn-default btn-xs" data-confirm-message="Anda yakin ingin mengupdate status menjadi Reserved?" data-heading="<?php echo $heading; ?>">Reserve</button>
                                   <?php 
                                   endif;
                                   ?>
@@ -323,21 +327,16 @@ else {
                                   ?>
                                 <?php /* elseif ($value->status_valid == 3): // Sold ?>
                                   &nbsp;~&nbsp;<button type='button' data-href="#clickable">View In Map</button>
-                                <?php */ elseif ($value->status_valid == 4): // Available Requested ?>
+                                <?php */ elseif ($value->status_valid == 4): // Reserved ?>
                                   <?php 
-                                  if (check_access_module_permission($module, PERMISSION_BOOKING)):
+                                  if (check_access_module_permission($module, PERMISSION_AVAILABLE)):
                                   ?>
-                                  <button type='button' data-href="<?php echo site_url("sector/kavling/update_status/". $detail_sector->id ."/". $value->id ."/". STATUS_BOOKING_KAVLING_BOOKING); ?>" class="confirmation btn btn-default btn-xs" data-confirm-message="Anda yakin ingin mengupdate status menjadi Booking?" data-heading="<?php echo $heading; ?>">Booking</button>
-                                  <?php 
-                                  endif;
-                                  if (check_access_module_permission($module, PERMISSION_UNBOOKING)):
-                                  ?>
-                                  <button type='button' data-href="<?php echo site_url("sector/kavling/update_status/". $detail_sector->id ."/". $value->id ."/". STATUS_BOOKING_KAVLING_UNBOOKING); ?>" class="confirmation btn btn-default btn-xs" data-confirm-message="Anda yakin ingin mengupdate status menjadi Unbooking?" data-heading="<?php echo $heading; ?>">Unbooking</button>
+                                  <button type='button' data-href="<?php echo site_url("sector/kavling/update_status/". $detail_sector->id ."/". $value->id ."/". STATUS_BOOKING_KAVLING_UNBOOKING); ?>" class="confirmation btn btn-default btn-xs" data-confirm-message="Anda yakin ingin mengupdate status menjadi Available?" data-heading="<?php echo $heading; ?>">Available</button>
                                   <?php 
                                   endif;
                                   ?>
                                 <?php endif; ?>
-                                <?php if ($value->offset_x > 0 or $value->offset_y > 0): // Available Requested ?>
+                                <?php if ($value->offset_x > 0 or $value->offset_y > 0): ?>
                                   <?php if (in_array($value->status_valid, [1, 2, 3, 4])): ?>
                                   <?php endif; ?>
                                   <a type='button' href="#clickable" class="view-in-map btn btn-default btn-xs" data-uniqueid="<?php echo $value->id; ?>">View In Map</a>
@@ -437,6 +436,9 @@ endif;
               if (check_access_module_permission($module, PERMISSION_BOOKING)):
                 $content .= "<button type='button' data-href='". site_url("sector/kavling/update_status/". $detail_sector->id ."/". $value->id ."/". STATUS_BOOKING_KAVLING_BOOKING) ."' class='confirmation btn btn-default btn-xs' style='margin-right:10px;' data-confirm-message='Anda yakin ingin mengupdate status menjadi Booking?' data-heading='". $heading ."'>Booking</button>";
               endif;
+              if (check_access_module_permission($module, PERMISSION_RESERVED)):
+                $content .= "<button type='button' data-href='". site_url("sector/kavling/update_status/". $detail_sector->id ."/". $value->id ."/". STATUS_BOOKING_KAVLING_RESERVED) ."' class='confirmation btn btn-default btn-xs' style='margin-right:10px;' data-confirm-message='Anda yakin ingin mengupdate status menjadi Reserve?' data-heading='". $heading ."'>Reserve</button>";
+              endif;
               $coordinate_color = $value->color_available;
             elseif ($value->status_valid == 2): // Booked
               if (check_access_module_permission($module, PERMISSION_DELETE)):
@@ -451,15 +453,12 @@ endif;
                 $content .= "<button type='button' data-href='". site_url("sector/kavling/update_status/". $detail_sector->id ."/". $value->id ."/". STATUS_BOOKING_KAVLING_REMOVE_FROM_MAP) ."' class='confirmation btn btn-default btn-xs' style='margin-right:10px;' data-confirm-message='Anda yakin ingin menghapus kordinat ini?' data-heading='". $heading ."'>Hapus dari Peta</button>";
               endif;
               $coordinate_color = $value->color_sold;
-            elseif ($value->status_valid == 4): // Available Requested
+            elseif ($value->status_valid == 4): // Reserved
               if (check_access_module_permission($module, PERMISSION_DELETE)):
                 $content = "<button type='button' data-href='". site_url("sector/kavling/update_status/". $detail_sector->id ."/". $value->id ."/". STATUS_BOOKING_KAVLING_REMOVE_FROM_MAP) ."' class='confirmation btn btn-default btn-xs' style='margin-right:10px;' data-confirm-message='Anda yakin ingin menghapus kordinat ini?' data-heading='". $heading ."'>Hapus dari Peta</button>";
               endif;
-              if (check_access_module_permission($module, PERMISSION_BOOKING)):
-                $content = "<button type='button' data-href='". site_url("sector/kavling/update_status/". $detail_sector->id ."/". $value->id ."/". STATUS_BOOKING_KAVLING_BOOKING) ."' class='confirmation btn btn-default btn-xs' style='margin-right:10px;' data-confirm-message='Anda yakin ingin mengupdate status menjadi Booking?' data-heading='". $heading ."'>Booking</button>";
-              endif;
-              if (check_access_module_permission($module, PERMISSION_UNBOOKING)):
-                $content = "<button type='button' data-href='". site_url("sector/kavling/update_status/". $detail_sector->id ."/". $value->id ."/". STATUS_BOOKING_KAVLING_UNBOOKING) ."' class='confirmation btn btn-default btn-xs' style='margin-right:10px;' data-confirm-message='Anda yakin ingin mengupdate status menjadi Unbooking?' data-heading='". $heading ."'>Unbooking</button>";
+              if (check_access_module_permission($module, PERMISSION_AVAILABLE)):
+                $content = "<button type='button' data-href='". site_url("sector/kavling/update_status/". $detail_sector->id ."/". $value->id ."/". STATUS_BOOKING_KAVLING_UNBOOKING) ."' class='confirmation btn btn-default btn-xs' style='margin-right:10px;' data-confirm-message='Anda yakin ingin mengupdate status menjadi Available?' data-heading='". $heading ."'>Available</button>";
               endif;
               $coordinate_color = $value->color_requested;
             endif;

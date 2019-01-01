@@ -121,7 +121,7 @@ class Dashboardmodel extends MY_Model
         }
     }
 
-    public function get_total_kavling_available_requested() 
+    public function get_total_kavling_reserved() 
     {
         try {
             $this->db->select("

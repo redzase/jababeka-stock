@@ -85,22 +85,18 @@
                     <tr>
                       <th>Total</th>
                       <th>Terjual</th>
-                      <?php /*
-                      <th>Available Requested</th>
-                      */ ?>
                       <th>Available</th>
                       <th>Booked</th>
+                      <th>Reserved</th>
                     </tr>
                   </thead>
                   <tbody style="font-size:36px;font-weight:bold;">
                     <tr>
                       <td><?php echo $value->total; ?></td>
                       <td><?php echo $value->sold; ?></td>
-                      <?php /*
-                      <td><?php echo $value->available_requested; ?></td>
-                      */ ?>
                       <td><?php echo $value->available; ?></td>
                       <td><?php echo $value->booked; ?></td>
+                      <td><?php echo $value->reserved; ?></td>
                     </tr>
                   </tbody>
                 </table>

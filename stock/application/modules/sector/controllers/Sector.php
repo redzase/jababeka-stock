@@ -155,6 +155,7 @@ class Sector extends MY_Controller
         $color_available     = $this->input->post("color_available");
         $color_booked        = $this->input->post("color_booked");
         $color_requested     = $this->input->post("color_requested");
+        $color_reserved      = $this->input->post("color_reserved");
 
         /**
          * -- Start -- 
@@ -197,6 +198,11 @@ class Sector extends MY_Controller
                 "rules" => "required",
                 ),
             array(
+                "field" => "color_reserved",
+                "label" => "Color Reserved",
+                "rules" => "required",
+                ),
+            array(
                 "field" => "image_field_name",
                 "label" => "File Denah Perumahan",
                 "rules" => "callback_fileImage_check[INSERT]",
@@ -218,6 +224,7 @@ class Sector extends MY_Controller
                 "color_available"     => $color_available,
                 "color_booked"        => $color_booked,
                 "color_requested"     => $color_requested,
+                "color_reserved"      => $color_reserved,
                 "sketch"              => $this->_image_path,
                 "status"              => GLOBAL_STATUS_ACTIVE,
                 "created_by"          => $this->session->userdata(PREFIX_SESSION . "_USER_ID"), 
@@ -257,6 +264,7 @@ class Sector extends MY_Controller
         $color_available     = $this->input->post("color_available");
         $color_booked        = $this->input->post("color_booked");
         $color_requested     = $this->input->post("color_requested");
+        $color_reserved      = $this->input->post("color_reserved");
 
         /**
          * -- Start -- 
@@ -299,6 +307,11 @@ class Sector extends MY_Controller
                 "rules" => "required",
                 ),
             array(
+                "field" => "color_reserved",
+                "label" => "Color Reserved",
+                "rules" => "required",
+                ),
+            array(
                 "field" => "image_field_name",
                 "label" => "File Denah Perumahan",
                 "rules" => "callback_fileImage_check[UPDATE]",
@@ -328,6 +341,7 @@ class Sector extends MY_Controller
                 "color_available"     => $color_available,
                 "color_booked"        => $color_booked,
                 "color_requested"     => $color_requested,
+                "color_reserved"      => $color_reserved,
                 "status"              => GLOBAL_STATUS_ACTIVE,
                 "modified_by"         => $this->session->userdata(PREFIX_SESSION . "_USER_ID"), 
                 "modified_date"       => date_now(),

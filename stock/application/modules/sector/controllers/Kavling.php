@@ -550,8 +550,8 @@ class Kavling extends MY_Controller
             elseif ($status == STATUS_BOOKING_KAVLING_UNBOOKING) {
                 insert_logs($this->_module, LOGS_ACTIVITY_UNBOOKING, $kavling_id, $this->session->userdata(PREFIX_SESSION . "_USER_ID"), $note);
             } 
-            elseif ($status == STATUS_BOOKING_KAVLING_REQUEST_BOOKING) {
-                insert_logs($this->_module, LOGS_ACTIVITY_REQUESTED, $kavling_id, $this->session->userdata(PREFIX_SESSION . "_USER_ID"), $note);
+            elseif ($status == STATUS_BOOKING_KAVLING_RESERVED) {
+                insert_logs($this->_module, LOGS_ACTIVITY_RESERVED, $kavling_id, $this->session->userdata(PREFIX_SESSION . "_USER_ID"), $note);
             }
             elseif ($status == STATUS_BOOKING_KAVLING_REMOVE_FROM_MAP) {
                 insert_logs($this->_module, LOGS_ACTIVITY_REMOVE_FROM_MAP, $kavling_id, $this->session->userdata(PREFIX_SESSION . "_USER_ID"), $note);

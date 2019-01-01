@@ -118,12 +118,12 @@ define('LIST_STATUS_KAVLING', serialize(array(
 	1 => "Available",
 	2 => "Booked",
 	3 => "Sold",
-	4 => "Available Requested",
+	4 => "Reserved",
 	))
 );
 define('STATUS_BOOKING_KAVLING_REMOVE_FROM_MAP', 999999);
 define('STATUS_BOOKING_KAVLING_UNBOOKING', 0);
-define('STATUS_BOOKING_KAVLING_REQUEST_BOOKING', 1);
+define('STATUS_BOOKING_KAVLING_RESERVED', 1);
 define('STATUS_BOOKING_KAVLING_BOOKING', 2);
 
 
@@ -135,7 +135,7 @@ define('PERMISSION_DELETE', 'DELETE');
 define('PERMISSION_MAPPING', 'MAPPING');
 define('PERMISSION_BOOKING', 'BOOKING');
 define('PERMISSION_UNBOOKING', 'UNBOOKING');
-define('PERMISSION_REQUEST_BOOKING', 'REQUEST_BOOKING');
+define('PERMISSION_RESERVED', 'RESERVED');
 
 
 // Activity Logs

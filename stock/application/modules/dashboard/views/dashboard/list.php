@@ -97,6 +97,22 @@
         </div>
         <!-- /.col -->
 
+        <div class="col-md-4 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-blue"><i class="ion ion-ios-checkmark"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text"><h4>Kavling Reserved</h4></span>
+              <span class="info-box-number">
+                <?php echo number_format($total_kavling_reserved); ?>
+              </span>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+
       </div>
       <!-- /.box -->
     </section>

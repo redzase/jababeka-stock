@@ -65,7 +65,7 @@ class Cronmodel extends MY_Model
             // 1 = Available
             // 2 = Booked
             // 3 = Sold
-            // 4 = Available Requested
+            // 4 = Reserved
             $this->db->from($this->_table_sector_kavling);
             $this->db->join($this->_dbase_jababeka_table_kavlings, "{$this->_table_sector_kavling}.reference_kavling_id = {$this->_dbase_jababeka_table_kavlings}.kav_ref", "LEFT");
             $this->db->where("{$this->_table_sector_kavling}.status", GLOBAL_STATUS_ACTIVE);

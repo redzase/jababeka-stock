@@ -119,7 +119,7 @@ define('LIST_STATUS_KAVLING', serialize(array(
 	1 => "Available",
 	2 => "Booked",
 	3 => "Sold",
-	4 => "Available Requested",
+	4 => "Reserved",
 	))
 );
 define('STATUS_BOOKING_KAVLING_REMOVE_FROM_MAP', 999999);

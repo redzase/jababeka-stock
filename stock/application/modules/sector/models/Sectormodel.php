@@ -40,7 +40,7 @@ class Sectormodel extends MY_Model
                      WHERE {$this->_table_sector_kavling}.status = ". GLOBAL_STATUS_ACTIVE ."
                        AND {$this->_table_sector_kavling}.sector_id = {$this->_table_sector}.id
                        AND {$this->_table_sector_kavling}.status_booking = 1
-                    ) AS available_requested,
+                    ) AS reserved,
                     (SELECT COUNT({$this->_table_sector_kavling}.id)
                      FROM {$this->_table_sector_kavling}
                      JOIN {$this->_dbase_jababeka_table_kavlings}      
@@ -132,7 +132,7 @@ class Sectormodel extends MY_Model
                  WHERE {$this->_table_sector_kavling}.status = ". GLOBAL_STATUS_ACTIVE ."
                    AND {$this->_table_sector_kavling}.sector_id = {$this->_table_sector}.id
                    AND {$this->_table_sector_kavling}.status_booking = 1
-                ) AS available_requested,
+                ) AS reserved,
                 (SELECT COUNT({$this->_table_sector_kavling}.id)
                  FROM {$this->_table_sector_kavling}
                  JOIN {$this->_dbase_jababeka_table_kavlings}      
