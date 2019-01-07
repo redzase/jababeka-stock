@@ -30,6 +30,7 @@ class Sectorkavlingmodel extends MY_Model
                     {$this->_table_sector}.color_available,
                     {$this->_table_sector}.color_booked,
                     {$this->_table_sector}.color_requested,
+                    {$this->_table_sector}.color_reserved,
                     CASE WHEN {$this->_dbase_jababeka_table_kavlings}.kav_ref IS NULL THEN 3
                          WHEN {$this->_table_sector_kavling}.status_booking = 1 THEN 4
                          WHEN {$this->_table_sector_kavling}.status_booking = 0 THEN 1
