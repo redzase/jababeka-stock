@@ -154,7 +154,7 @@ class Sector extends MY_Controller
         $color_sold          = $this->input->post("color_sold");
         $color_available     = $this->input->post("color_available");
         $color_booked        = $this->input->post("color_booked");
-        $color_requested     = $this->input->post("color_requested");
+        // $color_requested  = $this->input->post("color_requested");
         $color_reserved      = $this->input->post("color_reserved");
 
         /**
@@ -192,11 +192,11 @@ class Sector extends MY_Controller
                 "label" => "Color Booked",
                 "rules" => "required",
                 ),
-            array(
-                "field" => "color_requested",
-                "label" => "Color Requested",
-                "rules" => "required",
-                ),
+            // array(
+            //     "field" => "color_requested",
+            //     "label" => "Color Requested",
+            //     "rules" => "required",
+            //     ),
             array(
                 "field" => "color_reserved",
                 "label" => "Color Reserved",
@@ -223,7 +223,7 @@ class Sector extends MY_Controller
                 "color_sold"          => $color_sold,
                 "color_available"     => $color_available,
                 "color_booked"        => $color_booked,
-                "color_requested"     => $color_requested,
+                // "color_requested"  => $color_requested,
                 "color_reserved"      => $color_reserved,
                 "sketch"              => $this->_image_path,
                 "status"              => GLOBAL_STATUS_ACTIVE,
@@ -263,7 +263,7 @@ class Sector extends MY_Controller
         $color_sold          = $this->input->post("color_sold");
         $color_available     = $this->input->post("color_available");
         $color_booked        = $this->input->post("color_booked");
-        $color_requested     = $this->input->post("color_requested");
+        // $color_requested  = $this->input->post("color_requested");
         $color_reserved      = $this->input->post("color_reserved");
 
         /**
@@ -301,11 +301,11 @@ class Sector extends MY_Controller
                 "label" => "Color Booked",
                 "rules" => "required",
                 ),
-            array(
-                "field" => "color_requested",
-                "label" => "Color Requested",
-                "rules" => "required",
-                ),
+            // array(
+            //     "field" => "color_requested",
+            //     "label" => "Color Requested",
+            //     "rules" => "required",
+            //     ),
             array(
                 "field" => "color_reserved",
                 "label" => "Color Reserved",
@@ -340,7 +340,7 @@ class Sector extends MY_Controller
                 "color_sold"          => $color_sold,
                 "color_available"     => $color_available,
                 "color_booked"        => $color_booked,
-                "color_requested"     => $color_requested,
+                // "color_requested"  => $color_requested,
                 "color_reserved"      => $color_reserved,
                 "status"              => GLOBAL_STATUS_ACTIVE,
                 "modified_by"         => $this->session->userdata(PREFIX_SESSION . "_USER_ID"), 

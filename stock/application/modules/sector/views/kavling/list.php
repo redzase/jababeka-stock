@@ -460,7 +460,7 @@ endif;
               if (check_access_module_permission($module, PERMISSION_AVAILABLE)):
                 $content = "<button type='button' data-href='". site_url("sector/kavling/update_status/". $detail_sector->id ."/". $value->id ."/". STATUS_BOOKING_KAVLING_UNBOOKING) ."' class='confirmation btn btn-default btn-xs' style='margin-right:10px;' data-confirm-message='Anda yakin ingin mengupdate status menjadi Available?' data-heading='". $heading ."'>Available</button>";
               endif;
-              $coordinate_color = $value->color_requested;
+              $coordinate_color = $value->color_reserved;
             endif;
         ?>
           $('.bullseye-coordinate').bullseye({

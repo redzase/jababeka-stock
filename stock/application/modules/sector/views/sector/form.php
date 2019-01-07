@@ -9,8 +9,8 @@ if (isset($all_data)) {
   $color_sold = $all_data->color_sold;
   $color_available = $all_data->color_available;
   $color_booked = $all_data->color_booked;
-  $color_requested = $all_data->color_requested;
-  $color_reserved = $all_data->color_requested;
+  // $color_requested = $all_data->color_requested;
+  $color_reserved = $all_data->color_reserved;
 } 
 else {
   $page = "Add";
@@ -21,7 +21,7 @@ else {
   $color_sold = "#000000";
   $color_available = "#0011a1";
   $color_booked = "#a10000";
-  $color_requested = "#0da100";
+  // $color_requested = "#0da100";
   $color_reserved = "#01a001";
 }
 
@@ -124,6 +124,7 @@ else {
                       </div>
                   </div>  
 
+                  <?php /*
                   <div class="form-group">
                       <label for="inputPassword3" class="col-sm-2 control-label">Color Requested</label>
 
@@ -131,6 +132,7 @@ else {
                           <?php echo form_input("color_requested", set_value("color_requested", $color_requested), "data-required='1' class='form-control my-colorpicker1 colorpicker-element prevent-type' placeholder='Color Requested'"); ?>
                       </div>
                   </div>
+                  */ ?>
 
                   <div class="form-group">
                       <label for="inputPassword3" class="col-sm-2 control-label">Color Reserved</label>
