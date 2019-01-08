@@ -125,6 +125,7 @@ define('LIST_STATUS_KAVLING', serialize(array(
 );
 define('STATUS_BOOKING_KAVLING_REMOVE_FROM_MAP', 999999);
 define('STATUS_BOOKING_KAVLING_UNBOOKING', 0);
+define('STATUS_BOOKING_KAVLING_AVAILABLE', 0);
 define('STATUS_BOOKING_KAVLING_RESERVED', 1);
 define('STATUS_BOOKING_KAVLING_BOOKING', 2);
 
@@ -146,6 +147,7 @@ define('LOGS_ACTIVITY_LIST', serialize(array(
 	"INSERT_FIRST_ROW" => "Input data pertama",
 	"BOOKING"          => "Booking",
 	"UNBOOKING"        => "Unbooking",
+	"AVAILABLE"        => "Set Available",
 	"RESERVED"         => "Reserved",
 	"EDIT"             => "Edit",
 	"REMOVE_FROM_MAP"  => "Hapus dari peta",
@@ -154,6 +156,7 @@ define('LOGS_ACTIVITY_LIST', serialize(array(
 define('LOGS_ACTIVITY_INSERT_FIRST_ROW', 'INSERT_FIRST_ROW');
 define('LOGS_ACTIVITY_BOOKING', 'BOOKING');
 define('LOGS_ACTIVITY_UNBOOKING', 'UNBOOKING');
+define('LOGS_ACTIVITY_AVAILABLE', 'AVAILABLE');
 define('LOGS_ACTIVITY_RESERVED', 'RESERVED');
 define('LOGS_ACTIVITY_EDIT', 'EDIT');
 define('LOGS_ACTIVITY_REMOVE_FROM_MAP', 'REMOVE_FROM_MAP');
