@@ -265,7 +265,9 @@ if(!function_exists("is_logged_in"))
             }
         } else if($bool === TRUE) {
             if(!$is_exist) {
-                redirect(SSO_SERVER_LOGIN);
+                instance()->session->sess_destroy();
+                redirect(SSO_SERVER_LOGOUT);
+                // redirect(SSO_SERVER_LOGIN);
             }
         }
     }

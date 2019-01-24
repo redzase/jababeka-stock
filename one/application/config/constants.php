@@ -156,6 +156,7 @@ define('LOGS_ACTIVITY_EDIT', 'EDIT');
 
 // SSO
 define('SSO_SERVER_LOGIN', 'http://one.jababeka-stock.com');
+define('SSO_SERVER_LOGOUT', 'http://one.jababeka-stock.com/auth/logout');
 define('SSO_SERVER', 'http://one.jababeka-stock.com/auth/sso');
 define('SSO_BROKER_ID', 'stock');
 define('SSO_BROKER_SECRET', 'C6wkZ29gBXQ2Xb0FYEbWHw');
