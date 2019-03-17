@@ -89,6 +89,8 @@
 <!-- bootstrap color picker -->
 <script src="<?php echo base_url()?>static/bower_components/bootstrap-colorpicker/dist/js/bootstrap-colorpicker.min.js"></script>
 <script src="<?php echo base_url()?>static/plugins/bullseye/src/jquery.bullseye.js"></script>
+<script src="<?php echo base_url()?>static/plugins/vis/dist/vis.min.js"></script>
+<script src="<?php echo base_url()?>static/plugins/jquery-multiselect/jquery.multiselect.js"></script>
 <script src="<?php echo base_url()?>static/plugins/jquery-confirm/dist/jquery-confirm.min.js"></script>
 <script src="<?php echo base_url()?>static/js/all.js"></script>
 

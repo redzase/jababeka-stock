@@ -115,6 +115,11 @@ define('ORIGINALS_PHOTO_PATH', "/static/uploads/photos_originals");
 define('CSV_UPLOAD_PATH', "./static/uploads/csv");
 
 
+// Upload PDF
+define('PDF_UPLOAD_PATH', "./static/uploads/pdf");
+define('ORIGINALS_PDF_PATH', "/static/uploads/pdf");
+
+
 // Master Status
 define('LIST_STATUS_KAVLING', serialize(array(
 	1 => "Available",

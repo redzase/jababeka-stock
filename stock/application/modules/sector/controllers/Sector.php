@@ -93,10 +93,10 @@ class Sector extends MY_Controller
         // Check access module permission
         check_access_module_permission($this->_module, PERMISSION_READ, True);
 
-		$page        = ($page < 1) ? 1 : ($page - 1); 
-        $start_limit = $page * TOTAL_ITEM_PER_PAGE;
-        $end_limit   = TOTAL_ITEM_PER_PAGE;
-        $total       = 0;
+		// $page        = ($page < 1) ? 1 : ($page - 1); 
+        // $start_limit = $page * TOTAL_ITEM_PER_PAGE;
+        // $end_limit   = TOTAL_ITEM_PER_PAGE;
+        // $total       = 0;
 
         $params = array(
             // "start_limit" => $start_limit,
@@ -133,8 +133,8 @@ class Sector extends MY_Controller
          * Store data for view
          */
         $data_content["all_data"]           = $all_data; 
-        $data_content["total"]              = $total;
-        $data_content["start_no"]           = ($page * TOTAL_ITEM_PER_PAGE) + 1;
+        // $data_content["total"]           = $total;
+        // $data_content["start_no"]        = ($page * TOTAL_ITEM_PER_PAGE) + 1;
         // $data_content["pagination"]      = $this->pagination->create_links();
         $data_content["ses_result_process"] = $this->session->flashdata(PREFIX_SESSION . "_RESULT_PROCESS");
         $data_content["module"]             = $this->_module;
