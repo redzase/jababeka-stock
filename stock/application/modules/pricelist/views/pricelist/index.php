@@ -1,6 +1,6 @@
 <?php
 
-if (isset($all_data_memo)) {
+if (isset($all_data_pricelist)) {
   $filter_list_sector = $filter["list_sector"];
   $filter_year        = $filter["year"];
 } 

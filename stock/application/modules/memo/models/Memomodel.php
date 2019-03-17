@@ -6,22 +6,54 @@ if (!defined('BASEPATH'))
 class Memomodel extends MY_Model 
 {
 
-    public function get_list_year($params = array()) 
+    // public function get_list_year($params = array()) 
+    // {
+    //     $start_limit = (isset($params["start_limit"])) ? $params["start_limit"] : "";
+    //     $end_limit   = (isset($params["end_limit"])) ? $params["end_limit"] : "";
+
+    //     try {
+    //         $this->db->select("
+    //             DATE_FORMAT({$this->_table_memo}.start_date, '%Y') AS start_date_year,
+    //             DATE_FORMAT({$this->_table_memo}.end_date, '%Y') AS end_date_year,
+    //             ", FALSE);
+    //         $this->db->from($this->_table_memo);
+    //         $this->db->where("{$this->_table_memo}.status", GLOBAL_STATUS_ACTIVE);
+
+    //         if ($start_limit != "" or $end_limit != "")
+    //             $this->db->limit($end_limit, $start_limit);
+
+    //         $query = $this->db->get();
+
+    //         if($query === FALSE)
+    //             throw new Exception();
+
+    //         $result = $query->result();
+
+    //         return $result;         
+    //     } catch(Exception $e) {
+    //         return FALSE;
+    //     }
+    // }
+
+    public function get_sector_filter($params = array()) 
     {
-        $start_limit = (isset($params["start_limit"])) ? $params["start_limit"] : "";
-        $end_limit   = (isset($params["end_limit"])) ? $params["end_limit"] : "";
+        $sector_id   = (isset($params["sector_id"])) ? $params["sector_id"] : "";
+
+        // Convert to array if not array
+        $sector_id = (is_array($sector_id)) ? $sector_id : [$sector_id];
 
         try {
             $this->db->select("
-                DATE_FORMAT({$this->_table_memo}.start_date, '%Y') AS start_date_year,
-                DATE_FORMAT({$this->_table_memo}.end_date, '%Y') AS end_date_year,
+                {$this->_table_sector}.*,
                 ", FALSE);
-            $this->db->from($this->_table_memo);
-            $this->db->where("{$this->_table_memo}.status", GLOBAL_STATUS_ACTIVE);
+            $this->db->from($this->_table_sector);
 
-            if ($start_limit != "" or $end_limit != "")
-                $this->db->limit($end_limit, $start_limit);
+            if (!(count($sector_id) == 1 and empty($sector_id[0]))) {
+                $this->db->where_in("{$this->_table_sector}.id", $sector_id);
+            }
 
+            $this->db->where("{$this->_table_sector}.status", GLOBAL_STATUS_ACTIVE);
+            $this->db->order_by("{$this->_table_sector}.created_date", "DESC");
             $query = $this->db->get();
 
             if($query === FALSE)
@@ -38,6 +70,7 @@ class Memomodel extends MY_Model
     public function get_list($params = array()) 
     {
         $sector_id   = (isset($params["sector_id"])) ? $params["sector_id"] : "";
+        $year        = (isset($params["year"])) ? $params["year"] : "";
         $start_limit = (isset($params["start_limit"])) ? $params["start_limit"] : "";
         $end_limit   = (isset($params["end_limit"])) ? $params["end_limit"] : "";
         $get_total   = (isset($params["get_total"])) ? TRUE : FALSE;
@@ -58,7 +91,15 @@ class Memomodel extends MY_Model
             }
             $this->db->from($this->_table_memo);
             $this->db->join($this->_table_user, "{$this->_table_memo}.created_by = {$this->_table_user}.id");
-            $this->db->where_in("{$this->_table_memo}.sector_id", $sector_id);
+            
+            if (!(count($sector_id) == 1 and empty($sector_id[0]))) {
+                $this->db->where_in("{$this->_table_memo}.sector_id", $sector_id);
+            }
+            if (!empty($year)) {
+                $this->db->where("DATE_FORMAT({$this->_table_memo}.start_date, '%Y') <=", $year);   
+                $this->db->where("DATE_FORMAT({$this->_table_memo}.end_date, '%Y') >=", $year);   
+            }
+
             $this->db->where("{$this->_table_memo}.status", GLOBAL_STATUS_ACTIVE);
 
             if ($get_total === FALSE) {

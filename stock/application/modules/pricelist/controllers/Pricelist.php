@@ -97,8 +97,9 @@ class Pricelist extends MY_Controller
         // $end_limit   = TOTAL_ITEM_PER_PAGE;
         // $total       = 0;
         
+        $current_year = date("Y");
         $list_sector = $this->input->get("select_sector[]") ?: "";
-        $year = $this->input->get("select_year") ?: "";
+        $year = $this->input->get("select_year") ?: $current_year;
         $is_get = ($this->input->get()) ? true : false;
         $all_data_pricelist = [];
         $filter = [
@@ -113,26 +114,38 @@ class Pricelist extends MY_Controller
         $all_data_sector = $this->Sectormodel->get_list($params);
 
         $params = array(
+            "sector_id"      => $list_sector,
             // "start_limit" => $start_limit,
             // "end_limit"   => $end_limit,
             );
-        $all_data_year = $this->Pricelistmodel->get_list_year($params);
+        $all_data_sector_filter = $this->Pricelistmodel->get_sector_filter($params);
 
+        // $params = array(
+        //     // "start_limit" => $start_limit,
+        //     // "end_limit"   => $end_limit,
+        //     );
+        // $all_data_year = $this->Pricelistmodel->get_list_year($params);
+
+        // $list_year = ["" => "-- Pilih Tahun --"];
+        // foreach ($all_data_year as $key => $value) {
+        //     $list_year[$value->start_date_year] = $value->start_date_year;
+        //     $list_year[$value->end_date_year] = $value->end_date_year;
+        // }        
+        
         $list_year = ["" => "-- Pilih Tahun --"];
-        foreach ($all_data_year as $key => $value) {
-            $list_year[$value->start_date_year] = $value->start_date_year;
-            $list_year[$value->end_date_year] = $value->end_date_year;
-        }        
+        for ($i=$current_year-10; $i <= $current_year+5; $i++) { 
+            $list_year[$i] = $i;
+        }
 
-
-        if (!empty($list_sector) and !empty($year)) {
+        // if (!empty($list_sector) and !empty($year)) {
             $params = array(
                 "sector_id"      => $list_sector,
+                "year"           => $year,
                 // "start_limit" => $start_limit,
                 // "end_limit"   => $end_limit,
                 );
             $all_data_pricelist = $this->Pricelistmodel->get_list($params);
-        }
+        // }
 
         /**
          * -- Start --
@@ -142,9 +155,10 @@ class Pricelist extends MY_Controller
         $data_content["filter"]             = $filter;
         $data_content["is_get"]             = $is_get;
         $data_content["all_data_pricelist"] = $all_data_pricelist;
-        $data_content["all_data_sector"]    = $all_data_sector;
+        $data_content["all_data_sector"]    = $all_data_sector_filter;
         $data_content["list_sector"]        = generate_array($all_data_sector, "id", "name");
-        $data_content["list_year"]          = array_unique($list_year);
+        // $data_content["list_year"]       = array_unique($list_year);
+        $data_content["list_year"]          = $list_year;
         // $data_content["total"]           = $total;
         // $data_content["start_no"]        = ($page * TOTAL_ITEM_PER_PAGE) + 1;
         // $data_content["pagination"]      = $this->pagination->create_links();
