@@ -130,7 +130,7 @@ else {
       stack: true,
       horizontalScroll: false,
       zoomable: false,
-      moveable: false,
+      moveable: true,
       // zoomKey: 'ctrlKey',
       // maxHeight: 400,
       start: currentYear +'-01-01',
