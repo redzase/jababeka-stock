@@ -3,12 +3,14 @@
 if (isset($all_data)) {
   $page = "Edit";
   $date_range = date_now(13, $all_data->start_date) ." - ". date_now(13, $all_data->end_date);
+  $title = $all_data->title;
   $filename = $all_data->filename;
   $filepath = ORIGINALS_PDF_PATH . "/". $all_data->filepath;
 } 
 else {
   $page = "Add";
   $date_range = FALSE;
+  $title = FALSE;
   $filename = FALSE;
   $filepath = FALSE;
 }
@@ -47,6 +49,14 @@ else {
               <?php echo form_open(uri_string(), array("id" => "form_sample_3", "class" => "form-horizontal", "enctype" => "multipart/form-data")); ?>
               <div class="box-body">
 
+                  <div class="form-group">
+                      <label for="inputPassword3" class="col-sm-2 control-label">Title</label>
+
+                      <div class="col-sm-9">
+                          <?php echo form_input("title", set_value("title", $title), "data-required='1' class='form-control' placeholder='Title'"); ?>
+                      </div>
+                  </div>     
+                  
                   <!-- Date range -->
                   <div class="form-group">
                       <label for="inputPassword3" class="col-sm-2 control-label">Date Range</label>

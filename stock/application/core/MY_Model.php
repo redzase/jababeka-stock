@@ -17,6 +17,8 @@ class MY_Model extends CI_Model {
 	protected $_table_logs              = "logs";
 	protected $_table_setting           = "setting";
 	protected $_table_pricelist         = "pricelist";
+	protected $_table_pricelist_logs    = "pricelist_logs";
 	protected $_table_memo              = "memo";
+	protected $_table_memo_logs         = "memo_logs";
     
 }

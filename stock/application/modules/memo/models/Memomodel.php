@@ -199,4 +199,53 @@ class Memomodel extends MY_Model
         }
     }
 
+    public function get_list_logs($params = array()) 
+    {
+        $sector_id   = (isset($params["sector_id"])) ? $params["sector_id"] : "";
+        $start_limit = (isset($params["start_limit"])) ? $params["start_limit"] : "";
+        $end_limit   = (isset($params["end_limit"])) ? $params["end_limit"] : "";
+        $get_total   = (isset($params["get_total"])) ? TRUE : FALSE;
+
+        try {
+            if ($get_total) {
+                $this->db->select("
+                    COUNT({$this->_table_memo_logs_logs}.id) AS total
+                    ", FALSE);
+            } else {
+                $this->db->select("
+                    {$this->_table_memo_logs_logs}.*,
+                    {$this->_table_user}.username AS created_by_name
+                    ", FALSE);
+            }
+            $this->db->from($this->_table_memo_logs_logs);
+            $this->db->join($this->_table_user, "{$this->_table_memo_logs_logs}.created_by = {$this->_table_user}.id");
+
+            if (!empty($sector_id)) {
+                $this->db->where_in("{$this->_table_memo_logs_logs}.sector_id", $sector_id);
+            }
+
+            if ($get_total === FALSE) {
+                if ($start_limit != "" or $end_limit != "")
+                    $this->db->limit($end_limit, $start_limit);
+            }
+
+            $this->db->order_by("{$this->_table_memo_logs_logs}.created_date", "DESC");
+            $query = $this->db->get();
+
+            if($query === FALSE)
+                throw new Exception();
+
+            if ($get_total) {
+                $result = $query->row();
+                $result = ($result) ? $result->total : 0;
+            } else {
+                $result = $query->result();
+            }
+
+            return $result;         
+        } catch(Exception $e) {
+            return FALSE;
+        }
+    }
+
 }

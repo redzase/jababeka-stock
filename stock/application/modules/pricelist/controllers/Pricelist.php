@@ -246,6 +246,7 @@ class Pricelist extends MY_Controller
 
 	private function _do_add($sector_id) 
 	{
+        $title = $this->input->post("title") ?: "";
         $date_range = $this->input->post("date_range") ?: "";
 
         $start_date = "";
@@ -263,6 +264,11 @@ class Pricelist extends MY_Controller
          * Do validation
          */
         $config = array(
+            array(
+                "field" => "title",
+                "label" => "Title",
+                "rules" => "required",
+                ),
             array(
                 "field" => "date_range",
                 "label" => "Date Range",
@@ -286,6 +292,7 @@ class Pricelist extends MY_Controller
                 "sector_id"     => $sector_id,
                 "start_date"    => $start_date,
                 "end_date"      => $end_date,
+                "title"         => $title,
                 "filename"      => $this->_image_name,
                 "filepath"      => $this->_image_path,
                 "status"        => GLOBAL_STATUS_ACTIVE,
@@ -303,7 +310,7 @@ class Pricelist extends MY_Controller
             // Store session
             $this->session->set_flashdata(PREFIX_SESSION ."_RESULT_PROCESS", $result);
 
-            redirect($this->class_metadata["module"] ."/". $this->class_metadata["class"] ."/index/". $sector_id, "refresh");
+            redirect($this->class_metadata["module"] ."/". $this->class_metadata["class"] ."/list/". $sector_id, "refresh");
         }
     }
 
@@ -329,6 +336,7 @@ class Pricelist extends MY_Controller
 
 	private function _do_edit($sector_id, $id) 
     {
+        $title = $this->input->post("title") ?: "";
 		$date_range = $this->input->post("date_range") ?: "";
 
         $start_date = "";
@@ -346,6 +354,11 @@ class Pricelist extends MY_Controller
          * Do validation
          */
         $config = array(
+            array(
+                "field" => "title",
+                "label" => "Title",
+                "rules" => "required",
+                ),
             array(
                 "field" => "date_range",
                 "label" => "Date Range",
@@ -378,6 +391,7 @@ class Pricelist extends MY_Controller
                 "sector_id"     => $sector_id,
                 "start_date"    => $start_date,
                 "end_date"      => $end_date,
+                "title"         => $title,
                 "status"        => GLOBAL_STATUS_ACTIVE,
                 "modified_by"   => $this->session->userdata(PREFIX_SESSION . "_USER_ID"), 
                 "modified_date" => date_now(),
@@ -391,7 +405,7 @@ class Pricelist extends MY_Controller
             // Store session
             $this->session->set_flashdata(PREFIX_SESSION ."_RESULT_PROCESS", $result);
 
-            redirect($this->class_metadata["module"] ."/". $this->class_metadata["class"] ."/index/". $sector_id, "refresh");
+            redirect($this->class_metadata["module"] ."/". $this->class_metadata["class"] ."/list/". $sector_id, "refresh");
         }
     }
 
@@ -442,6 +456,64 @@ class Pricelist extends MY_Controller
         $this->session->set_flashdata(PREFIX_SESSION . "_RESULT_PROCESS", $return);
 
         redirect($this->class_metadata["module"] ."/". $this->class_metadata["class"] ."/index/". $sector_id, "refresh");
+    }
+
+    public function ajax_list_logs($sector_id, $page = 1) 
+    {
+        if ($this->input->is_ajax_request()) {
+            $page        = ($page < 1) ? 1 : ($page - 1); 
+            $start_limit = $page * TOTAL_ITEM_PER_PAGE;
+            $end_limit   = TOTAL_ITEM_PER_PAGE;
+            $total       = 0;
+
+            $params = array(
+                "start_limit" => $start_limit,
+                "end_limit"   => $end_limit,
+                "sector_id"   => $sector_id,
+                );
+            $all_data = $this->Pricelistmodel->get_list($params);
+
+            $params = array(
+                "get_total"  => TRUE,
+                "sector_id"  => $sector_id,
+                );
+            $total = $this->Pricelistmodel->get_list($params);  
+
+            /**
+             * START
+             * PAGINATION
+             */
+            $base_url    = site_url($this->class_metadata["module"] ."/". $this->class_metadata["class"] ."/". $this->class_metadata["method"] ."/". $sector_id);
+            $uri_segment = 5;
+            $total_rows  = $total;
+            $per_page    = TOTAL_ITEM_PER_PAGE;
+            $suffix      = "";
+            
+            $config = set_config_pagination($base_url, $suffix, $uri_segment, $total_rows, $per_page); 
+
+            $this->pagination->initialize($config);
+            /**
+             * END
+             * PAGINATION
+             */
+
+            /**
+             * START
+             * SIMPAN DATA KE VARIABLE UNTUK DIGUNAKAN DI VIEW
+             */
+            $data_content["all_data"]    = $all_data;
+            $data_content["total"]       = $total;
+            $data_content["start_no"]    = ($page * TOTAL_ITEM_PER_PAGE) + 1;
+            $data_content["pagination"]  = $this->pagination->create_links();
+            /**
+             * END
+             * SIMPAN DATA KE VARIABLE UNTUK DIGUNAKAN DI VIEW
+             */
+            
+            $this->load->view($this->class_metadata["module"] ."/". $this->class_metadata["class"] ."/ajax_list_logs", $data_content, array('no-templating' => True));
+        } else {
+            echo "Ajax request needed to do this process!";
+        }
     }
 
 }

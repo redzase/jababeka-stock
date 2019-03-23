@@ -120,7 +120,7 @@ else {
         group: <?php echo $value->sector_id; ?>,
         start: '<?php echo $value->start_date; ?>',
         end: '<?php echo $value->end_date; ?>',
-        content: '<a href="<?php echo ORIGINALS_PDF_PATH . "/". $value->filepath; ?>" target="_blank"><?php echo $value->filename; ?></a>',
+        content: '<a href="<?php echo ORIGINALS_PDF_PATH . "/". $value->filepath; ?>" target="_blank"><?php echo $value->title; ?></a>',
       });
     <?php endforeach; ?>
 

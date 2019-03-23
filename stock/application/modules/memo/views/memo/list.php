@@ -29,6 +29,9 @@
 
                   <h3 class="pull-left" style="margin-top:5px;"><?php echo $detail_sector->name; ?></h3>
                   <p class="pull-right" style="margin-left:10px;">
+                      <a class="btn btn-primary view-log" data-toggle="modal" data-target="#myModalLogs" data-url="<?php echo site_url('memo/ajax_list_logs/'. $detail_sector->id); ?>">
+                        View Log
+                      </a>
                       <?php 
                       if (check_access_module_permission($module, PERMISSION_CREATE)):
                       ?>
@@ -45,6 +48,7 @@
                         <thead>
                             <tr role="row">
                                 <th style="width: 10px">#</th>
+                                <th>Title</th>
                                 <th>Memo</th>
                                 <th>Start Date</th>
                                 <th>End Date</th>
@@ -60,6 +64,9 @@
                             <tr class="<?php echo ($key % 2) == 0 ? "event" : "odd"; ?>">
                               <td>
                                 <?php echo $start_no++; ?>
+                              </td>
+                              <td>
+                                <?php echo $value->title; ?>
                               </td>
                               <td>
                                 <a href="<?php echo ORIGINALS_PDF_PATH . "/". $value->filepath; ?>" target="_blank"><?php echo $value->filename; ?></a>
@@ -110,3 +117,38 @@
   <!-- /.container -->
 </div>
 <!-- /.content-wrapper -->
+
+<!-- Modal -->
+<div class="modal fade" id="myModalLogs" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body">
+        Loading...
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $(".view-log").click(function() {
+          var url = $(this).data("url");
+          
+          $("#myModalLogs").find(".modal-dialog").css("width", "800px");
+          
+          $.ajax({
+            type: "POST",
+            url: url,
+            cache: false,
+            success: function(data) {
+              $("#myModalLogs .modal-content").html(data);
+            }
+          });
+
+          return true;
+        });
+    });
+</script>
