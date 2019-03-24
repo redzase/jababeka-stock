@@ -1,3 +1,53 @@
+<style type="text/css">
+  .vis-item.red, .vis-item.red a {
+    background-color:#FF0000;
+    border-color:#808080;
+    color:#FFFFFF !important; 
+  }
+
+  .vis-item.maroon, .vis-item.maroon a {
+    background-color:#800000;
+    border-color:#808080;
+    color:#FFFFFF !important; 
+  }
+
+  .vis-item.yellow, .vis-item.yellow a {
+    background-color:#FFFF00;
+    border-color:#808080;
+    color:#808080 !important; 
+  }
+
+  .vis-item.olive, .vis-item.olive a {
+    background-color:#808000;
+    border-color:#808080;
+    color:#FFFFFF !important; 
+  }
+
+  .vis-item.lime, .vis-item.lime a {
+    background-color:#00FF00;
+    border-color:#808080;
+    color:#808080 !important; 
+  }
+
+  .vis-item.green, .vis-item.green a {
+    background-color:#008000;
+    border-color:#808080;
+    color:#FFFFFF !important; 
+  }
+
+  .vis-item.aqua, .vis-item.aqua a {
+    background-color:#00FFFF;
+    border-color:#808080;
+    color:#808080 !important; 
+  }
+
+  .vis-item.teal, .vis-item.teal a {
+    background-color:#008080;
+    border-color:#808080;
+    color:#FFFFFF !important; 
+  }
+</style>
+
 <?php
 
 if (isset($all_data_pricelist)) {
@@ -102,7 +152,8 @@ else {
       }
     });
 
-    // create groups
+    // create numberOfGroups
+    var item_colors = ["red", "maroon", "yellow", "olive", "lime", "green", "aqua", "teal"];
     var numberOfGroups = <?php echo count($all_data_sector); ?>; 
     var groups = new vis.DataSet()
     <?php foreach ($all_data_sector as $key => $value): ?>
@@ -115,12 +166,15 @@ else {
     var items = new vis.DataSet();
    
     <?php foreach ($all_data_pricelist as $key => $value): ?>
+      var color_index = Math.floor(Math.random() * (7 - 0 + 1)) + 0;
+      var color = item_colors[color_index];
       items.add({
         id: <?php echo $value->id; ?>,
         group: <?php echo $value->sector_id; ?>,
         start: '<?php echo $value->start_date; ?>',
         end: '<?php echo $value->end_date; ?>',
         content: '<a href="<?php echo ORIGINALS_PDF_PATH . "/". $value->filepath; ?>" target="_blank"><?php echo $value->title; ?></a>',
+        className: color,
       });
     <?php endforeach; ?>
 
