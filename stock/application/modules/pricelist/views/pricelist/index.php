@@ -183,18 +183,20 @@ else {
     var options = {
       stack: true,
       horizontalScroll: false,
-      zoomable: false,
+      zoomable: true,
       moveable: true,
       // zoomKey: 'ctrlKey',
       // maxHeight: 400,
       start: currentYear +'-01-01',
       end: currentYear +'-12-31',
+      min: currentYear +'-01-01',
+      max: currentYear +'-12-31',
       editable: false,
       margin: {
         item: 10, // minimal margin between items
         axis: 5   // minimal margin between items and the axis
       },
-      orientation: 'top'
+      orientation: 'top',
     };
 
     // create a Timeline
