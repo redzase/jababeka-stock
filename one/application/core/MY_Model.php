@@ -16,5 +16,13 @@ class MY_Model extends CI_Model {
 	protected $_table_sector            = "sector";
 	protected $_table_sector_kavling    = "sector_kavling";
 	protected $_table_logs              = "logs";
-    
+ 	
+	protected $_table_mst_divisi        = "mst_divisi";
+	protected $_table_mst_status        = "mst_status";
+	protected $_table_mst_type        	= "mst_type";
+	protected $_table_mst_notification  = "mst_notification";
+
+	protected $_table_type_status       = "tbl_type_status";
+	protected $_table_tiket        		= "tbl_tiket";
+
 }

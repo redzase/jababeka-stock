@@ -135,7 +135,7 @@ if(!function_exists("get_validate_form")) {
 
 if(!function_exists("generate_array")) {
     function generate_array($data, $column_index, $column_value, $column_attribute = array()) {
-        $result = "";
+        $result = [];
 
         foreach ($data as $key => $value) {
             if ($column_index === FALSE)
@@ -168,6 +168,7 @@ if(!function_exists("generate_array")) {
                 }
             }
         }
+
 
         return (is_array($result)) ? $result : array(0);
     }
@@ -209,69 +210,69 @@ if(!function_exists('csv_to_array'))
     }
 }    
 
-// if(!function_exists("is_logged_in")) 
-// {
-//     function is_logged_in($bool = FALSE) 
-//     {
-//         instance()->load->library("session");
-
-//         $ses_user_data = instance()->session->userdata(PREFIX_SESSION . "_USER_ID");
-
-        // if($bool === FALSE){
-        //     if($ses_user_data){
-        //         redirect("dashboard");
-        //     }
-        // } else if($bool === TRUE){
-        //     if(!$ses_user_data){
-        //         redirect("auth");
-        //     }
-        // }
-//     }
-// }
-
 if(!function_exists("is_logged_in")) 
 {
     function is_logged_in($bool = FALSE) 
     {
         instance()->load->library("session");
 
-        $is_exist = True;
+        $ses_user_data = instance()->session->userdata(PREFIX_SESSION . "_USER_ID");
 
-        $broker = new third_party\sso\Broker(SSO_SERVER, SSO_BROKER_ID, SSO_BROKER_SECRET);
-        $broker->attach(true);
-        
-        try {
-            $user = $broker->getUserInfo();
-            
-            if (empty($user)) {
-                throw new Exception();
-            }
-            
-            instance()->session->set_userdata($user);
-        } 
-        catch (NotAttachedException $e) {
-            $is_exist = False;
-        } 
-        // catch (SsoException $e) {
-        //     $is_exist = False;
-        // }
-        catch (Exception $e) {
-            $is_exist = False;
-        }
-
-        if($bool === FALSE) {
-            if($is_exist) {
+        if($bool === FALSE){
+            if($ses_user_data){
                 redirect("dashboard");
             }
-        } else if($bool === TRUE) {
-            if(!$is_exist) {
-                instance()->session->sess_destroy();
-                redirect(SSO_SERVER_LOGOUT);
-                // redirect(SSO_SERVER_LOGIN);
+        } else if($bool === TRUE){
+            if(!$ses_user_data){
+                redirect("auth");
             }
         }
     }
 }
+
+// if(!function_exists("is_logged_in")) 
+// {
+//     function is_logged_in($bool = FALSE) 
+//     {
+//         instance()->load->library("session");
+
+//         $is_exist = True;
+
+//         $broker = new third_party\sso\Broker(SSO_SERVER, SSO_BROKER_ID, SSO_BROKER_SECRET);
+//         $broker->attach(true);
+        
+//         try {
+//             $user = $broker->getUserInfo();
+            
+//             if (empty($user)) {
+//                 throw new Exception();
+//             }
+            
+//             instance()->session->set_userdata($user);
+//         } 
+//         catch (NotAttachedException $e) {
+//             $is_exist = False;
+//         } 
+//         // catch (SsoException $e) {
+//         //     $is_exist = False;
+//         // }
+//         catch (Exception $e) {
+//             $is_exist = False;
+//         }
+
+//         if($bool === FALSE) {
+//             if($is_exist) {
+//                 redirect("dashboard");
+//             }
+//         } else if($bool === TRUE) {
+//             if(!$is_exist) {
+//                 instance()->session->sess_destroy();
+//                 redirect(SSO_SERVER_LOGOUT);
+//                 // redirect(SSO_SERVER_LOGIN);
+//             }
+//         }
+//     }
+// }
 
 if(!function_exists("check_access_module_permission")) 
 {

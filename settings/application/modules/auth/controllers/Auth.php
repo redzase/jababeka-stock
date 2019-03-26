@@ -24,13 +24,13 @@ class Auth extends MX_Controller
 
 	public function logout()
     {
-    	$broker = new third_party\sso\Broker(SSO_SERVER, SSO_BROKER_ID, SSO_BROKER_SECRET);
-        $broker->attach(true);
-        $broker->logout();
+    	// $broker = new third_party\sso\Broker(SSO_SERVER, SSO_BROKER_ID, SSO_BROKER_SECRET);
+     //    $broker->attach(true);
+     //    $broker->logout();
         
     	$this->load->library('session');
     	$this->session->sess_destroy();
-		// $this->googleplus->revokeToken();
+		$this->googleplus->revokeToken();
 		redirect(SSO_SERVER_LOGIN);
 
         // // Removing session data

@@ -42,18 +42,18 @@ class Auth extends MX_Controller
 	        $all_data = $this->Authmodel->check_email($params);
 
 	        if ($all_data) {
-	   //      	$session_data = array(
-				// 	PREFIX_SESSION . "_USER_ID"       => $all_data->id,
-				// 	PREFIX_SESSION . "_USER_USERNAME" => $all_data->username,
-				// 	PREFIX_SESSION . "_ALL_ACCESS"    => $all_data->all_access,
-				// 	);
+	        	$session_data = array(
+					PREFIX_SESSION . "_USER_ID"       => $all_data->id,
+					PREFIX_SESSION . "_USER_USERNAME" => $all_data->username,
+					PREFIX_SESSION . "_ALL_ACCESS"    => $all_data->all_access,
+					);
 
-				// $this->session->set_userdata($session_data);
+				$this->session->set_userdata($session_data);
 				
 				// Set SSO Session
-				$broker = new third_party\sso\Broker(SSO_SERVER, SSO_BROKER_ID, SSO_BROKER_SECRET);
-				$broker->attach(true);
-				$broker->login($email, $email);
+				// $broker = new third_party\sso\Broker(SSO_SERVER, SSO_BROKER_ID, SSO_BROKER_SECRET);
+				// $broker->attach(true);
+				// $broker->login($email, $email);
 
 	        	redirect('dashboard');
 	        } 
@@ -68,7 +68,7 @@ class Auth extends MX_Controller
 				$page = "auth"; 
 	        }
 
-			// $this->session->set_userdata('login', true);
+			$this->session->set_userdata('login', true);
 			// $this->session->set_userdata('user_profile', $this->googleplus->getUserInfo());
 			// redirect('dashboard');
 		} 
@@ -89,9 +89,9 @@ class Auth extends MX_Controller
 
 	public function logout()
     {
-    	$broker = new third_party\sso\Broker(SSO_SERVER, SSO_BROKER_ID, SSO_BROKER_SECRET);
-        $broker->attach(true);
-        $broker->logout();
+    	// $broker = new third_party\sso\Broker(SSO_SERVER, SSO_BROKER_ID, SSO_BROKER_SECRET);
+     //    $broker->attach(true);
+     //    $broker->logout();
         
     	$this->load->library('session');
     	$this->session->sess_destroy();

@@ -98,8 +98,8 @@ $query_builder = TRUE;
 
 $db['default'] = array(
 	'dsn'	   => '',
-	'hostname' => '172.17.0.2',
-	'username' => 'root',
+	'hostname' => '127.0.0.1',
+	'username' => 'jababeka',
 	'password' => 'password',
 	'database' => 'jababeka_stock',
 	'dbdriver' => 'mysqli',
