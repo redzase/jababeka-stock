@@ -217,7 +217,7 @@ class Memomodel extends MY_Model
                     {$this->_table_user}.username AS created_by_name
                     ", FALSE);
             }
-            $this->db->from($this->_table_memo_logs_logs);
+            $this->db->from($this->_table_memo_logs);
             $this->db->join($this->_table_user, "{$this->_table_memo_logs_logs}.created_by = {$this->_table_user}.id");
 
             if (!empty($sector_id)) {
