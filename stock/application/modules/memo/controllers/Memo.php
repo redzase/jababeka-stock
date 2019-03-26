@@ -471,13 +471,13 @@ class Memo extends MY_Controller
                 "end_limit"   => $end_limit,
                 "sector_id"   => $sector_id,
                 );
-            $all_data = $this->Memomodel->get_list($params);
+            $all_data = $this->Memomodel->get_list_logs($params);
 
             $params = array(
                 "get_total"  => TRUE,
                 "sector_id"  => $sector_id,
                 );
-            $total = $this->Memomodel->get_list($params);  
+            $total = $this->Memomodel->get_list_logs($params);  
 
             /**
              * START
