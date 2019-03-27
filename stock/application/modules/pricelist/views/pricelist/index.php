@@ -126,7 +126,7 @@ else {
                       <?php echo form_close(); ?>
                   </div>
 
-                  <div id="timeline-visualization" style="overflow:true;">
+                  <div id="timeline-visualization" style="overflow:auto;">
                     <?php if ($is_get and count($all_data_pricelist) == 0): ?>
                       <h3 align="center">No data found.</h3>
                     <?php endif; ?>
