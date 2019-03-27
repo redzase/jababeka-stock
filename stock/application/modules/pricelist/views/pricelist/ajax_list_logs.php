@@ -8,6 +8,7 @@
     <thead>
       <tr>
         <th><center>#</center></th>
+        <th><center>Activity</center></th>
         <th><center>Title</center></th>
         <th><center>Pricelist</center></th>
         <th><center>Start Date</center></th>
@@ -20,6 +21,7 @@
       <?php foreach ($all_data as $key => $value): ?>
         <tr>
           <td><?php echo $start_no++; ?></td>
+          <td><?php echo $value->activity; ?></td>
           <td><?php echo $value->title; ?></td>
           <td><a href="<?php echo ORIGINALS_PDF_PATH . "/". $value->filepath; ?>" target="_blank"><?php echo $value->filename; ?></a></td>
           <td><?php echo date_now(13, $value->start_date); ?></td>
