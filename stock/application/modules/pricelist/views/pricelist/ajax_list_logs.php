@@ -13,8 +13,8 @@
         <th><center>Pricelist</center></th>
         <th><center>Start Date</center></th>
         <th><center>End Date</center></th>
-        <th><center>Upload Time</center></th>
-        <th><center>Upload User</center></th>
+        <th><center>Modified Time</center></th>
+        <th><center>Modified User</center></th>
       </tr>
     </thead>
     <tbody>
