@@ -46,6 +46,10 @@
     border-color:#808080;
     color:#FFFFFF !important; 
   }
+  
+  .vis-timeline {
+    min-width:900px;
+  }
 </style>
 
 <?php
@@ -122,7 +126,7 @@ else {
                       <?php echo form_close(); ?>
                   </div>
 
-                  <div id="timeline-visualization">
+                  <div id="timeline-visualization" style="overflow:true;">
                     <?php if ($is_get and count($all_data_pricelist) == 0): ?>
                       <h3 align="center">No data found.</h3>
                     <?php endif; ?>
@@ -183,7 +187,7 @@ else {
     var options = {
       stack: true,
       horizontalScroll: false,
-      zoomable: true,
+      zoomable: false,
       moveable: true,
       // zoomKey: 'ctrlKey',
       // maxHeight: 400,
