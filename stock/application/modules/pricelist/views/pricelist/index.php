@@ -186,7 +186,7 @@ else {
     var currentYear = <?php echo (empty($filter_year)) ? date("Y") : $filter_year; ?>;
     var options = {
       stack: true,
-      horizontalScroll: false,
+      horizontalScroll: true,
       zoomable: false,
       moveable: true,
       // zoomKey: 'ctrlKey',
