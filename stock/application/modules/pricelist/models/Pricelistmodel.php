@@ -218,7 +218,7 @@ class Pricelistmodel extends MY_Model
                     ", FALSE);
             }
             $this->db->from($this->_table_pricelist_logs);
-            $this->db->join($this->_table_user, "{$this->_table_pricelist_logs}.created_by = {$this->_table_user}.id");
+            $this->db->join($this->_table_user, "{$this->_table_pricelist_logs}.modified_by = {$this->_table_user}.id");
 
             if (!empty($sector_id)) {
                 $this->db->where_in("{$this->_table_pricelist_logs}.sector_id", $sector_id);
