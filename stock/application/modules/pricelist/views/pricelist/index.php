@@ -197,7 +197,7 @@ else {
       max: currentYear +'-12-31',
       zoomMin: 1000 * 60 * 60 * 24 * 31,
       zoomMax: 1000 * 60 * 60 * 24 * 31 * 12,
-      autoResize: false,
+      //autoResize: false,
       editable: false,
       margin: {
         item: 10, // minimal margin between items
