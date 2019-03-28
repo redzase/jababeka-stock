@@ -455,7 +455,7 @@ class Memo extends MY_Controller
 
         $this->session->set_flashdata(PREFIX_SESSION . "_RESULT_PROCESS", $return);
 
-        redirect($this->class_metadata["module"] ."/". $this->class_metadata["class"] ."/index/". $sector_id, "refresh");
+        redirect($this->class_metadata["module"] ."/". $this->class_metadata["class"] ."/list/". $sector_id, "refresh");
     }
 
     public function ajax_list_logs($sector_id, $page = 1) 

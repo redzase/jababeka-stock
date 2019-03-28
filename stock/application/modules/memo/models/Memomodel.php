@@ -209,19 +209,19 @@ class Memomodel extends MY_Model
         try {
             if ($get_total) {
                 $this->db->select("
-                    COUNT({$this->_table_memo_logs_logs}.id) AS total
+                    COUNT({$this->_table_memo_logs}.id) AS total
                     ", FALSE);
             } else {
                 $this->db->select("
-                    {$this->_table_memo_logs_logs}.*,
+                    {$this->_table_memo_logs}.*,
                     {$this->_table_user}.username AS created_by_name
                     ", FALSE);
             }
             $this->db->from($this->_table_memo_logs);
-            $this->db->join($this->_table_user, "{$this->_table_memo_logs_logs}.modified_by = {$this->_table_user}.id");
+            $this->db->join($this->_table_user, "{$this->_table_memo_logs}.modified_by = {$this->_table_user}.id");
 
             if (!empty($sector_id)) {
-                $this->db->where_in("{$this->_table_memo_logs_logs}.sector_id", $sector_id);
+                $this->db->where_in("{$this->_table_memo_logs}.sector_id", $sector_id);
             }
 
             if ($get_total === FALSE) {
@@ -229,7 +229,7 @@ class Memomodel extends MY_Model
                     $this->db->limit($end_limit, $start_limit);
             }
 
-            $this->db->order_by("{$this->_table_memo_logs_logs}.created_date", "DESC");
+            $this->db->order_by("{$this->_table_memo_logs}.created_date", "DESC");
             $query = $this->db->get();
 
             if($query === FALSE)
