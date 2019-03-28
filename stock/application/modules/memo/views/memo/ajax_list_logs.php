@@ -10,7 +10,7 @@
         <th><center>#</center></th>
         <th><center>Activity</center></th>
         <th><center>Title</center></th>
-        <th><center>Pricelist</center></th>
+        <th><center>Memo</center></th>
         <th><center>Start Date</center></th>
         <th><center>End Date</center></th>
         <th><center>Modified Time</center></th>
