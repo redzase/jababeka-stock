@@ -206,5 +206,6 @@ else {
     // create a Timeline
     var container = document.getElementById('timeline-visualization');
     timeline = new vis.Timeline(container, items, groups, options);
+    timeline.setWindow(start, end);
   })
 </script>
