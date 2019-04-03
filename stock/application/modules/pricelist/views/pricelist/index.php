@@ -110,7 +110,7 @@ else {
                       <?php echo form_close(); ?>
                   </div>
 
-                  <div class="box-body table-responsive no-padding">
+                  <div class="col-md-12 table-responsive no-padding">
                       <div id="box-main" style="min-width:1024px;width:100%;">
                         <div id="box-left" style="float:left;width:20%;">
                           <div style="height:40px;text-align:right;margin-right:20px;line-height:40px;">Year</div>
@@ -122,7 +122,7 @@ else {
 
                         </div>
 
-                        <div id="box-right" style="float:left;width:79%;position:relative;">
+                        <div style="float:left;width:79%;position:relative;">
                           <div id="year"><?php echo (empty($filter_year)) ? date("Y") : $filter_year; ?></div>
                           <div>
                             <div class="month">Jan</div>
@@ -152,7 +152,9 @@ else {
                                   $width = ($value_pricelist["total_range_month"] + 1) * $bar_one_month;
                                   $random_keys = array_rand($item_colors,1);
                               ?>
-                                <div class="bar" style="left:<?php echo $left; ?>%;width:<?php echo $width; ?>%;background-color:<?php echo $item_colors[$random_keys]; ?>;"><?php echo $value_pricelist["title"]; ?></div>
+                                <div class="bar" style="left:<?php echo $left; ?>%;width:<?php echo $width; ?>%;background-color:<?php echo $item_colors[$random_keys]; ?>;">
+                                  <a href="<?php echo ORIGINALS_PDF_PATH . "/". $value_pricelist["filepath"]; ?>" target="_blank" style="color:white;"><?php echo $value_pricelist["title"]; ?></a>
+                                </div>
                               <?php 
                                 endforeach; 
                               endif;
