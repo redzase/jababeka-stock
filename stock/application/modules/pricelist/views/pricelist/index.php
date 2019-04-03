@@ -110,7 +110,7 @@ else {
                       <?php echo form_close(); ?>
                   </div>
 
-                  <div id="timeline-visualization">
+                  <div class="box-body table-responsive no-padding">
                       <div id="box-main" style="min-width:1024px;width:100%;">
                         <div id="box-left" style="float:left;width:20%;">
                           <div style="height:40px;text-align:right;margin-right:20px;line-height:40px;">Year</div>
