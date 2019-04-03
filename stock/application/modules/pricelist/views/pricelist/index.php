@@ -1,55 +1,39 @@
 <style type="text/css">
-  .vis-item.red, .vis-item.red a {
-    background-color:#FF0000;
-    border-color:#808080;
-    color:#FFFFFF !important; 
-  }
+.bar {
+  position:absolute;
+  height:20px;
+  opacity:0.7;
+  text-align:center;
+  color:white;
+    border-radius:25px;
+}
+#year{
+  width:100%;
+  text-align:center;
+  height:40px;
+  line-height:40px;
+}
+.month{
+  float:left;
+  width:8.3%;
+  text-align:center;
+  height:40px;
+  line-height:40px;
+}
+.box-bar{
+  padding-top:10px;
+  padding-bottom:30px;
+  width:100%;
+  position:relative;
+  clear:both;
+}
 
-  .vis-item.maroon, .vis-item.maroon a {
-    background-color:#800000;
-    border-color:#808080;
-    color:#FFFFFF !important; 
-  }
+.box-title{
+  line-height:40px;
+  text-align:right;
+  margin-right:20px;
+}
 
-  .vis-item.yellow, .vis-item.yellow a {
-    background-color:#FFFF00;
-    border-color:#808080;
-    color:#808080 !important; 
-  }
-
-  .vis-item.olive, .vis-item.olive a {
-    background-color:#808000;
-    border-color:#808080;
-    color:#FFFFFF !important; 
-  }
-
-  .vis-item.lime, .vis-item.lime a {
-    background-color:#00FF00;
-    border-color:#808080;
-    color:#808080 !important; 
-  }
-
-  .vis-item.green, .vis-item.green a {
-    background-color:#008000;
-    border-color:#808080;
-    color:#FFFFFF !important; 
-  }
-
-  .vis-item.aqua, .vis-item.aqua a {
-    background-color:#00FFFF;
-    border-color:#808080;
-    color:#808080 !important; 
-  }
-
-  .vis-item.teal, .vis-item.teal a {
-    background-color:#008080;
-    border-color:#808080;
-    color:#FFFFFF !important; 
-  }
-  
-  .vis-timeline {
-    //min-width:1090px;
-  }
 </style>
 
 <?php
@@ -126,10 +110,58 @@ else {
                       <?php echo form_close(); ?>
                   </div>
 
-                  <div id="timeline-visualization" style="">
-                    <?php if ($is_get and count($all_data_pricelist) == 0): ?>
-                      <h3 align="center">No data found.</h3>
-                    <?php endif; ?>
+                  <div id="timeline-visualization">
+                      <div id="box-main" style="min-width:1024px;width:100%;">
+                        <div id="box-left" style="float:left;width:20%;">
+                          <div style="height:40px;text-align:right;margin-right:20px;line-height:40px;">Year</div>
+                          <div style="height:40px;text-align:right;margin-right:20px;line-height:40px;">Sector / Month</div>
+
+                          <?php foreach ($all_data_sector as $key => $value): ?>
+                            <div class="box-title"><a href="<?php echo site_url("pricelist/list/". $value->id); ?>"><?php echo addslashes($value->name); ?></a></div>
+                          <?php endforeach; ?>
+
+                        </div>
+
+                        <div id="box-right" style="float:left;width:79%;position:relative;">
+                          <div id="year"><?php echo (empty($filter_year)) ? date("Y") : $filter_year; ?></div>
+                          <div>
+                            <div class="month">Jan</div>
+                            <div class="month">Feb</div>
+                            <div class="month">Mar</div>
+                            <div class="month">Apr</div>
+                            <div class="month">May</div>
+                            <div class="month">Jun</div>
+                            <div class="month">Jul</div>
+                            <div class="month">Aug</div>
+                            <div class="month">Sep</div>
+                            <div class="month">Oct</div>
+                            <div class="month">Nov</div>
+                            <div class="month">Des</div>
+                            <div style="clear:both;"></div>
+                          </div>
+
+                          <?php foreach ($all_data_sector as $key => $value): ?>
+                            <div class="box-bar">
+                              <?php 
+                              if (isset($list_pricelist[$value->id])):
+                                $bar_one_month = 8.3;
+                                $item_colors = ["red", "maroon", "olive", "green", "teal", "blue"];
+
+                                foreach ($list_pricelist[$value->id] as $key_pricelist => $value_pricelist): 
+                                  $left  = ($value_pricelist["start_month"] - 1) * $bar_one_month;
+                                  $width = ($value_pricelist["total_range_month"] + 1) * $bar_one_month;
+                                  $random_keys = array_rand($item_colors,1);
+                              ?>
+                                <div class="bar" style="left:<?php echo $left; ?>%;width:<?php echo $width; ?>%;background-color:<?php echo $item_colors[$random_keys]; ?>;"><?php echo $value_pricelist["title"]; ?></div>
+                              <?php 
+                                endforeach; 
+                              endif;
+                              ?>
+                            </div>
+                          <?php endforeach; ?>
+
+                        </div>
+                      </div>
                   </div>
               </div>
               <!-- /.box-body -->
@@ -155,60 +187,5 @@ else {
           search     : 'Cari Sector'
       }
     });
-
-    // create numberOfGroups
-    var item_colors = ["red", "maroon", "yellow", "olive", "lime", "green", "aqua", "teal"];
-    var numberOfGroups = <?php echo count($all_data_sector); ?>; 
-    var groups = new vis.DataSet()
-    <?php foreach ($all_data_sector as $key => $value): ?>
-     groups.add({
-        id: <?php echo $value->id; ?>,
-        content: '<a href="<?php echo site_url("pricelist/list/". $value->id); ?>"><?php echo addslashes($value->name); ?></a>'
-      })   
-    <?php endforeach; ?>
-
-    var items = new vis.DataSet();
-   
-    <?php foreach ($all_data_pricelist as $key => $value): ?>
-      var color_index = Math.floor(Math.random() * (7 - 0 + 1)) + 0;
-      var color = item_colors[color_index];
-      items.add({
-        id: <?php echo $value->id; ?>,
-        group: <?php echo $value->sector_id; ?>,
-        start: '<?php echo $value->start_date; ?>',
-        end: '<?php echo $value->end_date; ?>',
-        content: '<a href="<?php echo ORIGINALS_PDF_PATH . "/". $value->filepath; ?>" target="_blank"><?php echo $value->title; ?></a>',
-        className: color,
-      });
-    <?php endforeach; ?>
-
-    // specify options
-    var currentYear = <?php echo (empty($filter_year)) ? date("Y") : $filter_year; ?>;
-    var options = {
-      stack: true,
-      horizontalScroll: false,
-      zoomable: true,
-      moveable: true,
-      // zoomKey: 'ctrlKey',
-      // maxHeight: 400,
-      start: currentYear +'-01-01',
-      end: currentYear +'-12-31',
-      min: currentYear +'-01-01',
-      max: currentYear +'-12-31',
-      zoomMin: 1000 * 60 * 60 * 24 * 31,
-      zoomMax: 1000 * 60 * 60 * 24 * 31 * 12,
-      //autoResize: false,
-      editable: false,
-      margin: {
-        item: 10, // minimal margin between items
-        axis: 5   // minimal margin between items and the axis
-      },
-      orientation: 'top',
-    };
-
-    // create a Timeline
-    var container = document.getElementById('timeline-visualization');
-    timeline = new vis.Timeline(container, items, groups, options);
-    timeline.setWindow(start, end);
   })
 </script>

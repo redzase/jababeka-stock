@@ -28,7 +28,7 @@ class Memo extends MY_Controller
         }
 
         $config["upload_path"]   = $uploadPath;
-        $config["allowed_types"] = 'pdf';
+        $config["allowed_types"] = 'pdf|'. ALLOWED_UPLOAD_TYPE;
         $config["encrypt_name"]  = FALSE;
         $config["overwrite"]     = FALSE;
 
@@ -145,6 +145,50 @@ class Memo extends MY_Controller
                 // "end_limit"   => $end_limit,
                 );
             $all_data_memo = $this->Memomodel->get_list($params);
+
+            $list_memo = [];
+            foreach ($all_data_memo as $key => $value) {
+                if (!isset($list_memo[$value->sector_id])) {
+                    $list_memo[$value->sector_id] = [];
+                }
+
+                $start_year = date_now(17, $value->start_date);
+                $end_year = date_now(17, $value->end_date);
+
+                if ($year == $start_year) {
+                    $start_month = date_now(16, $value->start_date);
+
+                    if ($year == $end_year) {
+                        $total_range_month = month_between_date($value->start_date, $value->end_date);
+                    } elseif ($year < $end_year) {
+                        $total_range_month = month_between_date($value->start_date, "{$year}-12-30");
+                    }
+                } else {
+                    $start_month = 1;
+
+                    if ($year == $end_year) {
+                        $total_range_month = month_between_date("{$year}-01-01", $value->end_date);
+                    } elseif ($year < $end_year) {
+                        $total_range_month = month_between_date("{$year}-01-01", "{$year}-12-30");
+                    }
+                }
+
+                // if ($year == $end_year) {
+                //     $total_range_month = month_between_date($value->start_date, $value->end_date);
+                // } elseif ($year < $end_year) {
+                //     $total_range_month = month_between_date($value->start_date, "{$year}-12-01");
+                // } elseif ($year > $end_year) {
+                //     $total_range_month = month_between_date("{$year}-01-01", $value->end_date);
+                // }
+
+                $list_memo[$value->sector_id] = array_merge($list_memo[$value->sector_id], [[
+                    "start_month"       => $start_month,
+                    "total_range_month" => $total_range_month,
+                    "title"             => $value->title,
+                    "filename"          => $value->filename,
+                    "filepath"          => $value->filepath,
+                ]]);
+            }
         // }
 
         /**
@@ -155,6 +199,7 @@ class Memo extends MY_Controller
         $data_content["filter"]             = $filter;
         $data_content["is_get"]             = $is_get;
         $data_content["all_data_memo"]      = $all_data_memo;
+        $data_content["list_memo"]          = $list_memo;
         $data_content["all_data_sector"]    = $all_data_sector_filter;
         $data_content["list_sector"]        = generate_array($all_data_sector, "id", "name");
         // $data_content["list_year"]       = array_unique($list_year);

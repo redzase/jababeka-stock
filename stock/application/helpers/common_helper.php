@@ -328,3 +328,12 @@ if(!function_exists("insert_logs"))
         return $result;
     }
 }
+
+if(!function_exists("month_between_date")) {
+    function month_between_date($date1, $date2) {
+        $date1 = new DateTime($date1);
+        $date2 = new DateTime($date2);
+        $interval = date_diff($date1, $date2);
+        return $interval->m + ($interval->y * 12);
+    }
+}
