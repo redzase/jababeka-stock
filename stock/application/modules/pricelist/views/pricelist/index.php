@@ -117,7 +117,7 @@ else {
                           <div style="height:40px;text-align:right;margin-right:20px;line-height:40px;">Sector / Month</div>
 
                           <?php foreach ($all_data_sector as $key => $value): ?>
-                            <div class="box-title"><a href="<?php echo site_url("pricelist/list/". $value->id); ?>"><?php echo addslashes($value->name); ?></a></div>
+                            <div class="box-title"><a href="<?php echo site_url("pricelist/list/". $value->id); ?>"><?php echo $value->name; ?></a></div>
                           <?php endforeach; ?>
 
                         </div>
