@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class UserDivisi extends MY_Controller 
+class Userdivisi extends MY_Controller 
 {
 
     private $_module = "USER_DIVISI";
@@ -11,7 +11,7 @@ class UserDivisi extends MY_Controller
     public function __construct()
     {
         parent::__construct();
-        
+
         $this->load->model('Userdivisimodel');
         $this->load->model('master/Typemodel');
         $this->load->model('master/Statusmodel');

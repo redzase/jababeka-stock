@@ -85,7 +85,6 @@
                                 <a class="btn default btn-xs purple" href="<?php echo site_url("/ticket/detail/" . $id_type . "/" . $value->id_status . "/" . $value->id); ?>"><i class="fa fa-book"></i> Detail </a>
                                 <?php if ($value->id_status == $data_status_first->id) : ?>
                                   <a class="btn default btn-xs purple" href="<?php echo site_url("/ticket/edit/" . $id_type . "/" . $value->sort_number . "/" . $value->id); ?>"><i class="fa fa-edit"></i> Edit </a>
-                                  <a class="btn default btn-xs black" href="<?php echo site_url("/ticket/delete/". $id_type . "/" . $value->id); ?>" onclick="return confirm('Anda yakin ingin menghapus data ini?');"><i class="fa fa-trash-o"></i> Delete </a>
                                 <?php endif; ?>
 
                               </td>

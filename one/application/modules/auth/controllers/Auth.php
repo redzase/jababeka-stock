@@ -9,7 +9,7 @@ class Auth extends MX_Controller
 		parent::__construct();
 		
 		$this->load->model('Authmodel');
-		$this->load->library('googleplus');
+		//$this->load->library('googleplus');
 
 	}
 	
@@ -26,7 +26,7 @@ class Auth extends MX_Controller
 		
 		// $data['message_display'] = $this->session->flashdata('message_display');
 		// $data['user_data'] = $this->session->flashdata('user_data');
-		$data_content['login_url'] = $this->googleplus->loginURL();
+		//$data_content['login_url'] = $this->googleplus->loginURL();
 		$data_content["ses_result_process"] = $this->session->flashdata(PREFIX_SESSION . "_RESULT_PROCESS");
 		$this->load->view('login', $data_content, array('login-header-footer' => True));
 		
@@ -161,7 +161,7 @@ class Auth extends MX_Controller
         
     	$this->load->library('session');
     	$this->session->sess_destroy();
-		$this->googleplus->revokeToken();
+		//$this->googleplus->revokeToken();
 		redirect(SSO_SERVER_LOGIN);
 
         // // Removing session data
