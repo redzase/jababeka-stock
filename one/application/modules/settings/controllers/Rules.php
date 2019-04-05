@@ -124,6 +124,8 @@ class Rules extends MY_Controller
         // delete by id type
         $action = $this->Rulesmodel->delete_by_id_type($id_type);
 
+        $action = $this->Rulesmodel->delete_detail_by_id_type($id_type);
+
         // loop by id status  
         foreach ($id_status as $key => $value) {
             $data_create = [

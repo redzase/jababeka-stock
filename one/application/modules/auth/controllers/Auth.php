@@ -15,6 +15,12 @@ class Auth extends MX_Controller
 	
 	public function index()
 	{
+
+        if ($this->input->post()) {
+            $email = $this->input->post('email');
+            self::_do_login($email);
+        }
+
 		// CEK APAKAH USER SUDAH LOGIN ATAU BELUM
 		is_logged_in(FALSE);
 		
@@ -22,9 +28,69 @@ class Auth extends MX_Controller
 		// $data['user_data'] = $this->session->flashdata('user_data');
 		$data_content['login_url'] = $this->googleplus->loginURL();
 		$data_content["ses_result_process"] = $this->session->flashdata(PREFIX_SESSION . "_RESULT_PROCESS");
-		$this->load->view('index', $data_content, array('login-header-footer' => True));
+		$this->load->view('login', $data_content, array('login-header-footer' => True));
 		
 	}
+
+    private function _do_login($email){
+        $this->load->library('session');
+        
+        if (isset($email)) {
+            // echo "asdsa";
+            // $this->googleplus->getAuthenticate();
+            
+            // $google_user_info = $this->googleplus->getUserInfo();
+            // $email = $google_user_info["email"];
+
+            $params = array(
+                "email" => $email,
+                );
+            $all_data = $this->Authmodel->check_email($params);
+
+            if ($all_data) {
+                $session_data = array(
+                    PREFIX_SESSION . "_USER_ID"       => $all_data->id,
+                    PREFIX_SESSION . "_USER_USERNAME" => $all_data->username,
+                    PREFIX_SESSION . "_ALL_ACCESS"    => $all_data->all_access,
+                    );
+
+                $this->session->set_userdata($session_data);
+                
+                // Set SSO Session
+                // $broker = new third_party\sso\Broker(SSO_SERVER, SSO_BROKER_ID, SSO_BROKER_SECRET);
+                // $broker->attach(true);
+                // $broker->login($email, $email);
+
+                redirect('dashboard');
+            } 
+            else {
+                $result = array(
+                    "status" => FALSE,
+                    "message" => "Login failed. Check your account again.",
+                );
+
+                // Set session error message
+                $this->session->set_flashdata(PREFIX_SESSION ."_RESULT_PROCESS", $result);
+                $page = "auth"; 
+            }
+
+            $this->session->set_userdata('login', true);
+            // $this->session->set_userdata('user_profile', $this->googleplus->getUserInfo());
+            // redirect('dashboard');
+        } 
+        else {
+            $result = array(
+                "status" => FALSE,
+                "message" => "Login failed. Check your account again.",
+            );
+
+            // Store session
+            $this->session->set_flashdata(PREFIX_SESSION ."_RESULT_PROCESS", $result);
+            $page = "auth"; 
+        }
+
+        redirect($page, "refresh");
+    }
 
 	public function callback()
 	{

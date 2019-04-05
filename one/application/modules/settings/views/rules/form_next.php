@@ -299,7 +299,8 @@ else {
     var tplRaw = $("#tpl_status_" + dt_status).clone().html().trim(),
         tpl = $(tplRaw);
     // detect selected condtions and set to disable
-    // console.log("asd");
+    console.log(data_status_code);
+    console.log(dt_status);
     if (data_status_code[dt_status].length > 0) {
       for(var i = 0; i < data_status_code[dt_status].length; i++) {
           $(tpl).find("option[value='" + data_status_code[dt_status][i] + "']").prop("disabled", true);
@@ -365,7 +366,7 @@ else {
       }
 
       // add to data
-      if (!status.value in data_status_code[dt_status]){
+      if (!data_status_code[dt_status].indexOf(status.value) != -1){
         data_status_code[dt_status].push(status.value);
       }
       // console.log(data_status_code);
