@@ -12,7 +12,7 @@
       </h1>
       <ol class="breadcrumb">
         <li><a href="<?php echo site_url("dashboard"); ?>"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li><a href="<?php echo site_url("/ticket/"); ?>">Ticket</a></li>
+        <li><a href="<?php echo site_url("ticket/index/".$id_type); ?>">Ticket</a></li>
         <li class="active"><?php echo $name_type; ?></li>
       </ol>
     </section>
@@ -42,7 +42,7 @@
               <div class="box-body">
 
                   <p class="pull-left" style="margin-left:10px;">
-                      <a href="<?php echo site_url('/ticket/') ?>">
+                      <a href="<?php echo site_url('/ticket/index/'.$id_type) ?>">
                         <i class="fa fa-arrow-left"></i>&nbsp; Back to Ticket
                       </a> 
                   </p>
@@ -79,11 +79,15 @@
                                 <?php echo $value->description; ?>
                               </td>
                               <td>
-                                <?php echo $value->status_order_name; ?>
+                                <span class="btn-xs bg-purple"><?php echo $value->status_order_name; ?></span>
                               </td>
                               <td>
-                                <a class="btn default btn-xs purple" href="<?php echo site_url("/ticket/edit/" . $id_type . "/" . $value->sort_number . "/" . $value->id); ?>"><i class="fa fa-edit"></i> Edit </a>
-                                <a class="btn default btn-xs black" href="<?php echo site_url("/ticket/delete/". $id_type . "/" . $value->id); ?>" onclick="return confirm('Anda yakin ingin menghapus data ini?');"><i class="fa fa-trash-o"></i> Delete </a>
+                                <a class="btn default btn-xs purple" href="<?php echo site_url("/ticket/detail/" . $id_type . "/" . $value->id_status . "/" . $value->id); ?>"><i class="fa fa-book"></i> Detail </a>
+                                <?php if ($value->id_status == $data_status_first->id) : ?>
+                                  <a class="btn default btn-xs purple" href="<?php echo site_url("/ticket/edit/" . $id_type . "/" . $value->sort_number . "/" . $value->id); ?>"><i class="fa fa-edit"></i> Edit </a>
+                                  <a class="btn default btn-xs black" href="<?php echo site_url("/ticket/delete/". $id_type . "/" . $value->id); ?>" onclick="return confirm('Anda yakin ingin menghapus data ini?');"><i class="fa fa-trash-o"></i> Delete </a>
+                                <?php endif; ?>
+
                               </td>
                             </tr>
                           <?php endforeach; ?>

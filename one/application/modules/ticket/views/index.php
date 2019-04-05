@@ -5,7 +5,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Jababeka Control Center - Ticket
+        Dashboard Ticket - <?php echo $name_type; ?>
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
@@ -25,7 +25,7 @@
             </a> 
         </p>
 
-        <div class="col-md-3 col-sm-6 col-xs-12">
+        <?php /* ?><div class="col-md-3 col-sm-6 col-xs-12">
           <div class="info-box">
             <span class="info-box-icon bg-aqua"><i class="ion ion-android-archive"></i></span>
 
@@ -41,6 +41,7 @@
           </div>
           <!-- /.info-box -->
         </div>
+        <?php */ ?>
 
         <div class="col-md-3 col-sm-6 col-xs-12">
           <div class="info-box">
@@ -49,7 +50,7 @@
             <div class="info-box-content">
               <span class="info-box-text"><h4>Settings</h4></span>
               <span class="info-box-number">
-                <a href="/settings/" class="small-box-footer">
+                <a href="/settings/rules/index/<?php echo $id_type; ?>" class="small-box-footer">
                   <small>More info <i class="fa fa-arrow-circle-right"></i></small>
                 </a>
               </span>
@@ -59,17 +60,14 @@
           <!-- /.info-box -->
         </div>
 
-        <?php 
-          foreach ($list_type as $key => $value):
-        ?>
         <div class="col-md-3 col-sm-6 col-xs-12">
           <div class="info-box">
             <span class="info-box-icon bg-aqua"><i class="ion ion-social-apple"></i></span>
 
             <div class="info-box-content">
-              <span class="info-box-text"><h4><?php echo $value; ?></h4></span>
+              <span class="info-box-text"><h4>TICKET</h4></span>
               <span class="info-box-number">
-                <a href="list/<?php echo $key; ?>" class="small-box-footer">
+                <a href="/ticket/list/<?php echo $id_type; ?>" class="small-box-footer">
                   <small>More info <i class="fa fa-arrow-circle-right"></i></small>
                 </a>
               </span>
@@ -79,9 +77,6 @@
           <!-- /.info-box -->
         </div>
         <!-- /.col -->
-        <?php 
-          endforeach;
-        ?>
 
       </div>
       <!-- /.box -->

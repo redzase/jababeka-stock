@@ -70,6 +70,7 @@ else {
                   </div>   
               </div>
 
+              <?php /*
               <div class="box-body">
 
                   <div class="form-group">
@@ -81,6 +82,7 @@ else {
                   </div>  
                 
               </div>  
+              */ ?>
                   
               <!-- /.box-body -->
               <div class="box-footer">

@@ -9,7 +9,7 @@
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li><a href="<?php echo site_url('/ticket/') ?>">Ticket</a></li>
+        <li><a href="<?php echo site_url('/dashboard/') ?>">Dashboard</a></li>
         <li class="active">Master</li>
       </ol>
     </section>
@@ -19,8 +19,8 @@
       <div class="row">
 
         <p class="pull-left col-xs-12">
-            <a href="<?php echo site_url('/ticket/') ?>">
-              <i class="fa fa-arrow-left"></i>&nbsp; Back to ticket
+            <a href="<?php echo site_url('/dashboard/') ?>">
+              <i class="fa fa-arrow-left"></i>&nbsp; Back to dashboard
             </a> 
         </p>
 

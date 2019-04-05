@@ -25,6 +25,7 @@ class Statusmodel extends MY_Model
             }
             $this->db->from($this->_table_mst_status);
             $this->db->where("{$this->_table_mst_status}.is_deleted", NULL);
+            $this->db->where("{$this->_table_mst_status}.default", NULL);
 
             if ($get_total === FALSE) {
                 if ($start_limit != "" or $end_limit != "")
@@ -89,6 +90,32 @@ class Statusmodel extends MY_Model
                 throw new Exception();
 
             $result = $query->row();
+
+            return $result;         
+        } catch(Exception $e) {
+            return FALSE;
+        }
+    }
+
+    public function get_list_by_params($params = array(), $where = array()) {
+        $order_by   = (isset($params["order_by"])) ? $params["order_by"] : "created_at";
+        $sort_by   = (isset($params["sort_by"])) ? $params["sort_by"] : "DESC";
+        try {
+            $this->db->select("
+                {$this->_table_mst_status}.*
+                ", FALSE);
+            $this->db->from($this->_table_mst_status);
+            foreach ($where as $key => $value) {
+                $this->db->where(sprintf("{$this->_table_mst_status}.%s", $key), $value);
+            }
+            $this->db->order_by(sprintf("{$this->_table_mst_status}.%s", $order_by), $sort_by);
+
+            $query = $this->db->get();
+
+            if($query === FALSE)
+                throw new Exception();
+
+            $result = $query->result();
 
             return $result;         
         } catch(Exception $e) {

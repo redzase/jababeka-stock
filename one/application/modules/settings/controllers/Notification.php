@@ -138,7 +138,7 @@ class Notification extends MY_Controller
             $action = $this->Notificationmodel->create($data_create);
 
             $result["status"]  = $action;
-            $result["message"] = ($action) ? "Rules successfully created." : "Rules failed created.";
+            $result["message"] = ($action) ? "Notification successfully created." : "Notification failed created.";
 
             // Store session
             $this->session->set_flashdata(PREFIX_SESSION ."_RESULT_PROCESS", $result);
@@ -207,7 +207,7 @@ class Notification extends MY_Controller
             $check_notification = $this->Notificationmodel->get_detail_by_params($params);
             if ($check_notification and $check_notification->id !== $id){
                 $result["status"]  = FALSE;
-                $result["message"] = sprintf("Rules with user <b><i>%s</i></b> is already exists", $dt_user->username);
+                $result["message"] = sprintf("Notification with user <b><i>%s</i></b> is already exists", $dt_user->username);
                 $this->session->set_flashdata(PREFIX_SESSION ."_FORM_RESULT_PROCESS", $result);
                 return false;
             }
@@ -222,7 +222,7 @@ class Notification extends MY_Controller
             $action = $this->Notificationmodel->update($id, $data_update);
 
             $result["status"]  = $action;
-            $result["message"] = ($action) ? "Rules successfully updated." : "Rules failed updated.";
+            $result["message"] = ($action) ? "Notification successfully updated." : "Notification failed updated.";
 
             // Store session
             $this->session->set_flashdata(PREFIX_SESSION ."_RESULT_PROCESS", $result);
@@ -278,12 +278,12 @@ class Notification extends MY_Controller
         if ($action === TRUE) {
             $return = array(
                 "status"  => TRUE,
-                "message" => "Rules successfully deleted.",
+                "message" => "Notification successfully deleted.",
                 );
         } else {
             $return = array(
                 "status"  => FALSE,
-                "message" => "Rules failed deleted.",
+                "message" => "Notification failed deleted.",
                 );
         }
 

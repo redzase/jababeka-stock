@@ -4,13 +4,12 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-      Status
-        <small>list status</small>
+      User Divisi
+        <small>assign of user to division</small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="<?php echo site_url("dashboard"); ?>"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li><a href="<?php echo site_url("/master/"); ?>">Master</a></li>
-        <li class="active">Status</li>
+        <li class="active">User Divisi</li>
       </ol>
     </section>
 
@@ -28,14 +27,14 @@
               <div class="box-body">
 
                   <p class="pull-left" style="margin-left:10px;">
-                      <a href="<?php echo site_url('/master/') ?>">
-                        <i class="fa fa-arrow-left"></i>&nbsp; Back to master
+                      <a href="<?php echo site_url('/dashboard/') ?>">
+                        <i class="fa fa-arrow-left"></i>&nbsp; Back to dashboard
                       </a> 
                   </p>
 
                   <p class="pull-right" style="margin-left:10px;">
-                      <a href="<?php echo site_url('master/status/add/') ?>" class="btn btn-primary">
-                        <i class="fa fa-plus"></i>&nbsp; Add Status
+                      <a href="<?php echo site_url('/settings/userdivisi/add/') ?>" class="btn btn-primary">
+                        <i class="fa fa-plus"></i>&nbsp; Add User Divisi
                       </a> 
                   </p>
                   <div style="clear:both;"></div>
@@ -44,8 +43,8 @@
                         <thead>
                             <tr role="row">
                                 <th style="width: 10px">#</th>
-                                <th>Name</th>
-                                <th>Status Order</th>
+                                <th>Username</th>
+                                <th>Divisi</th>
                                 <th width="12%">Action</th>
                             </tr>
                         </thead>
@@ -58,16 +57,14 @@
                                 <?php echo $start_no++; ?>
                               </td>
                               <td>
+                                <?php echo $value->username; ?>
+                              </td>
+                              <td>
                                 <?php echo $value->name; ?>
                               </td>
                               <td>
-                                <?php echo $value->status_order; ?>
-                              </td>
-                              <td>
-                                <?php if (!$value->default): ?>
-                                  <a class="btn default btn-xs purple" href="<?php echo site_url("master/status/edit/". $value->id); ?>"><i class="fa fa-edit"></i> Edit </a>
-                                  <a class="btn default btn-xs black" href="<?php echo site_url("master/status/delete/". $value->id); ?>" onclick="return confirm('Anda yakin ingin menghapus data ini?');"><i class="fa fa-trash-o"></i> Delete </a>
-                                <?php endif; ?>
+                                <a class="btn default btn-xs purple" href="<?php echo site_url("/settings/userdivisi/edit/". $value->id); ?>"><i class="fa fa-edit"></i> Edit </a>
+                                <a class="btn default btn-xs black" href="<?php echo site_url("/settings/userdivisi/delete/". $value->id); ?>" onclick="return confirm('Anda yakin ingin menghapus data ini?');"><i class="fa fa-trash-o"></i> Delete </a>
                               </td>
                             </tr>
                           <?php endforeach; ?>

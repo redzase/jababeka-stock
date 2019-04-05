@@ -13,22 +13,35 @@ class Ticket extends MY_Controller
         
         parent::__construct();
         $this->load->model('master/Typemodel');
+        $this->load->model('master/Statusmodel');
         $this->load->model('settings/Rulesmodel');
         $this->load->model('Ticketmodel');
+        $this->load->model('settings/Userdivisimodel');
     }
 
-    public function index(){
+    public function index($id_type = NULL)
+    {
 
-        $params = array(
-            'order_by'  => 'name',
-            'sort_by'   => 'ASC',
-        );
-        $all_data_type = $this->Typemodel->get_list($params);
+        // CHeck if status in type
+        if ($id_type !== NULL){
+            $where_check_type_status = array(
+                "id" => $id_type
+            );
 
-        $data_content["all_data_type"]      = $all_data_type;
-        $data_content["list_type"]          = generate_array($all_data_type, "id", "name");
+            $check_type_status = $this->Typemodel->get_detail_by_id($where_check_type_status);
+            if (!$check_type_status){
+                $result["status"]  = FALSE;
+                $result["message"] = sprintf("Unknown parameters, Please try again");
+                $this->session->set_flashdata(PREFIX_SESSION ."_RESULT_PROCESS", $result);
+                redirect('/dashboard', "refresh");
+            }
+        }
+
+        $get_name_type = $this->Typemodel->get_detail_by_id(array("id" => $id_type))->name;
+
+        $data_content['id_type']            = $id_type;
+        $data_content['name_type']          = $get_name_type;
         $data_content["ses_result_process"] = $this->session->flashdata(PREFIX_SESSION . "_RESULT_PROCESS");
-
         $this->load->view('index', $data_content);
     }
 
@@ -39,7 +52,7 @@ class Ticket extends MY_Controller
         // check_access_module_permission($this->_module, PERMISSION_READ, True);
         $all_data_rules = array();
         if ($id_type !== NULL){
-            $all_data_rules = $this->Rulesmodel->get_list_by_id_type($id_type);
+            $all_data_rules = $this->Rulesmodel->get_list_status_by_id_type($id_type, TRUE);
             if (!$all_data_rules){
                 $result["status"]  = FALSE;
                 $result["message"] = sprintf("Rules is not definition, please input rules first");
@@ -66,6 +79,14 @@ class Ticket extends MY_Controller
             }
 
         }
+
+        // get data first
+        $where = array(
+            'default'   => TRUE,
+            'status_order' => 1,
+            'is_deleted' => NULL
+        );
+        $data_status_first = $this->Statusmodel->get_detail_by_params($where);
 
         // If no sector_id defined, redirect to dashboard page
         $page        = ($page < 1) ? 1 : ($page - 1); 
@@ -119,7 +140,8 @@ class Ticket extends MY_Controller
          * -- Start --
          * Store data for view
          */
-
+        
+        $data_content['data_status_first']  = $data_status_first;
         $data_content['id_type']            = $id_type;
         $data_content['id_status']          = $id_status;
         $data_content['name_type']          = $get_name_type;
@@ -192,9 +214,80 @@ class Ticket extends MY_Controller
         $this->load->view($this->class_metadata["module"] ."/form", $data_content);
     }
 
+    private function _do_detail($id_type = NULL, $id = NULL) 
+    {
+        // get data first
+        $id_status     = $this->input->post("status") ?: "";
+        $title           = $this->input->post("title") ?: "";
+        $description           = $this->input->post("description") ?: "";
+
+        $data_create = [
+            "id_status"          => $id_status,
+            "updated_by"   => $this->session->userdata(PREFIX_SESSION . "_USER_ID"), 
+            "updated_at"   => date_now(),
+        ];
+
+        $action = $this->Ticketmodel->update($id, $data_create);
+
+        $result["status"]  = $action;
+        $result["message"] = ($action) ? "Ticket successfully updated." : "Ticket failed updated.";
+
+        // Store session
+        $this->session->set_flashdata(PREFIX_SESSION ."_RESULT_PROCESS", $result);
+
+        redirect($this->class_metadata["module"] ."/list/". $id_type . "/" . $id_status, "refresh");
+    }
+
+    public function detail($id_type = NULL, $id_status = NULL, $id = NULL)
+    {
+        // If submit
+        if ($this->input->post()) {
+            self::_do_detail($id_type, $id);
+        }
+
+        $session_id_user = $this->session->userdata(PREFIX_SESSION . "_USER_ID");
+
+        $params = array(
+            "id_user"           => $session_id_user,
+            "is_deleted"        => NULL
+            );
+
+        $all_data_divisi = $this->Userdivisimodel->get_detail_by_params();
+
+        $params = array(
+            "id_type"           => $id_type,
+            "id_status_parent"  => $id_status,
+            "id_divisi"         => $all_data_divisi->id_divisi
+            );
+        $all_data_rules = $this->Rulesmodel->get_list_with_detail_raw($params);
+
+        $get_name_type = $this->Typemodel->get_detail_by_id(array("id" => $id_type))->name;
+
+        $params = array(
+            "id" => $id,
+            );
+        $all_data = $this->Ticketmodel->get_detail_by_id($params);
+
+        $data_content['id_type']            = $id_type;
+        $data_content['name_type']          = $get_name_type;
+        $data_content["all_data_rules"]      = $all_data_rules;
+        $data_content["all_data"]      = $all_data;
+
+        $this->load->view($this->class_metadata["module"] ."/detail", $data_content);
+    }
+
     private function _do_add($id_type = NULL) 
     {
-        $id_status     = $this->input->post("select_status") ?: "";
+
+        // get data first
+        $where = array(
+            'default'   => TRUE,
+            'status_order' => 1,
+            'is_deleted' => NULL
+        );
+        $data_status_first = $this->Statusmodel->get_detail_by_params($where);
+
+        $id_status     = $data_status_first->id;
         $title           = $this->input->post("title") ?: "";
         $description           = $this->input->post("description") ?: "";
 
@@ -206,11 +299,6 @@ class Ticket extends MY_Controller
             array(
                 "field" => "title",
                 "label" => "Title",
-                "rules" => "required",
-                ),
-            array(
-                "field" => "select_status",
-                "label" => "Rules",
                 "rules" => "required",
                 )
             );
@@ -249,7 +337,15 @@ class Ticket extends MY_Controller
 
     private function _do_edit($id_type = NULL, $id = NULL) 
     {
-        $id_status     = $this->input->post("select_status") ?: "";
+        // get data first
+        $where = array(
+            'default'   => TRUE,
+            'status_order' => 1,
+            'is_deleted' => NULL
+        );
+        $data_status_first = $this->Statusmodel->get_detail_by_params($where);
+        
+        $id_status     = $data_status_first->id;
         $title           = $this->input->post("title") ?: "";
         $description           = $this->input->post("description") ?: "";
 
@@ -261,11 +357,6 @@ class Ticket extends MY_Controller
             array(
                 "field" => "title",
                 "label" => "Title",
-                "rules" => "required",
-                ),
-            array(
-                "field" => "select_status",
-                "label" => "Rules",
                 "rules" => "required",
                 )
             );

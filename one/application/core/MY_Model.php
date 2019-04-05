@@ -23,6 +23,8 @@ class MY_Model extends CI_Model {
 	protected $_table_mst_notification  = "mst_notification";
 
 	protected $_table_type_status       = "tbl_type_status";
+	protected $_table_type_status_detail = "tbl_type_status_detail";
 	protected $_table_tiket        		= "tbl_tiket";
+	protected $_table_user_divisi       = "tbl_user_divisi";
 
 }

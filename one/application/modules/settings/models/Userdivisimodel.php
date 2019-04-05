@@ -3,7 +3,7 @@
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
-class Ticketmodel extends MY_Model 
+class Userdivisimodel extends MY_Model 
 {
     public function get_list($params = array()) 
     {
@@ -16,27 +16,92 @@ class Ticketmodel extends MY_Model
         try {
             if ($get_total) {
                 $this->db->select("
-                    COUNT({$this->_table_tiket}.id) AS total
+                    COUNT({$this->_table_user_divisi}.id) AS total
                     ", FALSE);
             } else {
                 $this->db->select("
-                    {$this->_table_tiket}.*,
-                    {$this->_table_mst_type}.name as type_ticket_name,
-                    {$this->_table_mst_status}.name as status_order_name,
-                    ", FALSE);
+                    {$this->_table_user_divisi}.*,
+                    {$this->_table_user}.username,
+                    {$this->_table_mst_divisi}.name,
+                    ", TRUE);
             }
-            $this->db->from($this->_table_tiket);
-            $this->db->join($this->_table_mst_type, "{$this->_table_tiket}.id_type = {$this->_table_mst_type}.id", 'left');
-            $this->db->join($this->_table_mst_status, "{$this->_table_tiket}.id_status = {$this->_table_mst_status}.id", 'left');
-            $this->db->where("{$this->_table_tiket}.is_deleted", NULL);
-
-            $this->db->order_by(sprintf("{$this->_table_tiket}.%s", $order_by), $sort_by);
+            $this->db->from($this->_table_user_divisi);
+            $this->db->join($this->_table_user, "{$this->_table_user_divisi}.id_user = {$this->_table_user}.id");
+            $this->db->join($this->_table_mst_divisi, "{$this->_table_user_divisi}.id_divisi = {$this->_table_mst_divisi}.id");
+            $this->db->where("{$this->_table_user_divisi}.is_deleted", NULL);
 
             if ($get_total === FALSE) {
                 if ($start_limit != "" or $end_limit != "")
                     $this->db->limit($end_limit, $start_limit);
             }
 
+            $this->db->order_by(sprintf("{$this->_table_user_divisi}.%s", $order_by), $sort_by);
+            $query = $this->db->get();
+
+            if($query === FALSE)
+                throw new Exception();
+
+            if ($get_total) {
+                $result = $query->row();
+                $result = ($result) ? $result->total : 0;
+            } else {
+                $result = $query->result();
+            }
+
+            return $result;         
+        } catch(Exception $e) {
+            return FALSE;
+        }
+    }
+
+    public function get_user_by_params($params = array()) {
+        try {
+            $this->db->select("
+                {$this->_table_user}.*
+                ", FALSE);
+            $this->db->from($this->_table_user);
+            foreach ($params as $key => $value) {
+                $this->db->where(sprintf("{$this->_table_user}.%s", $key), $value);
+            }
+
+            $query = $this->db->get();
+            
+            if($query === FALSE)
+                throw new Exception();
+
+            $result = $query->row();
+
+            return $result;         
+        } catch(Exception $e) {
+            return FALSE;
+        }
+    }
+
+    public function get_list_user($params = array()) {
+        $start_limit = (isset($params["start_limit"])) ? $params["start_limit"] : "";
+        $end_limit   = (isset($params["end_limit"])) ? $params["end_limit"] : "";
+        $order_by   = (isset($params["order_by"])) ? $params["order_by"] : "created_at";
+        $sort_by   = (isset($params["sort_by"])) ? $params["sort_by"] : "DESC";
+        $get_total   = (isset($params["get_total"])) ? TRUE : FALSE;
+
+        try {
+            if ($get_total) {
+                $this->db->select("
+                    COUNT({$this->_table_user}.id) AS total
+                    ", FALSE);
+            } else {
+                $this->db->select("
+                    {$this->_table_user}.*
+                    ", FALSE);
+            }
+            $this->db->from($this->_table_user);
+
+            if ($get_total === FALSE) {
+                if ($start_limit != "" or $end_limit != "")
+                    $this->db->limit($end_limit, $start_limit);
+            }
+
+            $this->db->order_by(sprintf("{$this->_table_user}.%s", $order_by), $sort_by);
             $query = $this->db->get();
 
             if($query === FALSE)
@@ -60,13 +125,11 @@ class Ticketmodel extends MY_Model
 
         try {
             $this->db->select("
-                {$this->_table_tiket}.*,
-                {$this->_table_mst_status}.name as status_order_name,
+                {$this->_table_user_divisi}.*
                 ", FALSE);
-            $this->db->from($this->_table_tiket);
-            $this->db->join($this->_table_mst_status, "{$this->_table_tiket}.id_status = {$this->_table_mst_status}.id", 'left');
-            $this->db->where("{$this->_table_tiket}.id", $id);
-            $this->db->where("{$this->_table_tiket}.is_deleted", NULL);
+            $this->db->from($this->_table_user_divisi);
+            $this->db->where("{$this->_table_user_divisi}.id", $id);
+            $this->db->where("{$this->_table_user_divisi}.is_deleted", NULL);
             $query = $this->db->get();
 
             if($query === FALSE)
@@ -80,55 +143,22 @@ class Ticketmodel extends MY_Model
         }
     }
 
-    public function get_list_by_params($where = array(), $params = array()) {
-        $start_limit = (isset($params["start_limit"])) ? $params["start_limit"] : "";
-        $end_limit   = (isset($params["end_limit"])) ? $params["end_limit"] : "";
-        $order_by   = (isset($params["order_by"])) ? $params["order_by"] : "created_at";
-        $sort_by   = (isset($params["sort_by"])) ? $params["sort_by"] : "DESC";
-        $get_total   = (isset($params["get_total"])) ? TRUE : FALSE;
+    public function get_detail_by_params($params = array()) {
         try {
-            if ($get_total) {
-                $this->db->select("
-                    COUNT({$this->_table_tiket}.id) AS total
-                    ", FALSE);
-            } else {
-                $this->db->select("
-                    {$this->_table_tiket}.*,
-                    {$this->_table_mst_type}.name as type_ticket_name,
-                    {$this->_table_mst_status}.name as status_order_name,
-                    {$this->_table_type_status}.sort_number,
-                    ", FALSE);
-            }
-
-            $this->db->from($this->_table_tiket);
-            $this->db->join($this->_table_type_status, "{$this->_table_type_status}.id_type = {$this->_table_tiket}.id_type AND {$this->_table_type_status}.id_status = {$this->_table_tiket}.id_status");
-
-            $this->db->join($this->_table_mst_type, "{$this->_table_tiket}.id_type = {$this->_table_mst_type}.id", 'left');
-            $this->db->join($this->_table_mst_status, "{$this->_table_tiket}.id_status = {$this->_table_mst_status}.id", 'left');
-            $this->db->where("{$this->_table_type_status}.is_deleted", NULL);
-
-            foreach ($where as $key => $value) {
-                $this->db->where(sprintf("{$this->_table_tiket}.%s", $key), $value);
-            }
-
-            $this->db->order_by(sprintf("{$this->_table_tiket}.%s", $order_by), $sort_by);
-
-            if ($get_total === FALSE) {
-                if ($start_limit != "" or $end_limit != "")
-                    $this->db->limit($end_limit, $start_limit);
+            $this->db->select("
+                {$this->_table_user_divisi}.*
+                ", FALSE);
+            $this->db->from($this->_table_user_divisi);
+            foreach ($params as $key => $value) {
+                $this->db->where(sprintf("{$this->_table_user_divisi}.%s", $key), $value);
             }
 
             $query = $this->db->get();
-
+            
             if($query === FALSE)
                 throw new Exception();
 
-            if ($get_total) {
-                $result = $query->row();
-                $result = ($result) ? $result->total : 0;
-            } else {
-                $result = $query->result();
-            }
+            $result = $query->row();
 
             return $result;         
         } catch(Exception $e) {
@@ -139,7 +169,7 @@ class Ticketmodel extends MY_Model
     public function create($data_create = []) 
     {
         try {
-            $query = $this->db->insert($this->_table_tiket, $data_create);
+            $query = $this->db->insert($this->_table_user_divisi, $data_create);
 
             if($query === FALSE)
                 throw new Exception();
@@ -155,7 +185,7 @@ class Ticketmodel extends MY_Model
         try {
             $this->db->where("id", $id);
             $this->db->where("is_deleted", NULL); 
-            $query = $this->db->update($this->_table_tiket, $data_update);
+            $query = $this->db->update($this->_table_user_divisi, $data_update);
 
             if($query === FALSE)
                 throw new Exception();
@@ -171,7 +201,7 @@ class Ticketmodel extends MY_Model
         try {
             $this->db->where("id", $id);
             $this->db->where("is_deleted", NULL); 
-            $query = $this->db->update($this->_table_tiket, [
+            $query = $this->db->update($this->_table_user_divisi, [
                 "is_deleted" => GLOBAL_STATUS_ACTIVE
             ]);
 

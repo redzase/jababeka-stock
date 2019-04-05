@@ -4,13 +4,13 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-      Rules
+      Rules <?php echo $name_type; ?>
         <small>Status per type ticket</small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="<?php echo site_url("dashboard"); ?>"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li><a href="<?php echo site_url("/settings/"); ?>">Settings</a></li>
-        <li class="active">Rules</li>
+        <li><a href="<?php echo site_url('/ticket/index/'.$id_type) ?>">Ticket <?php echo $name_type; ?></a></li>
+        <li class="active">Rules <?php echo $name_type; ?></li>
       </ol>
     </section>
 
@@ -28,14 +28,14 @@
               <div class="box-body">
 
                   <p class="pull-left" style="margin-left:10px;">
-                      <a href="<?php echo site_url('/settings/') ?>">
-                        <i class="fa fa-arrow-left"></i>&nbsp; Back to settings
+                      <a href="<?php echo site_url('/ticket/index/'.$id_type) ?>">
+                        <i class="fa fa-arrow-left"></i>&nbsp; Back to ticket <?php echo $name_type; ?>
                       </a> 
                   </p>
 
                   <p class="pull-right" style="margin-left:10px;">
-                      <a href="<?php echo site_url('/settings/rules/add/') ?>" class="btn btn-primary">
-                        <i class="fa fa-plus"></i>&nbsp; Add Rules
+                      <a href="<?php echo site_url('/settings/rules/edit/'. $id_type) ?>" class="btn btn-primary">
+                        <i class="fa fa-edit"></i>&nbsp; Edit Rules
                       </a> 
                   </p>
                   <div style="clear:both;"></div>
@@ -45,9 +45,7 @@
                             <tr role="row">
                                 <th style="width: 10px">#</th>
                                 <th>Type Ticket</th>
-                                <th>Status Order</th>
                                 <th>Sequence</th>
-                                <th width="12%">Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -59,18 +57,29 @@
                                 <?php echo $start_no++; ?>
                               </td>
                               <td>
-                                <?php echo $value->type_ticket_name; ?>
-                              </td>
-                              <td>
                                 <?php echo $value->status_order_name; ?>
                               </td>
-                              <td>
-                                <?php echo $value->sort_number; ?>
-                              </td>
-                              <td>
-                                <a class="btn default btn-xs purple" href="<?php echo site_url("/settings/rules/edit/". $value->id); ?>"><i class="fa fa-edit"></i> Edit </a>
-                                <a class="btn default btn-xs black" href="<?php echo site_url("/settings/rules/delete/". $value->id); ?>" onclick="return confirm('Anda yakin ingin menghapus data ini?');"><i class="fa fa-trash-o"></i> Delete </a>
-                              </td>
+                              <?php
+                                if (!$value->default):
+                              ?>
+                                <td>
+                                  <?php echo $value->sort_number; ?>
+                                </td>
+                              <?php
+                                else:
+                              ?>
+                                  <td>
+                                  <?php 
+                                    if ($value->status_order == '1'):
+                                      echo '##';
+                                    else:
+                                      echo '##';
+                                    endif
+                                  ?>
+                                </td>
+                              <?php
+                                endif
+                              ?>
                             </tr>
                           <?php endforeach; ?>
                         </tbody>

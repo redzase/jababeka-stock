@@ -15,17 +15,37 @@ class Rules extends MY_Controller
         $this->load->model('Rulesmodel');
         $this->load->model('master/Typemodel');
         $this->load->model('master/Statusmodel');
+        $this->load->model('master/Divisimodel');
 
         $this->form_validation->CI =& $this;
     }
 
-    public function index($page = 1){
+    public function index($id_type = NULL, $page = 1){
 
         // Check access module permission
         // check_access_module_permission($this->_module, PERMISSION_READ, True);
 
+        if ($id_type == NULL){
+            redirect('/dashboard', "refresh");
+        }
+
+        // CHeck if status in type
+        if ($id_type !== NULL){
+            $where_check_type_status = array(
+                "id" => $id_type
+            );
+
+            $check_type_status = $this->Typemodel->get_detail_by_id($where_check_type_status);
+            if (!$check_type_status){
+                $result["status"]  = FALSE;
+                $result["message"] = sprintf("Unknown parameters, Please try again");
+                $this->session->set_flashdata(PREFIX_SESSION ."_RESULT_PROCESS", $result);
+                redirect('/dashboard', "refresh");
+            }
+        }
+
         // If no sector_id defined, redirect to dashboard page
-        $page        = ($page < 1) ? 1 : ($page - 1); 
+        $page        = ($page < 1) ? TOTAL_ITEM_PER_PAGE : ($page - 1); 
         $start_limit = $page * TOTAL_ITEM_PER_PAGE;
         $end_limit   = TOTAL_ITEM_PER_PAGE;
         $total       = 0;
@@ -33,21 +53,23 @@ class Rules extends MY_Controller
         $params = array(
             "start_limit" => $start_limit,
             "end_limit"   => $end_limit,
+            "id_type"   => $id_type,
             );
 
-        $all_data = $this->Rulesmodel->get_list($params);
+        $all_data = $this->Rulesmodel->get_list_raw($params);
 
         $params = array(
             "get_total" => TRUE,
+            "id_type"   => $id_type,
             );
-        $total = $this->Rulesmodel->get_list($params);  
+        $total = $this->Rulesmodel->get_list_raw($params);  
 
         /**
          * -- Start --
          * Pagination
          */
-        $base_url    = site_url($this->class_metadata["module"] . $this->class_metadata["method"]);
-        $uri_segment = 4;
+        $base_url    = site_url($this->class_metadata["module"] . '/' . $this->class_metadata["class"] . '/' . $this->class_metadata["method"] . '/' . $id_type);
+        $uri_segment = 5;
         $total_rows  = $total;
         $per_page    = TOTAL_ITEM_PER_PAGE;
         $suffix      = "";
@@ -65,6 +87,10 @@ class Rules extends MY_Controller
          * -- Start --
          * Store data for view
          */
+        $get_name_type = $this->Typemodel->get_detail_by_id(array("id" => $id_type))->name;
+
+        $data_content['id_type']            = $id_type;
+        $data_content['name_type']          = $get_name_type;
         $data_content["all_data"]           = $all_data; 
         $data_content["total"]              = $total;
         $data_content["start_no"]           = ($page * TOTAL_ITEM_PER_PAGE) + 1;
@@ -80,79 +106,30 @@ class Rules extends MY_Controller
 
     }
 
-    private function _do_add() 
+    private function _do_edit($id_type) 
     {
-        $id_type     = $this->input->post("select_type") ?: "";
-        $id_status   = $this->input->post("select_status") ?: "";
-        $sequence    = $this->input->post("sequence") ?: "";
+        $status_first = $this->input->post('status_first')?:"";
+        $status_last = $this->input->post('status_last')?:"";
+        $status = $this->input->post('status')?:"";
 
-        /**
-         * -- Start -- 
-         * Do validation
-         */
-        $config = array(
-            array(
-                "field" => "sequence",
-                "label" => "Sequence",
-                "rules" => "required",
-                ),
-            array(
-                "field" => "select_type",
-                "label" => "Type Ticket",
-                "rules" => "required",
-                ),
-            array(
-                "field" => "select_status",
-                "label" => "Status Order",
-                "rules" => "required",
-                )
-            );
+        $id_status = array();
+        array_push($id_status, $status_first);
 
-        $this->form_validation->set_rules($config);
-        /**
-         * Do validation
-         * -- End -- 
-         */
+        if ($status != '')
+            $explode_status = explode(",", $this->input->post('status'));
+            $id_status = array_merge($id_status, $explode_status);
 
-        $dt_type = $this->Typemodel->get_detail_by_id(array("id" => $id_type));
-        $dt_status = $this->Statusmodel->get_detail_by_id(array("id" => $id_status));
+        array_push($id_status, $status_last);
 
-        if ($this->form_validation->run()) {
+        // delete by id type
+        $action = $this->Rulesmodel->delete_by_id_type($id_type);
 
-            // Check if has rules order already exists
-            $params = array(
-                "id_type"       => $id_type,
-                "id_status"     => $id_status,
-                "is_deleted"    => NULL
-            );
-
-            $check_rules_order = $this->Rulesmodel->get_detail_by_params($params);
-            if ($check_rules_order){
-                $result["status"]  = FALSE;
-                $result["message"] = sprintf("Rules with type <b><i>%s</i></b>, status order <b><i>%s</i></b> is already exists", $dt_type->name, $dt_status->name);
-                $this->session->set_flashdata(PREFIX_SESSION ."_FORM_RESULT_PROCESS", $result);
-                return false;
-            }
-
-            // Check if has rules order already exists
-            $params = array(
-                "id_type"       => $id_type,
-                "sort_number"     => $sequence,
-                "is_deleted"    => NULL
-            );
-
-            $check_rules_order = $this->Rulesmodel->get_detail_by_params($params);
-            if ($check_rules_order){
-                $result["status"]  = FALSE;
-                $result["message"] = sprintf("Rules with sequence <b><i>%s</i></b> is already exists", $sequence);
-                $this->session->set_flashdata(PREFIX_SESSION ."_FORM_RESULT_PROCESS", $result);
-                return false;
-            }
-
+        // loop by id status  
+        foreach ($id_status as $key => $value) {
             $data_create = [
                 "id_type"          => $id_type,
-                "id_status"          => $id_status,
-                "sort_number"          => $sequence,
+                "id_status"          => $value,
+                "sort_number"          => $key + 1,
                 "created_by"    => $this->session->userdata(PREFIX_SESSION . "_USER_ID"), 
                 "created_at"    => date_now(),
                 "updated_by"   => $this->session->userdata(PREFIX_SESSION . "_USER_ID"), 
@@ -160,177 +137,86 @@ class Rules extends MY_Controller
             ];
 
             $action = $this->Rulesmodel->create($data_create);
-
-            $result["status"]  = $action;
-            $result["message"] = ($action) ? "Rules successfully created." : "Rules failed created.";
-
-            // Store session
-            $this->session->set_flashdata(PREFIX_SESSION ."_RESULT_PROCESS", $result);
-
-            redirect($this->class_metadata["module"] ."/". $this->class_metadata["class"] ."/", "refresh");
         }
+
+        $result["status"]  = $action;
+        $result["message"] = ($action) ? "Rules successfully updated." : "Rules failed updated.";
+
+        // Store session
+        $this->session->set_flashdata(PREFIX_SESSION ."_FORM_RESULT_PROCESS", $result);
+
+        redirect($this->class_metadata["module"] . '/' . $this->class_metadata["class"] . '/next/' . $id_type, "refresh");
     }
 
-    public function add()
+    public function edit($id_type = NULL)
     {
         // If submit
         if ($this->input->post()) {
-            self::_do_add();
+            self::_do_edit($id_type);
         }
-
-        // $list_type = $this->input->get("select_type[]") ?: "";
-
-        // $filter = [
-        //     "list_type" => $list_type,
-        // ];
-
-        $params = array(
-            'order_by'  => 'name',
-            'sort_by'   => 'ASC',
-        );
-        $all_data_type = $this->Typemodel->get_list($params);
-
-        $params = array(
-            'order_by'  => 'name',
-            'sort_by'   => 'ASC',
-        );
-        $all_data_status = $this->Statusmodel->get_list($params);
-
-        $data_content["all_data_type"]      = $all_data_type;
-        $data_content["all_data_status"]    = $all_data_status;
-        $data_content["list_type"]          = generate_array($all_data_type, "id", "name");
-        $data_content["list_status"]        = generate_array($all_data_status, "id", "name");
-
-        $this->load->view($this->class_metadata["module"] ."/". $this->class_metadata["class"] ."/form", $data_content);
-    }
-
-    private function _do_edit($id) 
-    {
-        $id_type     = $this->input->post("select_type") ?: "";
-        $id_status   = $this->input->post("select_status") ?: "";
-        $sequence    = $this->input->post("sequence") ?: "";
-
-        /**
-         * -- Start -- 
-         * Do validation
-         */
-        $config = array(
-            array(
-                "field" => "sequence",
-                "label" => "Sequence",
-                "rules" => "required",
-                ),
-            array(
-                "field" => "select_type",
-                "label" => "Type Ticket",
-                "rules" => "required",
-                ),
-            array(
-                "field" => "select_status",
-                "label" => "Status Order",
-                "rules" => "required",
-                )
-            );
-
-        $this->form_validation->set_rules($config);
-        /**
-         * Do validation
-         * -- End -- 
-         */
-
-        $dt_type = $this->Typemodel->get_detail_by_id(array("id" => $id_type));
-        $dt_status = $this->Statusmodel->get_detail_by_id(array("id" => $id_status));
-
-        if ($this->form_validation->run()) {
-
-            // Check if has rules order already exists
-            $params = array(
-                "id_type"       => $id_type,
-                "id_status"     => $id_status,
-                "is_deleted"    => NULL
-            );
-
-            $check_rules_order = $this->Rulesmodel->get_detail_by_params($params);
-            if ($check_rules_order and $check_rules_order->id !== $id){
-                $result["status"]  = FALSE;
-                $result["message"] = sprintf("Rules with type <b><i>%s</i></b>, status order <b><i>%s</i></b> is already exists", $dt_type->name, $dt_status->name);
-                $this->session->set_flashdata(PREFIX_SESSION ."_FORM_RESULT_PROCESS", $result);
-                return false;
-            }
-
-            // Check if has rules order already exists
-            $params = array(
-                "id_type"       => $id_type,
-                "sort_number"   => $sequence,
-                "is_deleted"    => NULL
-            );
-
-            $check_rules_order = $this->Rulesmodel->get_detail_by_params($params);
-            if ($check_rules_order and $check_rules_order->id !== $id){
-                $result["status"]  = FALSE;
-                $result["message"] = sprintf("Rules with type <b><i>%s</i></b>, sequence <b><i>%s</i></b> is already exists", $dt_type->name, $sequence);
-                $this->session->set_flashdata(PREFIX_SESSION ."_FORM_RESULT_PROCESS", $result);
-                return false;
-            }
-
-            $data_update = array_merge([
-                "id_type"          => $id_type,
-                "id_status"          => $id_status,
-                "sort_number"          => $sequence,
-                "updated_by"   => $this->session->userdata(PREFIX_SESSION . "_USER_ID"), 
-                "updated_at"   => date_now(),
-            ]);
-
-            $action = $this->Rulesmodel->update($id, $data_update);
-
-            $result["status"]  = $action;
-            $result["message"] = ($action) ? "Rules successfully updated." : "Rules failed updated.";
-
-            // Store session
-            $this->session->set_flashdata(PREFIX_SESSION ."_RESULT_PROCESS", $result);
-
-            redirect($this->class_metadata["module"] ."/". $this->class_metadata["class"] ."/", "refresh");
-        }
-    }
-
-    public function edit($id)
-    {
-        // If submit
-        if ($this->input->post()) {
-            self::_do_edit($id);
-        }
-
-        // $list_type = $this->input->get("select_type[]") ?: "";
-
-        // $filter = [
-        //     "list_type" => $list_type,
-        // ];
-
-        $params = array(
-            'order_by'  => 'name',
-            'sort_by'   => 'ASC',
-        );
-        $all_data_type = $this->Typemodel->get_list($params);
-
-        $params = array(
-            'order_by'  => 'name',
-            'sort_by'   => 'ASC',
-        );
-        $all_data_status = $this->Statusmodel->get_list($params);
 
         // Get detail data
         $params = array(
-            "id"        => $id,
+            "id"       => $id_type,
+            "is_deleted"    => NULL
             );
-        $all_data = $this->Rulesmodel->get_detail_by_id($params);
+        $check_rules_order = $this->Typemodel->get_list_by_params($params);
+        if (!$check_rules_order){
+            $result["status"]  = FALSE;
+            $result["message"] = sprintf("Unknown parameters, Please try again");
+            $this->session->set_flashdata(PREFIX_SESSION ."_RESULT_PROCESS", $result);
+            redirect($this->class_metadata["module"] ."/". $this->class_metadata["class"] ."/index/" . $id_type, "refresh");
+        }
+
+        $params = array(
+            'order_by'  => 'name',
+            'sort_by'   => 'ASC',
+        );
+        $all_data_type = $this->Typemodel->get_list($params);
+
+        $params = array(
+            'order_by'  => 'name',
+            'sort_by'   => 'ASC'
+        );
+        $where = array(
+            'default'   => NULL,
+            'is_deleted' => NULL
+        );
+        $all_data_status = $this->Statusmodel->get_list_by_params($params, $where);
+
+        // get data first
+        $where = array(
+            'default'   => TRUE,
+            'status_order' => 1,
+            'is_deleted' => NULL
+        );
+        $data_status_first = $this->Statusmodel->get_detail_by_params($where);
+
+        // get data last
+        $where = array(
+            'default'   => TRUE,
+            'status_order' => 0,
+            'is_deleted' => NULL
+        );
+        $data_status_last = $this->Statusmodel->get_detail_by_params($where);
 
         /**
          * -- Start --
          * Store data for view
          */
-        $data_content["all_data"]           = $all_data;
+        $get_name_type = $this->Typemodel->get_detail_by_id(array("id" => $id_type))->name;
+
+        $all_data = $this->Rulesmodel->get_list_status_by_id_type($id_type);
+        $all_data_detail = $this->Rulesmodel->get_detail_list_status_by_id_type($id_type);
+
+        $data_content['id_type']            = $id_type;
+        $data_content['name_type']          = $get_name_type;
+        $data_content['all_data']           = $all_data;
         $data_content["all_data_type"]      = $all_data_type;
         $data_content["all_data_status"]    = $all_data_status;
+        $data_content["data_status_first"]    = $data_status_first;
+        $data_content["data_status_last"]    = $data_status_last;
+        $data_content["lihat_detail"]    = $all_data_detail;
         $data_content["list_type"]          = generate_array($all_data_type, "id", "name");
         $data_content["list_status"]        = generate_array($all_data_status, "id", "name");
         /**
@@ -339,6 +225,114 @@ class Rules extends MY_Controller
          */
 
         $this->load->view($this->class_metadata["module"] ."/". $this->class_metadata["class"] . "/form", $data_content);
+    }
+
+    private function _do_next($id_type){
+        $post = $this->input->post()?:"";
+        $arr = array();
+        foreach ($post['status'] as $arrkey => $arrvalue) {
+            $arr[$arrvalue] = [];
+            foreach ($post as $key => $value) {
+                $len_string = strlen('divisi_' . $arrvalue);
+                if (substr($key, 0, $len_string) == 'divisi_' . $arrvalue){
+                    $split = explode("_", $key);
+                    $arr[$arrvalue][$split[2]] = $post['divisi_' . $arrvalue . '_' . $split[2]][0];
+                }
+            }
+        }
+
+        $action = $this->Rulesmodel->delete_detail_by_id_type($id_type);
+        
+        foreach ($arr as $arrkey => $arrvalue) {
+            foreach ($arrvalue as $key => $value) {
+                $data_create = [
+                    "id_type_status"          => $arrkey,
+                    "id_type"          => $id_type,
+                    "id_status"          => $key,
+                    "id_divisi"          => $value,
+                ];
+
+                $action = $this->Rulesmodel->create_detail($data_create);
+            }
+        }
+
+        $result["status"]  = TRUE;
+        $result["message"] = "Rules successfully updated.";
+
+        // Store session
+        $this->session->set_flashdata(PREFIX_SESSION ."_RESULT_PROCESS", $result);
+
+        redirect($this->class_metadata["module"] . '/' . $this->class_metadata["class"] . '/index/' . $id_type, "refresh");
+        
+    }
+
+    public function next($id_type = NULL)
+    {
+        // If submit
+        if ($this->input->post()) {
+            self::_do_next($id_type);
+        }
+
+        // Get detail data
+        $params = array(
+            "id"       => $id_type,
+            "is_deleted"    => NULL
+            );
+        $check_rules_order = $this->Typemodel->get_list_by_params($params);
+        if (!$check_rules_order){
+            $result["status"]  = FALSE;
+            $result["message"] = sprintf("Unknown parameters, Please try again");
+            $this->session->set_flashdata(PREFIX_SESSION ."_RESULT_PROCESS", $result);
+            redirect($this->class_metadata["module"] ."/". $this->class_metadata["class"] ."/index/" . $id_type, "refresh");
+        }
+
+        $params = array(
+            'order_by'  => 'name',
+            'sort_by'   => 'ASC',
+        );
+        $all_data_type = $this->Typemodel->get_list($params);
+
+        $params = array(
+            'order_by'  => 'name',
+            'sort_by'   => 'ASC'
+        );
+        $where = array(
+            'default'   => NULL,
+            'is_deleted' => NULL
+        );
+        $all_data_status = $this->Statusmodel->get_list_by_params($params, $where);
+
+
+        $all_data_divisi = $this->Divisimodel->get_list();
+
+        /**
+         * -- Start --
+         * Store data for view
+         */
+        $get_name_type = $this->Typemodel->get_detail_by_id(array("id" => $id_type))->name;
+
+        $all_data = $this->Rulesmodel->get_list_status_by_id_type($id_type, TRUE);
+
+        $all_data_detail = $this->Rulesmodel->get_detail_list_status_by_id_type($id_type);
+
+        // pre($all_data_detail);
+
+        $data_content['id_type']            = $id_type;
+        $data_content['name_type']          = $get_name_type;
+        $data_content['all_data']           = $all_data;
+        $data_content['all_data_detail']    = $all_data_detail;
+        $data_content["all_data_type"]      = $all_data_type;
+        $data_content["all_data_status"]    = $all_data_status;
+        $data_content["all_data_divisi"]    = $all_data_divisi;
+        $data_content["list_type"]          = generate_array($all_data_type, "id", "name");
+        $data_content["list_status"]        = generate_array($all_data_status, "id", "name");
+        $data_content["list_divisi"]        = generate_array($all_data_divisi, "id", "name");
+        /**
+         * Store data for view
+         * -- End --
+         */
+
+        $this->load->view($this->class_metadata["module"] ."/". $this->class_metadata["class"] . "/form_next", $data_content);
     }
 
     public function delete($id) 

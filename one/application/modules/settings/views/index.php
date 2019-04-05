@@ -9,7 +9,7 @@
       </h1>
       <ol class="breadcrumb">
         <li><a href="<?php echo site_url('/dashboard/') ?>"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li><a href="<?php echo site_url('/ticket/') ?>">Ticket</a></li>
+        <li><a href="<?php echo site_url('/ticket/index/') ?>">Ticket</a></li>
         <li class="active">Settings</li>
       </ol>
     </section>
@@ -41,6 +41,7 @@
           <!-- /.info-box -->
         </div>
 
+        <?php /* ?>
         <div class="col-md-3 col-sm-6 col-xs-12">
           <div class="info-box">
             <span class="info-box-icon bg-aqua"><i class="ion ion-email"></i></span>
@@ -57,6 +58,8 @@
           </div>
           <!-- /.info-box -->
         </div>
+
+        <?php */ ?>
 
       </div>
       <!-- /.box -->
