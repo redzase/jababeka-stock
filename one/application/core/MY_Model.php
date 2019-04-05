@@ -25,6 +25,7 @@ class MY_Model extends CI_Model {
 	protected $_table_type_status       = "tbl_type_status";
 	protected $_table_type_status_detail = "tbl_type_status_detail";
 	protected $_table_tiket        		= "tbl_tiket";
+	protected $_table_tiket_comment     = "tbl_tiket_comment";
 	protected $_table_user_divisi       = "tbl_user_divisi";
 
 }

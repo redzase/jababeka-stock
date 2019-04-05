@@ -80,6 +80,28 @@ class Ticketmodel extends MY_Model
         }
     }
 
+    public function get_list_comment_by_id_ticket($id_ticket) {
+        try {
+            $this->db->select("
+                {$this->_table_tiket_comment}.*,
+                {$this->_table_user}.username
+                ", FALSE);
+            $this->db->from($this->_table_tiket_comment);
+            $this->db->join($this->_table_user, "{$this->_table_tiket_comment}.id_user = {$this->_table_user}.id");
+            $this->db->where("{$this->_table_tiket_comment}.id_ticket", $id_ticket);
+            $query = $this->db->get();
+
+            if($query === FALSE)
+                throw new Exception();
+
+            $result = $query->result();
+
+            return $result;         
+        } catch(Exception $e) {
+            return FALSE;
+        }
+    }
+
     public function get_list_by_params($where = array(), $params = array()) {
         $start_limit = (isset($params["start_limit"])) ? $params["start_limit"] : "";
         $end_limit   = (isset($params["end_limit"])) ? $params["end_limit"] : "";
@@ -140,6 +162,20 @@ class Ticketmodel extends MY_Model
     {
         try {
             $query = $this->db->insert($this->_table_tiket, $data_create);
+
+            if($query === FALSE)
+                throw new Exception();
+
+            return True;
+        } catch(Exception $e) {
+            return FALSE;
+        }
+    }
+
+    public function create_ticket($data_create = []) 
+    {
+        try {
+            $query = $this->db->insert($this->_table_tiket_comment, $data_create);
 
             if($query === FALSE)
                 throw new Exception();

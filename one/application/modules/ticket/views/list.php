@@ -79,7 +79,7 @@
                                 <?php echo $value->description; ?>
                               </td>
                               <td>
-                                <span class="btn-xs bg-purple"><?php echo $value->status_order_name; ?></span>
+                                <span class="btn-sm bg-orange"><?php echo $value->status_order_name; ?></span>
                               </td>
                               <td>
                                 <a class="btn default btn-xs purple" href="<?php echo site_url("/ticket/detail/" . $id_type . "/" . $value->id_status . "/" . $value->id); ?>"><i class="fa fa-book"></i> Detail </a>
