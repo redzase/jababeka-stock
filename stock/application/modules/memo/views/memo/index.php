@@ -1,44 +1,8 @@
-<style type="text/css">
-.bar {
-  position:absolute;
-  height:20px;
-  opacity:0.7;
-  text-align:center;
-  color:white;
-    border-radius:25px;
-}
-#year{
-  width:100%;
-  text-align:center;
-  height:40px;
-  line-height:40px;
-}
-.month{
-  float:left;
-  width:8.3%;
-  text-align:center;
-  height:40px;
-  line-height:40px;
-}
-.box-bar{
-  padding-top:10px;
-  padding-bottom:30px;
-  width:100%;
-  position:relative;
-  clear:both;
-}
-
-.box-title{
-  line-height:40px;
-  text-align:right;
-  margin-right:20px;
-}
-
-</style>
+<link rel="stylesheet" href="<?php echo base_url()?>static/css/timeline.css">
 
 <?php
 
-if (isset($all_data_memo)) {
+if (isset($all_data_pricelist)) {
   $filter_list_sector = $filter["list_sector"];
   $filter_year        = $filter["year"];
 } 
@@ -113,22 +77,22 @@ else {
                   <div class="col-md-12 table-responsive no-padding">
                       <div id="box-main" style="min-width:1024px;width:100%;">
                         <div id="box-left" style="float:left;width:20%;">
-                          <div style="height:40px;text-align:right;margin-right:20px;line-height:40px;">Year</div>
-                          <div style="height:40px;text-align:right;margin-right:20px;line-height:40px;">Sector / Month</div>
-
+                          <div style="height:40px;text-align:right;padding-right:20px;line-height:40px;border-bottom: 2px solid;border-right:2px solid;">Year</div>
+                          <div class="box-secmony">Sector / Month</div>
                           <?php foreach ($all_data_sector as $key => $value): ?>
                             <div class="box-title"><a href="<?php echo site_url("pricelist/list/". $value->id); ?>"><?php echo $value->name; ?></a></div>
                           <?php endforeach; ?>
+                          <div class="box-secmony">Sector / Month</div>
 
                         </div>
 
                         <div id="box-right" style="float:left;width:79%;position:relative;">
-                          <div id="year"><?php echo (empty($filter_year)) ? date("Y") : $filter_year; ?></div>
+                          <div class="year"><?php echo (empty($filter_year)) ? date("Y") : $filter_year; ?></div>
                           <div>
                             <div class="month">Jan</div>
                             <div class="month">Feb</div>
                             <div class="month">Mar</div>
-                            <div class="month">Apr</div>
+                            <div class="month current-month">Apr</div>
                             <div class="month">May</div>
                             <div class="month">Jun</div>
                             <div class="month">Jul</div>
@@ -142,6 +106,20 @@ else {
 
                           <?php foreach ($all_data_sector as $key => $value): ?>
                             <div class="box-bar">
+                              <div class="month-bar"></div>
+                              <div class="month-bar"></div>
+                              <div class="month-bar"></div>
+                              <div class="month-bar current-month"></div>
+                              <div class="month-bar"></div>
+                              <div class="month-bar"></div>
+                              <div class="month-bar"></div>
+                              <div class="month-bar"></div>
+                              <div class="month-bar"></div>
+                              <div class="month-bar"></div>
+                              <div class="month-bar"></div>
+                              <div class="month-bar"></div>
+                              <div style="clear:both;"></div>
+
                               <?php 
                               if (isset($list_memo[$value->id])):
                                 $bar_one_month = 8.3;
@@ -162,6 +140,21 @@ else {
                             </div>
                           <?php endforeach; ?>
 
+                          <div>
+                            <div class="month">Jan</div>
+                            <div class="month">Feb</div>
+                            <div class="month">Mar</div>
+                            <div class="month current-month">Apr</div>
+                            <div class="month">May</div>
+                            <div class="month">Jun</div>
+                            <div class="month">Jul</div>
+                            <div class="month">Aug</div>
+                            <div class="month">Sep</div>
+                            <div class="month">Oct</div>
+                            <div class="month">Nov</div>
+                            <div class="month">Des</div>
+                            <div style="clear:both;"></div>
+                          </div>
                         </div>
                       </div>
                   </div>

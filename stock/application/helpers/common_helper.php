@@ -121,6 +121,8 @@ if(! function_exists("date_now")){
             return date("d F Y H:i", strtotime($param));
         } else if ($act == 22) {
             return date("d-m-Y", strtotime($param));
+        } else if ($act == 23) {
+            return date("Y-m", strtotime($param));
         }
     }
 }
@@ -331,6 +333,9 @@ if(!function_exists("insert_logs"))
 
 if(!function_exists("month_between_date")) {
     function month_between_date($date1, $date2) {
+        $date1 = date_now(23, $date1) ."-01";
+        $date2 = date_now(23, $date2) ."-30";
+
         $date1 = new DateTime($date1);
         $date2 = new DateTime($date2);
         $interval = date_diff($date1, $date2);

@@ -88,6 +88,21 @@ defined('EXIT__AUTO_MAX')      OR define('EXIT__AUTO_MAX', 125); // highest auto
 // Others
 define('MODULE_CODE_STOCK_SECTOR_KAVLING', 'STOCK_SECTOR_KAVLING');
 define('TOKEN_CRON', 'RI27AXFx8Bx1iHpQsHFp5w');
+define('LIST_MONTH', serialize(array(
+	1 => "Jan",
+	2 => "Feb",
+	3 => "Mar",
+	4 => "Apr",
+	5 => "May",
+	6 => "Jun",
+	7 => "Jul",
+	8 => "Aug",
+	9 => "Sep",
+	10 => "Oct",
+	11 => "Nov",
+	12 => "Des",
+	))
+);
 
 
 // My Constants
