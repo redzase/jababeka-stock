@@ -2,7 +2,7 @@
 
 <?php
 
-if (isset($all_data_pricelist)) {
+if (isset($all_data_memo)) {
   $filter_list_sector = $filter["list_sector"];
   $filter_year        = $filter["year"];
 } 
@@ -89,35 +89,17 @@ else {
                         <div id="box-right" style="float:left;width:79%;position:relative;">
                           <div class="year"><?php echo (empty($filter_year)) ? date("Y") : $filter_year; ?></div>
                           <div>
-                            <div class="month">Jan</div>
-                            <div class="month">Feb</div>
-                            <div class="month">Mar</div>
-                            <div class="month current-month">Apr</div>
-                            <div class="month">May</div>
-                            <div class="month">Jun</div>
-                            <div class="month">Jul</div>
-                            <div class="month">Aug</div>
-                            <div class="month">Sep</div>
-                            <div class="month">Oct</div>
-                            <div class="month">Nov</div>
-                            <div class="month">Des</div>
+                            <?php foreach (unserialize(LIST_MONTH) as $key_month => $value_month): ?>
+                              <div class="month <?php echo (date("m") == $key_month) ? "current-month": ""; ?>"><?php echo $value_month; ?></div>
+                            <?php endforeach; ?>
                             <div style="clear:both;"></div>
                           </div>
 
                           <?php foreach ($all_data_sector as $key => $value): ?>
                             <div class="box-bar">
-                              <div class="month-bar"></div>
-                              <div class="month-bar"></div>
-                              <div class="month-bar"></div>
-                              <div class="month-bar current-month"></div>
-                              <div class="month-bar"></div>
-                              <div class="month-bar"></div>
-                              <div class="month-bar"></div>
-                              <div class="month-bar"></div>
-                              <div class="month-bar"></div>
-                              <div class="month-bar"></div>
-                              <div class="month-bar"></div>
-                              <div class="month-bar"></div>
+                              <?php foreach (unserialize(LIST_MONTH) as $key_month => $value_month): ?>
+                                <div class="month-bar <?php echo (date("m") == $key_month) ? "current-month": ""; ?>"></div>
+                              <?php endforeach; ?>
                               <div style="clear:both;"></div>
 
                               <?php 
@@ -141,18 +123,9 @@ else {
                           <?php endforeach; ?>
 
                           <div>
-                            <div class="month">Jan</div>
-                            <div class="month">Feb</div>
-                            <div class="month">Mar</div>
-                            <div class="month current-month">Apr</div>
-                            <div class="month">May</div>
-                            <div class="month">Jun</div>
-                            <div class="month">Jul</div>
-                            <div class="month">Aug</div>
-                            <div class="month">Sep</div>
-                            <div class="month">Oct</div>
-                            <div class="month">Nov</div>
-                            <div class="month">Des</div>
+                            <?php foreach (unserialize(LIST_MONTH) as $key_month => $value_month): ?>
+                              <div class="month <?php echo (date("m") == $key_month) ? "current-month": ""; ?>"><?php echo $value_month; ?></div>
+                            <?php endforeach; ?>
                             <div style="clear:both;"></div>
                           </div>
                         </div>

@@ -98,7 +98,7 @@ else {
                           <?php foreach ($all_data_sector as $key => $value): ?>
                             <div class="box-bar">
                               <?php foreach (unserialize(LIST_MONTH) as $key_month => $value_month): ?>
-                                <div class="month <?php echo (date("m") == $key_month) ? "current-month": ""; ?>"></div>
+                                <div class="month-bar <?php echo (date("m") == $key_month) ? "current-month": ""; ?>"></div>
                               <?php endforeach; ?>
                               <div style="clear:both;"></div>
 
