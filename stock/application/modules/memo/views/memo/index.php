@@ -80,7 +80,7 @@ else {
                           <div style="height:40px;text-align:right;padding-right:20px;line-height:40px;border-bottom: 2px solid;border-right:2px solid;">Year</div>
                           <div class="box-secmony">Sector / Month</div>
                           <?php foreach ($all_data_sector as $key => $value): ?>
-                            <div class="box-title"><a href="<?php echo site_url("pricelist/list/". $value->id); ?>"><?php echo $value->name; ?></a></div>
+                            <div class="box-title"><a href="<?php echo site_url("memo/list/". $value->id); ?>"><?php echo $value->name; ?></a></div>
                           <?php endforeach; ?>
                           <div class="box-secmony">Sector / Month</div>
 
