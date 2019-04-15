@@ -85,26 +85,11 @@ $description = $all_data->description;
                 <!-- /.box-body -->
                 <div class="box-footer">
                     <a href="<?php echo site_url("/ticket/list/".$id_type) ?>" class="btn btn-danger">Batal</a>
-                    <div class="pull-right">
-                      <input type="hidden" name="status">
-                      <?php if (count($all_data_rules) > 0): ?>
-                        <label class="control-label">Action : &nbsp;</label>
-                        <?php foreach ($all_data_rules as $key => $value): ?>
-                          <button type="submit" class="btn bg-green" data-status="<?php echo $value->id_status_detail; ?>" name="submit-sector" id="submit-sector" style="margin-right: 5px;"><?php echo $value->status_order_name_detail; ?></button>
-                        <?php endforeach; ?>
-                      <?php endif; ?>
-                    </div>
                 </div>
-
-                <!-- /.box-footer -->
-                <?php echo form_close(); ?>
-
               </div>
               <div class="box box-danger">
-                <?php echo form_open(uri_string(), array("id" => "form_sample_4", "class" => "form-horizontal", "enctype" => "multipart/form-data")); ?>
-
                 <div class="box-header with-border">
-                  <h3 class="box-title">Comments</h3>
+                  <h3 class="box-title">Log History</h3>
                 </div>
 
                 <label for="inputPassword3" class="col-sm-1 control-label"></label>
@@ -115,6 +100,7 @@ $description = $all_data->description;
                               <tr role="row">
                                   <th style="width: 10px">#</th>
                                   <th>User</th>
+                                  <th>Status</th>
                                   <th>Comment</th>
                                   <th>Comment At</th>
                               </tr>
@@ -130,6 +116,9 @@ $description = $all_data->description;
                                 </td>
                                 <td>
                                   <?php echo $value->username; ?>
+                                </td>
+                                <td>
+                                  <?php echo $value->status_order_name; ?>
                                 </td>
                                 <td>
                                   <?php echo $value->comment; ?>
@@ -159,7 +148,18 @@ $description = $all_data->description;
                 <!-- /.box-body -->
                 <div class="box-footer">
                     <div class="pull-right">
-                      <button type="submit" class="btn bg-blue" name="submit-comment" id="submit-comment" style="margin-right: 5px;">Submit Comment</button>
+                      <input type="hidden" name="status" value="<?php echo $id_status; ?>">
+                      <label class="control-label">Change status to : &nbsp;</label>
+                      <?php if (count($all_data_rules) > 0): ?>
+                        <?php foreach ($all_data_rules as $key => $value): ?>
+                          <button type="submit" class="btn bg-green" data-status="<?php echo $value->id_status_detail; ?>" name="submit-sector" id="submit-sector" style="margin-right: 5px;"><?php echo $value->status_order_name_detail; ?></button>
+                        <?php endforeach; ?>
+                      <?php else: ?>
+                        <i>No Action</i>
+                      <?php endif; ?>
+                    </div>
+                    <div class="pull-left">
+                      <button type="submit" class="btn bg-blue" name="submit-comment" style="margin-right: 5px;">Submit Comment</button>
                     </div>
                 </div>
 
@@ -183,11 +183,4 @@ $description = $all_data->description;
     $("input[name=status]").val(id_status);
     $("#form_sample_3 ").submit();
   });
-
-  $(document).on("click", "#submit-comment", function(e) {
-    e.preventDefault();
-    var _this = $(this);
-    $("#form_sample_4 ").submit();
-  });
-
 </script>

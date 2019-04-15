@@ -223,55 +223,58 @@ class Ticket extends MY_Controller
 
         $data_create = [
             "id_status"          => $id_status,
-            "updated_by"   => $this->session->userdata(PREFIX_SESSION . "_USER_ID"), 
-            "updated_at"   => date_now(),
+            "updated_by"         => $this->session->userdata(PREFIX_SESSION . "_USER_ID"), 
+            "updated_at"         => date_now(),
         ];
 
         $action = $this->Ticketmodel->update($id, $data_create);
 
-        $result["status"]  = $action;
-        $result["message"] = ($action) ? "Ticket successfully updated." : "Ticket failed updated.";
+        self::_do_comment($id_type, $id);
 
-        // Store session
-        $this->session->set_flashdata(PREFIX_SESSION ."_RESULT_PROCESS", $result);
+        if ($this->input->post('submit-comment') === NULL){
+            $result["status"]  = $action;
+            $result["message"] = ($action) ? "Ticket successfully updated." : "Ticket failed updated.";
 
-        redirect($this->class_metadata["module"] ."/list/". $id_type . "/" . $id_status, "refresh");
+            // Store session
+            $this->session->set_flashdata(PREFIX_SESSION ."_RESULT_PROCESS", $result);
+
+            redirect($this->class_metadata["module"] ."/list/". $id_type . "/" . $id_status, "refresh");
+        }else{
+            $result["status"]  = $action;
+            $result["message"] = ($action) ? "Comment successfully added." : "Comment failed added.";
+
+            // Store session
+            $this->session->set_flashdata(PREFIX_SESSION ."_FORM_RESULT_PROCESS", $result);
+
+            redirect($this->class_metadata["module"] ."/detail/". $id_type . "/" . $id_status . "/" . $id, "refresh");
+        }
     }
 
-    private function _do_comment($id_type = NULL, $id_status = NULL, $id = NULL) 
+    private function _do_comment($id_type = NULL, $id = NULL) 
     {
         // get data first
         $comment           = $this->input->post("comment") ?: "";
+        $id_status         = $this->input->post("status") ?: "";
 
-        $data_create = [
-            "id_ticket"         => $id,
-            "id_user"           => $this->session->userdata(PREFIX_SESSION . "_USER_ID"), 
-            "comment"           => $comment,
-            "created_at"        => date_now(),
-        ];
+        if ($comment != ''){
+            $data_create = [
+                "id_ticket"         => $id,
+                "id_status"         => $id_status,
+                "id_user"           => $this->session->userdata(PREFIX_SESSION . "_USER_ID"), 
+                "comment"           => $comment,
+                "created_at"        => date_now(),
+            ];
 
-        $action = $this->Ticketmodel->create_ticket($data_create);
+            $action = $this->Ticketmodel->create_comment($data_create);
+        }
 
-        $result["status"]  = $action;
-        $result["message"] = ($action) ? "Comment successfully created." : "Comment failed created.";
-
-        // Store session
-        $this->session->set_flashdata(PREFIX_SESSION ."_FORM_RESULT_PROCESS", $result);
-
-        redirect($this->class_metadata["module"] ."/detail/". $id_type . "/" . $id_status . "/" . $id, "refresh");
     }
 
     public function detail($id_type = NULL, $id_status = NULL, $id = NULL)
     {
         // If submit
         if ($this->input->post()) {
-            if (!empty($this->input->post("comment"))){
-                self::_do_comment($id_type, $id_status, $id);
-            }
-
-            if (!empty($this->input->post("status"))){
-                self::_do_detail($id_type, $id);
-            }
+            self::_do_detail($id_type, $id);
         }
 
         $session_id_user = $this->session->userdata(PREFIX_SESSION . "_USER_ID");
@@ -301,6 +304,7 @@ class Ticket extends MY_Controller
         $data_content['name_type']          = $get_name_type;
         $data_content["all_data_rules"]     = $all_data_rules;
         $data_content["all_data"]           = $all_data;
+        $data_content["id_status"]          = $id_status;
 
         $all_data_comment = $this->Ticketmodel->get_list_comment_by_id_ticket($id);
 

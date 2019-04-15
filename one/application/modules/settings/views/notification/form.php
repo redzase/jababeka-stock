@@ -19,13 +19,13 @@ else {
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-      Notification
+      Notification <?php echo $name_type; ?>
         <small>days of notification if not closed</small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="<?php echo site_url("dashboard"); ?>"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li><a href="<?php echo site_url("/settings/"); ?>">Settings</a></li>
-        <li class="active">Notification</li>
+        <li><a href="<?php echo site_url("/settings/notification/index/" . $id_type); ?>">List Notification <?php echo $name_type; ?></a></li>
+        <li class="active">Notification <?php echo $name_type; ?></a></li></li>
       </ol>
     </section>
 
@@ -76,7 +76,7 @@ else {
               </div>
               <!-- /.box-body -->
               <div class="box-footer">
-                  <a href="<?php echo site_url("/settings/notification/") ?>" class="btn btn-danger">Batal</a>
+                  <a href="<?php echo site_url("/settings/notification/index/" . $id_type) ?>" class="btn btn-danger">Batal</a>
                   <button type="submit" class="btn btn-primary pull-right" name="submit-sector" id="submit-sector">Simpan</button>
               </div>
               <!-- /.box-footer -->

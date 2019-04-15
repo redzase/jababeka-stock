@@ -9,7 +9,7 @@
       </h1>
       <ol class="breadcrumb">
         <li><a href="<?php echo site_url("dashboard"); ?>"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li><a href="<?php echo site_url('/ticket/index/'.$id_type) ?>">Ticket <?php echo $name_type; ?></a></li>
+        <li><a href="<?php echo site_url('/settings/index/'.$id_type) ?>">Settings <?php echo $name_type; ?></a></li>
         <li class="active">Rules <?php echo $name_type; ?></li>
       </ol>
     </section>
@@ -28,8 +28,8 @@
               <div class="box-body">
 
                   <p class="pull-left" style="margin-left:10px;">
-                      <a href="<?php echo site_url('/ticket/index/'.$id_type) ?>">
-                        <i class="fa fa-arrow-left"></i>&nbsp; Back to ticket <?php echo $name_type; ?>
+                      <a href="<?php echo site_url('/settings/index/'.$id_type) ?>">
+                        <i class="fa fa-arrow-left"></i>&nbsp; Back to settings <?php echo $name_type; ?>
                       </a> 
                   </p>
 

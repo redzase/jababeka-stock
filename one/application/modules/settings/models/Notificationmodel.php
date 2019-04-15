@@ -9,6 +9,7 @@ class Notificationmodel extends MY_Model
     {
         $start_limit = (isset($params["start_limit"])) ? $params["start_limit"] : "";
         $end_limit   = (isset($params["end_limit"])) ? $params["end_limit"] : "";
+        $id_type   = (isset($params["id_type"])) ? $params["id_type"] : "";
         $order_by   = (isset($params["order_by"])) ? $params["order_by"] : "created_at";
         $sort_by   = (isset($params["sort_by"])) ? $params["sort_by"] : "DESC";
         $get_total   = (isset($params["get_total"])) ? TRUE : FALSE;
@@ -27,6 +28,9 @@ class Notificationmodel extends MY_Model
             $this->db->from($this->_table_mst_notification);
             $this->db->join($this->_table_user, "{$this->_table_mst_notification}.id_user = {$this->_table_user}.id");
             $this->db->where("{$this->_table_mst_notification}.is_deleted", NULL);
+
+            if ($id_type != "")
+                $this->db->where("{$this->_table_mst_notification}.id_type", $id_type);
 
             if ($get_total === FALSE) {
                 if ($start_limit != "" or $end_limit != "")

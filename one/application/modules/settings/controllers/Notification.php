@@ -19,10 +19,29 @@ class Notification extends MY_Controller
         $this->form_validation->CI =& $this;
     }
 
-    public function index($page = 1){
+    public function index($id_type = NULL, $page = 1){
 
         // Check access module permission
         // check_access_module_permission($this->_module, PERMISSION_READ, True);
+
+        if ($id_type == NULL){
+            redirect('/dashboard', "refresh");
+        }
+
+        // CHeck if status in type
+        if ($id_type !== NULL){
+            $where_check_type_status = array(
+                "id" => $id_type
+            );
+
+            $check_type_status = $this->Typemodel->get_detail_by_id($where_check_type_status);
+            if (!$check_type_status){
+                $result["status"]  = FALSE;
+                $result["message"] = sprintf("Unknown parameters, Please try again");
+                $this->session->set_flashdata(PREFIX_SESSION ."_RESULT_PROCESS", $result);
+                redirect('/dashboard', "refresh");
+            }
+        }
 
         // If no sector_id defined, redirect to dashboard page
         $page        = ($page < 1) ? 1 : ($page - 1); 
@@ -33,6 +52,7 @@ class Notification extends MY_Controller
         $params = array(
             "start_limit" => $start_limit,
             "end_limit"   => $end_limit,
+            "id_type" => $id_type
             );
 
         $all_data = $this->Notificationmodel->get_list($params);
@@ -65,6 +85,10 @@ class Notification extends MY_Controller
          * -- Start --
          * Store data for view
          */
+        $get_name_type = $this->Typemodel->get_detail_by_id(array("id" => $id_type))->name;
+
+        $data_content['id_type']            = $id_type;
+        $data_content['name_type']          = $get_name_type;
         $data_content["all_data"]           = $all_data; 
         $data_content["total"]              = $total;
         $data_content["start_no"]           = ($page * TOTAL_ITEM_PER_PAGE) + 1;
@@ -80,7 +104,7 @@ class Notification extends MY_Controller
 
     }
 
-    private function _do_add() 
+    private function _do_add($id_type = NULL) 
     {
         $id_user     = $this->input->post("select_user") ?: "";
         $days        = $this->input->post("days") ?: "";
@@ -115,6 +139,7 @@ class Notification extends MY_Controller
             // Check if has rules order already exists
             $params = array(
                 "id_user"       => $id_user,
+                "id_type"       => $id_type,
                 "is_deleted"    => NULL
             );
 
@@ -128,6 +153,7 @@ class Notification extends MY_Controller
 
             $data_create = [
                 "id_user"          => $id_user,
+                "id_type"          => $id_type,
                 "days"          => $days,
                 "created_by"    => $this->session->userdata(PREFIX_SESSION . "_USER_ID"), 
                 "created_at"    => date_now(),
@@ -143,15 +169,15 @@ class Notification extends MY_Controller
             // Store session
             $this->session->set_flashdata(PREFIX_SESSION ."_RESULT_PROCESS", $result);
 
-            redirect($this->class_metadata["module"] ."/". $this->class_metadata["class"] ."/", "refresh");
+            redirect($this->class_metadata["module"] . '/' . $this->class_metadata["class"] . '/index/' . $id_type, "refresh");
         }
     }
 
-    public function add()
+    public function add($id_type = NULL)
     {
         // If submit
         if ($this->input->post()) {
-            self::_do_add();
+            self::_do_add($id_type);
         }
 
         $params = array(
@@ -160,13 +186,17 @@ class Notification extends MY_Controller
         );
         $all_data_user = $this->Notificationmodel->get_list_user($params);
 
+        $get_name_type = $this->Typemodel->get_detail_by_id(array("id" => $id_type))->name;
+
+        $data_content['id_type']            = $id_type;
+        $data_content['name_type']            = $get_name_type;
         $data_content["all_data_user"]      = $all_data_user;
         $data_content["list_user"]          = generate_array($all_data_user, "id", "username");
 
         $this->load->view($this->class_metadata["module"] ."/". $this->class_metadata["class"] ."/form", $data_content);
     }
 
-    private function _do_edit($id) 
+    private function _do_edit($id_type = NULL, $id) 
     {
         $id_user     = $this->input->post("select_user") ?: "";
         $days        = $this->input->post("days") ?: "";
@@ -201,6 +231,7 @@ class Notification extends MY_Controller
             // Check if has rules order already exists
             $params = array(
                 "id_user"       => $id_user,
+                "id_type"          => $id_type,
                 "is_deleted"    => NULL
             );
 
@@ -214,6 +245,7 @@ class Notification extends MY_Controller
 
             $data_update = array_merge([
                 "id_user"          => $id_user,
+                "id_type"          => $id_type,
                 "days"          => $days,
                 "updated_by"   => $this->session->userdata(PREFIX_SESSION . "_USER_ID"), 
                 "updated_at"   => date_now(),
@@ -227,15 +259,15 @@ class Notification extends MY_Controller
             // Store session
             $this->session->set_flashdata(PREFIX_SESSION ."_RESULT_PROCESS", $result);
 
-            redirect($this->class_metadata["module"] ."/". $this->class_metadata["class"] ."/", "refresh");
+            redirect($this->class_metadata["module"] . '/' . $this->class_metadata["class"] . '/index/' . $id_type, "refresh");
         }
     }
 
-    public function edit($id)
+    public function edit($id_type = NULL, $id)
     {
         // If submit
         if ($this->input->post()) {
-            self::_do_edit($id);
+            self::_do_edit($id_type, $id);
         }
 
         // $list_type = $this->input->get("select_type[]") ?: "";
@@ -260,6 +292,10 @@ class Notification extends MY_Controller
          * -- Start --
          * Store data for view
          */
+        $get_name_type = $this->Typemodel->get_detail_by_id(array("id" => $id_type))->name;
+
+        $data_content['id_type']            = $id_type;
+        $data_content['name_type']          = $get_name_type;
         $data_content["all_data"]           = $all_data;
         $data_content["all_data_user"]      = $all_data_user;
         $data_content["list_user"]          = generate_array($all_data_user, "id", "username");
@@ -271,7 +307,7 @@ class Notification extends MY_Controller
         $this->load->view($this->class_metadata["module"] ."/". $this->class_metadata["class"] . "/form", $data_content);
     }
 
-    public function delete($id) 
+    public function delete($id_type = NULL, $id) 
     {
         $action = $this->Notificationmodel->delete($id);
 
@@ -289,7 +325,7 @@ class Notification extends MY_Controller
 
         $this->session->set_flashdata(PREFIX_SESSION . "_RESULT_PROCESS", $return);
 
-        redirect($this->class_metadata["module"] ."/". $this->class_metadata["class"] ."/", "refresh");
+        redirect($this->class_metadata["module"] . '/' . $this->class_metadata["class"] . '/index/' . $id_type, "refresh");
     }
 
 }

@@ -24,7 +24,7 @@ else {
       </h1>
       <ol class="breadcrumb">
         <li><a href="<?php echo site_url("dashboard"); ?>"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li><a href="<?php echo site_url('/settings/rules/index/'.$id_type) ?>">Ticket <?php echo $name_type; ?></a></li>
+        <li><a href="<?php echo site_url('/settings/rules/index/'.$id_type) ?>">Rules <?php echo $name_type; ?></a></li>
         <li class="active"><?php echo $page; ?> Rules <?php echo $name_type; ?></li>
       </ol>
     </section>

@@ -50,7 +50,7 @@
             <div class="info-box-content">
               <span class="info-box-text"><h4>Settings</h4></span>
               <span class="info-box-number">
-                <a href="/settings/rules/index/<?php echo $id_type; ?>" class="small-box-footer">
+                <a href="/settings/index/<?php echo $id_type; ?>" class="small-box-footer">
                   <small>More info <i class="fa fa-arrow-circle-right"></i></small>
                 </a>
               </span>

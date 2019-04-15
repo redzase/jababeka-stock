@@ -84,11 +84,15 @@ class Ticketmodel extends MY_Model
         try {
             $this->db->select("
                 {$this->_table_tiket_comment}.*,
-                {$this->_table_user}.username
+                {$this->_table_user}.username,
+                {$this->_table_mst_status}.name as status_order_name,
                 ", FALSE);
             $this->db->from($this->_table_tiket_comment);
             $this->db->join($this->_table_user, "{$this->_table_tiket_comment}.id_user = {$this->_table_user}.id");
+            $this->db->join($this->_table_mst_status, "{$this->_table_tiket_comment}.id_status = {$this->_table_mst_status}.id", 'left');
             $this->db->where("{$this->_table_tiket_comment}.id_ticket", $id_ticket);
+            $this->db->order_by("{$this->_table_tiket_comment}.created_at DESC");
+
             $query = $this->db->get();
 
             if($query === FALSE)
@@ -172,7 +176,7 @@ class Ticketmodel extends MY_Model
         }
     }
 
-    public function create_ticket($data_create = []) 
+    public function create_comment($data_create = []) 
     {
         try {
             $query = $this->db->insert($this->_table_tiket_comment, $data_create);
