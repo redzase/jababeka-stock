@@ -17,6 +17,8 @@ class Ticket extends MY_Controller
         $this->load->model('settings/Rulesmodel');
         $this->load->model('Ticketmodel');
         $this->load->model('settings/Userdivisimodel');
+
+        $this->load->library('sentemail');
     }
 
     public function index($id_type = NULL)
@@ -227,7 +229,10 @@ class Ticket extends MY_Controller
             "updated_at"         => date_now(),
         ];
 
-        $action = $this->Ticketmodel->update($id, $data_create);
+        // $action = $this->Ticketmodel->update($id, $data_create);
+
+        $this->sentemail->sent();
+        exit();
 
         self::_do_comment($id_type, $id);
 
