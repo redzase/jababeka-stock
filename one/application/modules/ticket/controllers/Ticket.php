@@ -289,7 +289,9 @@ class Ticket extends MY_Controller
             "is_deleted"        => NULL
             );
 
-        $all_data_divisi = $this->Userdivisimodel->get_detail_by_params();
+        $all_data_divisi = $this->Userdivisimodel->get_detail_by_params($params);
+        // print_r($all_data_divisi);
+
 
         $params = array(
             "id_type"           => $id_type,
