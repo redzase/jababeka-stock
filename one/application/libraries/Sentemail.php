@@ -21,7 +21,6 @@ class Sentemail {
         $this->CI->email->to($to_email);
         $this->CI->email->subject('Send Email Codeigniter');
         $this->CI->email->message('The email send using codeigniter library');
-        // pre($this->CI->email);
         //Send mail
         if($this->CI->email->send())
             echo "Congragulation Email Send Successfully.";
