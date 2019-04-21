@@ -48,6 +48,7 @@ $description = $all_data->description;
                             <div class="col-sm-3">
                             <div class="box box-solid">
                               <div class="box-body padding-25">
+                                <input type="hidden" name="title" value="<?php echo $title; ?>">
                                 <?php echo $title; ?>
                               </div>
                             </div>
