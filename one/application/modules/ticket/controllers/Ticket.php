@@ -257,9 +257,8 @@ class Ticket extends MY_Controller
                 $dt_email_detail = $this->Rulesmodel->get_username_with_detail_raw($params);
 
                 foreach ($dt_email_detail as $key => $value) {
-                    $this->sentemail->sent($value->username, sprintf('Status has been changed from %u to %s', $status_from, $status_to));
+                    $this->sentemail->sent($value->username, sprintf('Status has been changed from %s to %s', $status_from, $status_to));
                 }
-                
             }
 
             // Store session
