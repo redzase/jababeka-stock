@@ -216,29 +216,51 @@ class Ticket extends MY_Controller
         $this->load->view($this->class_metadata["module"] ."/form", $data_content);
     }
 
-    private function _do_detail($id_type = NULL, $id = NULL) 
+    private function _do_detail($id_type = NULL, $id_status_parent = NULL, $id = NULL) 
     {
         // get data first
         $id_status     = $this->input->post("status") ?: "";
         $title           = $this->input->post("title") ?: "";
         $description           = $this->input->post("description") ?: "";
 
-        $data_create = [
+        $data_update = [
             "id_status"          => $id_status,
             "updated_by"         => $this->session->userdata(PREFIX_SESSION . "_USER_ID"), 
             "updated_at"         => date_now(),
         ];
 
-        // $action = $this->Ticketmodel->update($id, $data_create);
-
-        $this->sentemail->sent();
-        exit();
+        $action = $this->Ticketmodel->update($id, $data_update);
+        // exit();
 
         self::_do_comment($id_type, $id);
 
         if ($this->input->post('submit-comment') === NULL){
             $result["status"]  = $action;
             $result["message"] = ($action) ? "Ticket successfully updated." : "Ticket failed updated.";
+
+            if ($action) {
+
+                $params = array(
+                    "id"           => $id_status_parent,
+                );
+                $status_from = $this->Statusmodel->get_detail_by_id($params)->name;
+
+                $params = array(
+                    "id"           => $id_status,
+                );
+                $status_to = $this->Statusmodel->get_detail_by_id($params)->name;
+
+                $params = array(
+                    "id_type"           => $id_type,
+                    "id_status_parent"  => $id_status,
+                    );
+                $dt_email_detail = $this->Rulesmodel->get_username_with_detail_raw($params);
+
+                foreach ($dt_email_detail as $key => $value) {
+                    $this->sentemail->sent($value->username, sprintf('Status has been changed from %u to %s', $status_from, $status_to));
+                }
+                
+            }
 
             // Store session
             $this->session->set_flashdata(PREFIX_SESSION ."_RESULT_PROCESS", $result);
@@ -279,7 +301,7 @@ class Ticket extends MY_Controller
     {
         // If submit
         if ($this->input->post()) {
-            self::_do_detail($id_type, $id);
+            self::_do_detail($id_type, $id_status, $id);
         }
 
         $session_id_user = $this->session->userdata(PREFIX_SESSION . "_USER_ID");

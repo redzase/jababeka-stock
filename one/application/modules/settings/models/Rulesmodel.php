@@ -207,6 +207,53 @@ class Rulesmodel extends MY_Model
         }
     }
 
+    public function get_username_with_detail_raw($params = array()){
+        $id_type                = (isset($params["id_type"])) ? $params["id_type"] : "";
+        $id_status_parent       = (isset($params["id_status_parent"])) ? $params["id_status_parent"] : "";
+
+        $where_id_type = "";
+        if ($id_type != "") {
+            $where_id_type = sprintf(" AND tbl.id_type =  '%s' ", $id_type);
+        }
+
+        $where_id_status_parent = "";
+        if ($id_status_parent != "") {
+            $where_id_status_parent = sprintf(" AND tbl.id_status =  '%s' ", $id_status_parent);
+        }
+
+        $q = sprintf("SELECT 
+                            u.username
+                        FROM
+                            (SELECT
+                                a.id AS id,
+                                a.id_type AS id_type,
+                                a.id_status AS id_status
+                            FROM
+                                tbl_type_status a
+                                LEFT JOIN mst_type t ON a.id_type = t.id
+                                LEFT JOIN mst_status s ON a.id_status = s.id 
+                            WHERE
+                                a.is_deleted IS NULL ) as tbl
+                            INNER JOIN tbl_type_status_detail dt ON tbl.id = dt.id_type_status
+                            LEFT JOIN tbl_user_divisi d ON dt.id_divisi = d.id_divisi 
+                            LEFT JOIN user u ON d.id_user = u.id
+                            WHERE dt.is_deleted IS NULL AND d.is_deleted IS NULL %s %s
+                            group by u.username", $where_id_type, $where_id_status_parent);
+
+        try {
+
+            $query  = $this->db->query($q);
+            if($query === FALSE)
+                throw new Exception();
+
+            $result = $query->result();
+
+            return $result;         
+        } catch(Exception $e) {
+            return FALSE;
+        }
+    }
+
     public function get_detail_by_id($params = array()) {
         $id = (isset($params["id"])) ? $params["id"] : "";
 

@@ -12,21 +12,19 @@ class Sentemail {
         $this->CI->email->set_newline("\r\n");
     }
 	
-	public function sent() {
+	public function sent($to_email, $msg) {
         $from_email = 'jababeka.help@gmail.com';
-        $to_email = 'mredzase@gmail.com';
 
         //Load email library
-        $this->CI->email->from($from_email, 'Identification');
+        $this->CI->email->from($from_email, 'Jababeka Help');
         $this->CI->email->to($to_email);
-        $this->CI->email->subject('Send Email Codeigniter');
-        $this->CI->email->message('The email send using codeigniter library');
+        $this->CI->email->subject('Status Topic is changed !');
+        $this->CI->email->message($msg);
         //Send mail
         if($this->CI->email->send())
-            echo "Congragulation Email Send Successfully.";
-        else
-            echo "You have encountered an error";
-        
+            return true;
+
+        return false;
     }
 	
 }
