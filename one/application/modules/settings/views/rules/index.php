@@ -124,6 +124,14 @@
             type: "GET",
             url: "/settings/rules/detail/" + data_id_type,
             cache: false,
+            beforeSend: function(jqXHR, settings) {
+              $("#myModal .modal-content").html('<div class="modal-body">Loading...</div>');
+            },
+            error: function(jqXHR, settings) {
+              console.log("ERROR WHEN DUPLICATING CAMPAIGN: " + errorThrown);
+              $("#myModal .modal-content").html('<div class="modal-body">Whoops! Something went wrong. Please try again</div>');
+              return false;
+            },
             success: function(data) {
               $("#myModal .modal-content").html(data);
             }
