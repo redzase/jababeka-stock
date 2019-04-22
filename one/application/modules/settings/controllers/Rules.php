@@ -106,6 +106,54 @@ class Rules extends MY_Controller
 
     }
 
+    public function detail($id_type = NULL)
+    {
+        // Get detail data
+        $params = array(
+            "id"       => $id_type,
+            "is_deleted"    => NULL
+            );
+        $check_rules_order = $this->Typemodel->get_list_by_params($params);
+        if (!$check_rules_order){
+            $result["status"]  = FALSE;
+            $result["message"] = sprintf("Unknown parameters, Please try again");
+            $this->session->set_flashdata(PREFIX_SESSION ."_RESULT_PROCESS", $result);
+            redirect($this->class_metadata["module"] ."/". $this->class_metadata["class"] ."/index/" . $id_type, "refresh");
+        }
+
+        /**
+         * -- Start --
+         * Store data for view
+         */
+        $get_name_type = $this->Typemodel->get_detail_by_id(array("id" => $id_type))->name;
+
+        $params = array(
+            'id_type'  => $id_type,
+        );
+        $all_data = $this->Rulesmodel->get_detail_with_detail_raw($params);
+
+        // print "<pre>";
+        $dt = array();
+        foreach ($all_data as $key => $value) {
+            if (!in_array($value->status_order_name, $dt))
+                $dt[$value->status_order_name] = array();
+        }
+
+        foreach ($all_data as $key => $value) {
+            $dt[$value->status_order_name][$value->status_order_detail_name] = $value->name_divisi;
+        }
+
+        $data_content['id_type']            = $id_type;
+        $data_content['name_type']          = $get_name_type;
+        $data_content['all_data']           = $dt;
+        /**
+         * Store data for view
+         * -- End --
+         */
+
+        $this->load->view($this->class_metadata["module"] ."/". $this->class_metadata["class"] . "/detail", $data_content, array("no-templating" => True));
+    }
+
     private function _do_edit($id_type) 
     {
         $status_first = $this->input->post('status_first')?:"";

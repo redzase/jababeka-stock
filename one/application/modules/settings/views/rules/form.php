@@ -100,7 +100,7 @@ else {
               <!-- /.box-body -->
               <div class="box-footer">
                   <a href="<?php echo site_url('/settings/rules/index/'.$id_type) ?>" class="btn btn-danger">Batal</a>
-                  <button type="submit" class="btn btn-primary pull-right" name="submit-sector" id="submit-sector">Simpan & Lanjutkan</button>
+                  <button type="submit" class="btn btn-primary pull-right" name="submit-sector" id="submit-sector">Simpan & Reset Detail</button>
                   <?php if (count($lihat_detail) > 0):?>
                     <a href="<?php echo site_url('/settings/rules/next/'.$id_type) ?>" class="btn btn-warning pull-right" style="margin-right: 5px;">Lihat Detail</a>
                   <?php endif; ?>

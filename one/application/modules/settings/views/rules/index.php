@@ -34,6 +34,7 @@
                   </p>
 
                   <p class="pull-right" style="margin-left:10px;">
+                      <a class="btn btn-primary detail" data-toggle="modal" href="#" data-target="#myModal" data-id-type="<?php echo $id_type; ?>"><i class="fa fa-book"></i>&nbsp; Lihat Detail </a>
                       <a href="<?php echo site_url('/settings/rules/edit/'. $id_type) ?>" class="btn btn-primary">
                         <i class="fa fa-edit"></i>&nbsp; Edit Rules
                       </a> 
@@ -70,11 +71,7 @@
                               ?>
                                   <td>
                                   <?php 
-                                    if ($value->status_order == '1'):
                                       echo '##';
-                                    else:
-                                      echo '##';
-                                    endif
                                   ?>
                                 </td>
                               <?php
@@ -102,7 +99,7 @@
 <!-- /.content-wrapper -->
 
 <!-- Modal -->
-<div class="modal fade" id="myModalLogs" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-body">
@@ -118,5 +115,21 @@
 <script type="text/javascript">
     $(document).ready(function() {
         
+        $(".detail").click(function(e) {
+          var data_id_type = $(this).data("id-type");
+
+          $("#myModal").find(".modal-dialog").css("width", "500px");
+
+          $.ajax({
+            type: "GET",
+            url: "/settings/rules/detail/" + data_id_type,
+            cache: false,
+            success: function(data) {
+              $("#myModal .modal-content").html(data);
+            }
+          });
+
+          return true;
+        });
     });
 </script>
