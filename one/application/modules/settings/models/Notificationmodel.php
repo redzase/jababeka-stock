@@ -168,6 +168,33 @@ class Notificationmodel extends MY_Model
         }
     }
 
+    public function get_list_by_params($params = array()) {
+        try {
+            $this->db->select("
+                {$this->_table_mst_notification}.*,
+                {$this->_table_user}.username
+                ", FALSE);
+            $this->db->from($this->_table_mst_notification);
+            $this->db->join($this->_table_user, "{$this->_table_mst_notification}.id_user = {$this->_table_user}.id");
+            $this->db->where("{$this->_table_mst_notification}.is_deleted", NULL); 
+
+            foreach ($params as $key => $value) {
+                $this->db->where(sprintf("{$this->_table_mst_notification}.%s", $key), $value);
+            }
+
+            $query = $this->db->get();
+            
+            if($query === FALSE)
+                throw new Exception();
+
+            $result = $query->result();
+
+            return $result;         
+        } catch(Exception $e) {
+            return FALSE;
+        }
+    }
+
     public function create($data_create = []) 
     {
         try {

@@ -183,13 +183,13 @@ class Rulesmodel extends MY_Model
                                 s.DEFAULT,
                                 s.status_order 
                             FROM
-                                tbl_type_status a
-                                LEFT JOIN mst_type t ON a.id_type = t.id
-                                LEFT JOIN mst_status s ON a.id_status = s.id 
+                                {$this->_table_type_status} a
+                                LEFT JOIN {$this->_table_mst_type} t ON a.id_type = t.id
+                                LEFT JOIN {$this->_table_mst_status} s ON a.id_status = s.id 
                             WHERE
                                 a.is_deleted IS NULL ) as tbl
-                            INNER JOIN tbl_type_status_detail dt ON tbl.id = dt.id_type_status
-                            LEFT JOIN mst_status s ON dt.id_status = s.id 
+                            INNER JOIN {$this->_table_type_status_detail} dt ON tbl.id = dt.id_type_status
+                            LEFT JOIN {$this->_table_mst_status} s ON dt.id_status = s.id 
                             WHERE dt.is_deleted IS NULL %s %s %s
                             ORDER BY tbl.sort_number", $where_id_type, $where_id_status_parent, $where_id_divisi);
 
@@ -229,14 +229,14 @@ class Rulesmodel extends MY_Model
                                 a.id_type AS id_type,
                                 a.id_status AS id_status
                             FROM
-                                tbl_type_status a
-                                LEFT JOIN mst_type t ON a.id_type = t.id
-                                LEFT JOIN mst_status s ON a.id_status = s.id 
+                                {$this->_table_type_status} a
+                                LEFT JOIN {$this->_table_mst_type} t ON a.id_type = t.id
+                                LEFT JOIN {$this->_table_mst_status} s ON a.id_status = s.id 
                             WHERE
                                 a.is_deleted IS NULL ) as tbl
-                            INNER JOIN tbl_type_status_detail dt ON tbl.id = dt.id_type_status
-                            LEFT JOIN tbl_user_divisi d ON dt.id_divisi = d.id_divisi 
-                            LEFT JOIN user u ON d.id_user = u.id
+                            INNER JOIN {$this->_table_type_status_detail} dt ON tbl.id = dt.id_type_status
+                            LEFT JOIN {$this->_table_user_divisi} d ON dt.id_divisi = d.id_divisi 
+                            LEFT JOIN {$this->_table_user} u ON d.id_user = u.id
                             WHERE dt.is_deleted IS NULL AND d.is_deleted IS NULL %s %s
                             group by u.username", $where_id_type, $where_id_status_parent, $where_id_divisi);
 
@@ -277,14 +277,14 @@ class Rulesmodel extends MY_Model
                                 s.NAME AS status_order_name
                             FROM
                                 tbl_type_status a
-                                LEFT JOIN mst_type t ON a.id_type = t.id
-                                LEFT JOIN mst_status s ON a.id_status = s.id 
+                                LEFT JOIN {$this->_table_mst_type} t ON a.id_type = t.id
+                                LEFT JOIN {$this->_table_mst_status} s ON a.id_status = s.id 
                             WHERE
                                 a.is_deleted IS NULL 
                                 ) AS tbl
-                            INNER JOIN tbl_type_status_detail dt ON tbl.id = dt.id_type_status
-                            LEFT JOIN mst_status s ON dt.id_status = s.id 
-                            LEFT JOIN mst_divisi u ON dt.id_divisi = u.id
+                            INNER JOIN {$this->_table_type_status_detail} dt ON tbl.id = dt.id_type_status
+                            LEFT JOIN {$this->_table_mst_status} s ON dt.id_status = s.id 
+                            LEFT JOIN {$this->_table_mst_divisi} u ON dt.id_divisi = u.id
                         WHERE
                             dt.is_deleted IS NULL %s
                             ORDER BY tbl.sort_number", $where_id_type);

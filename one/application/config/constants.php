@@ -87,6 +87,7 @@ defined('EXIT__AUTO_MAX')      OR define('EXIT__AUTO_MAX', 125); // highest auto
 
 // Others
 define('MODULE_CODE_STOCK_SECTOR_KAVLING', 'STOCK_SECTOR_KAVLING');
+define('TOKEN_CRON', 'Y3Jvbl9ub3RpZmljYXRpb24=');
 
 
 // My Constants
